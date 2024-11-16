@@ -1,0 +1,190 @@
+{
+    "languages": {
+        "EN-US": {
+            "menu": {
+                "select_vendor": "Select Vendor",
+                "enter_technology_name": "Enter the Technology Name",
+                "enter_technology_version": "Enter the version of the technology (or leave 'Static' if the technology has no version)",
+                "select_category": "Select Category",
+                "enter_urls": "Enter up to 10 URLs separated by commas",
+                "generate_baseline": "Generate Baseline"
+            },
+            "categories": [
+                "Analytics and Big Data",
+                "Artificial Intelligence",
+                "Augmented Reality and Virtual Reality (AR/VR)",
+                "Blockchain",
+                "Business Applications",
+                "Compute",
+                "Containers",
+                "Database",
+                "DevOps",
+                "Developer Tools",
+                "Game Development",
+                "Internet of Things (IoT)",
+                "Machine Learning",
+                "Management and Governance",
+                "Media Services",
+                "Migration and Transfer",
+                "Mobile",
+                "Networking and Content Delivery",
+                "Quantum Technologies",
+                "Security, Identity, and Compliance",
+                "Storage"
+            ],
+            "control_table": {
+                "ID": "ID",
+                "TITLE": "TITLE",
+                "DESCRIPTION": "DESCRIPTION",
+                "APPLICABILITY": "APPLICABILITY",
+                "SECURITY_RISK": "SECURITY RISK",
+                "CRITICALITY": "CRITICALITY",
+                "REFERENCES": "REFERENCES"
+            },
+            "html_sections": {
+                "control_list_title": "Security Controls List",
+                "history_table_title": "Change History"
+            },
+            "history_table": {
+                "version": "VERSION",
+                "revised_on": "REVISED ON",
+                "description": "DESCRIPTION",
+                "short_description": "Short Description: ",
+                "short_description_content": "Document Created",
+                "excluded_controls": "Excluded Controls:",
+                "excluded_controls_content": "None",
+                "included_controls": "Included Controls:"
+            },
+            "prompt_files": [
+                "prompts/security_controls_creation_prompt_en.txt",
+                "prompts/security_controls_consolidation_prompt_en.txt"
+            ]
+        },
+        "PT-BR": {
+            "menu": {
+                "select_vendor": "Selecione o Fornecedor",
+                "enter_technology_name": "Digite o nome da Tecnologia",
+                "enter_technology_version": "Digite a versão da tecnologia (ou deixe com valor padrão 'Static' se a tecnologia não possuir versão)",
+                "select_category": "Selecione a categoria",
+                "enter_urls": "Digite até 10 URLs separadas por vírgulas",
+                "generate_baseline": "Gerar Baseline"
+            },
+            "categories": [
+                "Análise e Big Data",
+                "Inteligência Artificial",
+                "Realidade Aumentada e Realidade Virtual (AR/VR)",
+                "Blockchain",
+                "Aplicações de Negócios",
+                "Computação",
+                "Containers",
+                "Banco de Dados",
+                "DevOps",
+                "Ferramentas de Desenvolvimento",
+                "Desenvolvimento de Jogos",
+                "Internet das Coisas (IoT)",
+                "Aprendizado de Máquina",
+                "Gerenciamento e Governança",
+                "Serviços de Mídia",
+                "Migração e Transferência",
+                "Mobile",
+                "Rede e Entrega de Conteúdo",
+                "Tecnologias Quânticas",
+                "Segurança, Identidade e Conformidade",
+                "Armazenamento"
+            ],
+            "control_table": {
+                "ID": "ID",
+                "TITLE": "TÍTULO",
+                "DESCRIPTION": "DESCRIÇÃO",
+                "APPLICABILITY": "APLICABILIDADE",
+                "SECURITY_RISK": "RISCO DE SEGURANÇA",
+                "CRITICALITY": "CRITICIDADE",
+                "REFERENCES": "REFERÊNCIAS"
+            },
+            "html_sections": {
+                "control_list_title": "Lista de Controles de Segurança",
+                "history_table_title": "Histórico de Alterações"
+            },
+            "history_table": {
+                "version": "VERSÃO",
+                "revised_on": "REVISADO EM",
+                "description": "DESCRIÇÃO",
+                "short_description": "Descrição Breve: ",
+                "short_description_content": "Documento Criado",
+                "excluded_controls": "Controles Excluídos:",
+                "excluded_controls_content": "Nenhum",
+                "included_controls": "Controles Incluídos:"
+            },
+            "prompt_files": [
+                "prompts/security_controls_creation_prompt_pt.txt",
+                "prompts/security_controls_consolidation_prompt_pt.txt"
+            ]
+        },
+        "ES-ES": {
+            "menu": {
+                "select_vendor": "Seleccione el Proveedor",
+                "enter_technology_name": "Introduzca el nombre de la Tecnología",
+                "enter_technology_version": "Introduzca la versión de la tecnología (o deje 'Static' si la tecnología no tiene versión)",
+                "select_category": "Seleccione la categoría",
+                "enter_urls": "Ingrese hasta 10 URLs separadas por comas",
+                "generate_baseline": "Generar Baseline"
+            },
+            "categories": [
+                "Análisis y Big Data",
+                "Inteligencia Artificial",
+                "Realidad Aumentada y Realidad Virtual (AR/VR)",
+                "Blockchain",
+                "Aplicaciones Empresariales",
+                "Computación",
+                "Contenedores",
+                "Bases de Datos",
+                "DevOps",
+                "Herramientas de Desarrollo",
+                "Desarrollo de Juegos",
+                "Internet de las Cosas (IoT)",
+                "Aprendizaje Automático",
+                "Gestión y Gobernanza",
+                "Servicios de Medios",
+                "Migración y Transferencia",
+                "Móvil",
+                "Redes y Distribución de Contenidos",
+                "Tecnologías Cuánticas",
+                "Seguridad, Identidad y Cumplimiento",
+                "Almacenamiento"
+            ],
+            "control_table": {
+                "ID": "ID",
+                "TITLE": "TÍTULO",
+                "DESCRIPTION": "DESCRIPCIÓN",
+                "APPLICABILITY": "APLICABILIDAD",
+                "SECURITY_RISK": "RIESGO DE SEGURIDAD",
+                "CRITICALITY": "CRITICIDAD",
+                "REFERENCES": "REFERENCIAS"
+            },
+            "html_sections": {
+                "control_list_title": "Lista de Controles de Seguridad",
+                "history_table_title": "Historial de Cambios"
+            },
+            "history_table": {
+                "version": "VERSIÓN",
+                "revised_on": "REVISADO EL",
+                "description": "DESCRIPCIÓN",
+                "short_description": "Descripción Corta: ",
+                "short_description_content": "Documento Creado",
+                "excluded_controls": "Controles Excluidos:",
+                "excluded_controls_content": "Ninguno",
+                "included_controls": "Controles Incluidos:"
+            },
+            "prompt_files": [
+                "prompts/security_controls_creation_prompt_es.txt",
+                "prompts/security_controls_consolidation_prompt_es.txt"
+            ]
+        }
+    },
+    "assistant_info": {
+        "instructions": "Você é um especialista em segurança cibernética.",
+        "name": "CyberSecurityAssistant",
+        "tools": [{"type": "code_interpreter"}],
+        "model": "gpt-4.0"
+    }
+}
