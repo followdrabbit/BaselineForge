@@ -78,7 +78,7 @@ class HTMLGenerator:
         # Generate HTML for included controls
         included_controls_html = "\n".join(
             f"<li>{control_id} - {control_title}</li>"
-            for control_title, control_id in controls_info
+            for control_id, control_title in controls_info
         )
 
         # Build the HTML structure for the history table
