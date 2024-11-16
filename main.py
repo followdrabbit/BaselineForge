@@ -8,8 +8,12 @@ from modules.openai_service import OpenAIService
 from modules.html_generator import HTMLGenerator
 from modules.cleanup_util import cleanup_generated_files
 
+# Variáveis globais para rastrear arquivos e o diretório da sessão
+generated_files = []  # Para rastrear os arquivos criados durante a execução
+ARTIFACTS_DIRECTORY = ""  # Diretório da sessão atual
 
 def main():
+    global generated_files, ARTIFACTS_DIRECTORY
     st.title("BaselineForge")
 
     # Geração de UUID único para a execução
@@ -53,6 +57,7 @@ def main():
     ARTIFACTS_DIRECTORY = os.path.join("artefacts", f"session_{section_id}")
     os.makedirs(ARTIFACTS_DIRECTORY, exist_ok=True)
 
+
     # Inicializa o URLProcessor com o diretório da sessão
     url_processor = URLProcessor(ARTIFACTS_DIRECTORY)
 
@@ -88,6 +93,7 @@ def main():
                 html_content = url_processor.fetch_page_content(url)
                 if html_content:
                     markdown_path = url_processor.save_as_markdown(url, html_content, section_id)
+                    generated_files.append(markdown_path)  # Rastrear arquivo Markdown gerado
                     markdown_files.append(markdown_path)
                     st.write(f"Conteúdo Markdown salvo em: {markdown_path}")
                 else:
@@ -147,6 +153,7 @@ def main():
             template_path = "templates/template_html.html"
             final_output_file = os.path.join(ARTIFACTS_DIRECTORY, f"{section_id}_final.md")
             output_html = os.path.join(ARTIFACTS_DIRECTORY, f"{section_id}_final.html")
+            generated_files.append(output_html)  # Rastrear arquivo HTML gerado
 
             if os.path.exists(final_output_file):
                 history_table = config_loader.get_history_table(selected_language)
@@ -178,4 +185,5 @@ if __name__ == "__main__":
     try:
         main()
     finally:
-        cleanup_generated_files("artefacts")
+        # Limpar arquivos e diretório da sessão após a execução
+        cleanup_generated_files(generated_files, ARTIFACTS_DIRECTORY)

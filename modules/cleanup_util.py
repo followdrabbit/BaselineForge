@@ -2,20 +2,33 @@ import os
 import shutil
 import streamlit as st
 
-def cleanup_generated_files(session_directory: str):
+def cleanup_generated_files(file_list: list, session_directory: str):
     """
-    Remove todos os arquivos e diretórios gerados durante a execução de uma sessão específica.
+    Remove os arquivos gerados durante a execução atual e o diretório da sessão, se aplicável.
 
     Args:
-        session_directory (str): Caminho para o diretório onde os artefatos da sessão estão armazenados.
+        file_list (list): Lista dos caminhos completos dos arquivos a serem removidos.
+        session_directory (str): Caminho do diretório da sessão.
     """
+    # Remover os arquivos rastreados
+    for file_path in file_list:
+        try:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                st.write(f"Arquivo removido: {file_path}")
+            else:
+                st.warning(f"Arquivo não encontrado para remoção: {file_path}")
+        except Exception as e:
+            st.error(f"Erro ao remover o arquivo {file_path}: {e}")
+    
+    # Tentar remover o diretório da sessão
     try:
-        if os.path.exists(session_directory):
-            st.write(f"Removendo todos os arquivos e diretórios da sessão: {session_directory}")
-            # Remove o diretório e todo o seu conteúdo
+        if os.path.exists(session_directory) and not os.listdir(session_directory):
+            os.rmdir(session_directory)
+            st.write(f"Diretório da sessão removido: {session_directory}")
+        elif os.path.exists(session_directory):
+            # Caso ainda tenha arquivos, forçar a remoção com shutil.rmtree
             shutil.rmtree(session_directory)
-            st.success("Arquivos e diretórios da sessão removidos com sucesso!")
-        else:
-            st.warning(f"O diretório da sessão {session_directory} não foi encontrado.")
+            st.write(f"Diretório da sessão removido com shutil: {session_directory}")
     except Exception as e:
-        st.error(f"Erro ao limpar os arquivos da sessão: {e}")
+        st.error(f"Erro ao remover o diretório da sessão: {e}")
