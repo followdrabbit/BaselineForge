@@ -55,6 +55,11 @@
                 "excluded_controls_content": "None",
                 "included_controls": "Included Controls:"
             },
+            "version_info": {
+                "version": "Version",
+                "status": "Status",
+                "draft": "Draft"
+            },
             "prompt_files": [
                 "prompts/security_controls_creation_prompt_en.txt",
                 "prompts/security_controls_consolidation_prompt_en.txt"
@@ -115,6 +120,11 @@
                 "excluded_controls_content": "Nenhum",
                 "included_controls": "Controles Incluídos:"
             },
+            "version_info": {
+                "version": "Versão",
+                "status": "Status",
+                "draft": "Rascunho"
+            },
             "prompt_files": [
                 "prompts/security_controls_creation_prompt_pt.txt",
                 "prompts/security_controls_consolidation_prompt_pt.txt"
@@ -174,6 +184,11 @@
                 "excluded_controls": "Controles Excluidos:",
                 "excluded_controls_content": "Ninguno",
                 "included_controls": "Controles Incluidos:"
+            },
+            "version_info": {
+                "version": "Versión",
+                "status": "Estado",
+                "draft": "Borrador"
             },
             "prompt_files": [
                 "prompts/security_controls_creation_prompt_es.txt",

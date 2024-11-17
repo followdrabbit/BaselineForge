@@ -63,6 +63,48 @@ class HTMLGenerator:
         return table_html
 
     @staticmethod
+    def generate_version_table(version_info):
+        """
+        Generates the HTML for the version table using the provided version information.
+
+        Args:
+            version_info (dict): Dictionary containing version information (e.g., version, status, draft).
+
+        Returns:
+            str: HTML content for the version table.
+
+        Raises:
+            ValueError: If `version_info` is None or missing required keys.
+        """
+        # Verifica se version_info é válido
+        if not version_info:
+            raise ValueError("version_info is None. Please ensure it contains valid data.")
+
+        # Verifica se todas as chaves necessárias estão presentes
+        required_keys = ["version", "status", "draft"]
+        for key in required_keys:
+            if key not in version_info:
+                raise ValueError(f"Key '{key}' is missing in version_info.")
+
+        # Gera o HTML da tabela de versão
+        version_table_html = f"""
+        <table id="version_table">
+            <tbody>
+                <tr>
+                    <th>{version_info['version']}</th>
+                    <td>1.0</td>
+                </tr>
+                <tr>
+                    <th>{version_info['status']}</th>
+                    <td>{version_info['draft']}</td>
+                </tr>
+            </tbody>
+        </table>
+        """
+        return version_table_html
+
+
+    @staticmethod
     def generate_history_table(datetime_str: str, controls_info: list, history_table_labels: dict) -> str:
         """
         Generate the HTML content for the history table.
@@ -120,7 +162,7 @@ class HTMLGenerator:
         return table_html
 
     @staticmethod
-    def generate_html(template_path: str, content_path: str, output_html: str, html_sections: dict, history_table: dict, control_table_labels: dict) -> str:
+    def generate_html(template_path: str, content_path: str, output_html: str, html_sections: dict, history_table: dict, control_table_labels: dict, version_info: dict) -> str:
         """Generate an HTML file from a Markdown file using a template."""
         # Load the template and Markdown content
         template_content = HTMLGenerator.load_template(template_path)
@@ -148,6 +190,9 @@ class HTMLGenerator:
         datetime_str = datetime.now().strftime("%Y-%m-%d")
         history_table_content = HTMLGenerator.generate_history_table(datetime_str, controls_info, history_table)
 
+        # Generate version table content using `generate_version_table`
+        version_table_content = HTMLGenerator.generate_version_table(version_info)
+
         # Render the final HTML using the template
         template = Template(template_content)
         final_html = template.render(
@@ -155,7 +200,8 @@ class HTMLGenerator:
             control_list_title=html_sections.get("control_list_title", "Security Controls List"),
             controls_table_content=controls_table_content,
             history_table_title=html_sections.get("history_table_title", "Change History"),
-            history_table_content=history_table_content
+            history_table_content=history_table_content,
+            version_table_content=version_table_content
         )
 
         # Write the final HTML to the output file

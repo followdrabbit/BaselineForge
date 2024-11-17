@@ -136,21 +136,10 @@
     <div style="clear: both;"></div>
     <!-- Tabela de versão -->
     <table id="version_table">
-        <tbody>
-            <tr>
-                <th>Version</th>
-                <td>1.0</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>Draft</td>
-            </tr>
-        </tbody>
+        {{ version_table_content }}
     </table>
     <br>
     <div style="clear: both;"></div>
-    <!-- Titulo da secao de controles -->
-    <h1>{{ control_list_title }}</h1>
     <!-- Tabela de controles -->
     <table id="controls_table">
         {{ controls_table_content }}

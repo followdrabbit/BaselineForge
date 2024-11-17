@@ -39,6 +39,11 @@ class ConfigLoader:
         language_config = self.get_language_config(language)
         return language_config.get("menu", {})
 
+    def get_version_info(self, language):
+        """Get the version configuration for the specified language."""
+        language_config = self.get_language_config(language)
+        return language_config.get("version_info", {})
+
     def get_categories(self, language):
         """Get the categories for the specified language."""
         language_config = self.get_language_config(language)

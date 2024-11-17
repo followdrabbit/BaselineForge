@@ -95,7 +95,7 @@ def main():
                     markdown_path = url_processor.save_as_markdown(url, html_content, section_id)
                     generated_files.append(markdown_path)  # Rastrear arquivo Markdown gerado
                     markdown_files.append(markdown_path)
-                    st.write(f"Conteúdo Markdown salvo em: {markdown_path}")
+                    st.success(f"Conteúdo Markdown salvo em: {markdown_path}")
                 else:
                     st.warning(f"Falha ao processar URL: {url}")
 
@@ -156,6 +156,7 @@ def main():
             generated_files.append(output_html)  # Rastrear arquivo HTML gerado
 
             if os.path.exists(final_output_file):
+                version_info = config_loader.get_version_info(selected_language)
                 history_table = config_loader.get_history_table(selected_language)
                 control_table_labels = config_loader.get_control_table(selected_language)  # Rótulos dinâmicos
                 html_content = html_generator.generate_html(
@@ -164,7 +165,8 @@ def main():
                     output_html=output_html,
                     html_sections=html_sections,
                     history_table=history_table,
-                    control_table_labels=control_table_labels
+                    control_table_labels=control_table_labels,
+                    version_info=version_info
                 )
 
                 if html_content:
