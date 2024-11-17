@@ -15,7 +15,6 @@ def cleanup_generated_files(file_list: list, session_directory: str):
         try:
             if os.path.exists(file_path):
                 os.remove(file_path)
-                st.write(f"Arquivo removido: {file_path}")
             else:
                 st.warning(f"Arquivo não encontrado para remoção: {file_path}")
         except Exception as e:
@@ -25,10 +24,8 @@ def cleanup_generated_files(file_list: list, session_directory: str):
     try:
         if os.path.exists(session_directory) and not os.listdir(session_directory):
             os.rmdir(session_directory)
-            st.write(f"Diretório da sessão removido: {session_directory}")
         elif os.path.exists(session_directory):
             # Caso ainda tenha arquivos, forçar a remoção com shutil.rmtree
             shutil.rmtree(session_directory)
-            st.write(f"Diretório da sessão removido com shutil: {session_directory}")
     except Exception as e:
         st.error(f"Erro ao remover o diretório da sessão: {e}")
