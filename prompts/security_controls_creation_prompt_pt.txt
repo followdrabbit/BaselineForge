@@ -6,7 +6,7 @@ Seja um especialista em Segurança da Informação e em Amazon Web Services (AWS
 
 {REGRAS}
 - Omitir introduções, conclusões, comentários e avisos sobre limitações de conteúdo.
-- Para cada controle criado, adicione a referência.
+- Para cada controle criado, adicione a referência obtida do dicionário {"REFERENCE": "<url>"}.
 - Siga o formato descrito em {FORMATO}.
 - Considere que profissionais de TI lerão o controle e precisam ser capazes de aplicá-lo e validá-lo.
 - Escreva o resultado no idioma PT-BR e no formato markdown.
@@ -19,7 +19,7 @@ Seja um especialista em Segurança da Informação e em Amazon Web Services (AWS
   <li><strong>Justificativa:</strong> Breve descrição do porquê esse controle é importante.</li>
   <li><strong>Riscos Mitigados:</strong> Breve descrição dos riscos mitigados por este controle.</li>
   <li><strong>Criticidade:</strong> Classificação deste controle e justificativa que apoie essa classificação.</li>
-  <li><strong>Referências:</strong> Referências fornecidas que suportam este controle.</li>
+  <li><strong>Referências:</strong> Extraia o valor dinamicamente da estrutura do dicionário: {"REFERENCE": "<url>"} que é fornecido com o conteúdo.</li>
 </ul>
 
 

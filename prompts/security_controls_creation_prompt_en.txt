@@ -6,7 +6,7 @@ Be an expert in Information Security and Amazon Web Services (AWS), and follow t
 
 {RULES}
 - Omit introductions, conclusions, comments, and warnings about content limitations.
-- For each control created, add the reference.
+- For each control created, add the reference obtained from the dictionary {"REFERENCE": "<url>"}.
 - Follow the format described in {FORMAT}.
 - Assume that IT professionals will read the control and need to be able to apply and validate it.
 - Write the result in EN-US and in markdown format.
