@@ -48,11 +48,6 @@ def main():
         st.error(f"Erro ao carregar configurações do idioma {selected_language}: {e}")
         st.stop()
 
-    # Exibir título dinâmico de controle
-    html_sections = config_loader.get_html_sections(selected_language)
-    subheader_title = html_sections.get("control_list_title", "Security Controls List")
-    st.subheader(subheader_title)
-
     # Diretório para artefatos
     ARTIFACTS_DIRECTORY = os.path.join("artefacts", f"session_{section_id}")
     os.makedirs(ARTIFACTS_DIRECTORY, exist_ok=True)
@@ -156,6 +151,7 @@ def main():
             generated_files.append(output_html)  # Rastrear arquivo HTML gerado
 
             if os.path.exists(final_output_file):
+                html_sections = config_loader.get_html_sections(selected_language)
                 version_info = config_loader.get_version_info(selected_language)
                 history_table = config_loader.get_history_table(selected_language)
                 control_table_labels = config_loader.get_control_table(selected_language)  # Rótulos dinâmicos
