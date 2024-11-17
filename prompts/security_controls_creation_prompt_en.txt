@@ -19,7 +19,7 @@ Be an expert in Information Security and Amazon Web Services (AWS), and follow t
   <li><strong>Justification:</strong> Brief description of why this control is important.</li>
   <li><strong>Mitigated Risks:</strong> Brief description of the risks mitigated by this control.</li>
   <li><strong>Criticality:</strong> Classification of this control with a justification supporting this classification.</li>
-  <li><strong>References:</strong> Provided references that support this control.</li>
+  <li><strong>References:</strong> Extract the value dynamically from the dictionary structure: {"REFERENCE": "<url>"} that is provided with the content</li>
 </ul>
 
 

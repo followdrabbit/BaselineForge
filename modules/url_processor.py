@@ -59,7 +59,7 @@ class URLProcessor:
             markdown_content = converter.handle(html_content)
 
             # Add a header with reference information
-            header = f"# Processed Content from URL: {url}\n\n{markdown_content}"
+            header = f"# Processed Content from URL: {{'REFERENCE': '{url}'}}\n\n{markdown_content}"
 
             # Save the Markdown content
             with open(markdown_file, "w", encoding="utf-8") as file:
