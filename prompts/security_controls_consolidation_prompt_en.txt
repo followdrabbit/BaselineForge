@@ -18,7 +18,7 @@ Be an expert in Information Security and Amazon Web Services (AWS), and follow t
   <li><strong>APPLICABILITY:</strong>The scope of application of the control. This is crucial for technologies that have multiple deployment options</li>
   <li><strong>SECURITY RISK:</strong>Description of the risk if the control is not applied</li>
   <li><strong>CRITICALITY:</strong>Classification of control's cliticality (Critical, High, Medium, Low) followed by tha justification for the cliticality classification.</li>
-  <li><strong>REFERENCES:</strong> The professionals full URL address explicity and directly, without anchor or additional descriptions.</li>
+  <li><strong>REFERENCES:</strong> The provided full URL address explicity and directly, without anchor or additional descriptions.</li>
 </ul>
 
 {CONTENT}
