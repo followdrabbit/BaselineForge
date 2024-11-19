@@ -15,8 +15,6 @@ def cleanup_generated_files(file_list: list, session_directory: str):
         try:
             if os.path.exists(file_path):
                 os.remove(file_path)
-            else:
-                st.warning(f"Arquivo não encontrado para remoção: {file_path}")
         except Exception as e:
             st.error(f"Erro ao remover o arquivo {file_path}: {e}")
     
