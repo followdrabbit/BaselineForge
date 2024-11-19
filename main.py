@@ -3,28 +3,32 @@ from datetime import datetime
 import os
 from modules.config_loader import ConfigLoader
 from modules.url_processor import URLProcessor
-from modules.id_generator import IDGenerator
+from modules.id_generator import IDGenerator  # Corrigido: Garantir a importação correta
 from modules.openai_service import OpenAIService
 from modules.html_generator import HTMLGenerator
 from modules.cleanup_util import cleanup_generated_files
+from modules.prompt_processor import PromptProcessor
 
 # Variáveis globais para rastrear arquivos e o diretório da sessão
 generated_files = []  # Para rastrear os arquivos criados durante a execução
 ARTIFACTS_DIRECTORY = ""  # Diretório da sessão atual
 
+
 def main():
     global generated_files, ARTIFACTS_DIRECTORY
     st.title("BaselineForge")
 
-    # Geração de UUID único para a execução
-    section_id = IDGenerator.generate_uuid()
+    # Geração de UUID único para a sessão
+    section_id = IDGenerator.generate_uuid()  # Corrigido: Inicialização correta do IDGenerator
 
-    # Inicializa carregadores e utilitários
-    openai_service = OpenAIService()
-    html_generator = HTMLGenerator()
+    # Diretório para artefatos
+    ARTIFACTS_DIRECTORY = os.path.join("artefacts", f"session_{section_id}")
+    os.makedirs(ARTIFACTS_DIRECTORY, exist_ok=True)
 
-    # Inicializa o carregador de configuração
+    # Inicializar carregadores e utilitários
     config_loader = ConfigLoader(config_file="config/config.json")
+    url_processor = URLProcessor(ARTIFACTS_DIRECTORY)
+    html_generator = HTMLGenerator()
 
     # Seleção de idioma
     selected_language = st.selectbox(
@@ -48,21 +52,13 @@ def main():
         st.error(f"Erro ao carregar configurações do idioma {selected_language}: {e}")
         st.stop()
 
-    # Diretório para artefatos
-    ARTIFACTS_DIRECTORY = os.path.join("artefacts", f"session_{section_id}")
-    os.makedirs(ARTIFACTS_DIRECTORY, exist_ok=True)
-
-
-    # Inicializa o URLProcessor com o diretório da sessão
-    url_processor = URLProcessor(ARTIFACTS_DIRECTORY)
-
-    # Configuração inicial
+    # Configuração inicial do formulário
     vendor = st.selectbox(menu_config.get("select_vendor", "Select Vendor"), ["AWS", "Azure", "GCP", "Huawei", "OCI"])
     tecnologia = st.text_input(menu_config.get("enter_technology_name", "Enter the Technology Name"))
-    versao = st.text_input(menu_config.get(
-        "enter_technology_version", 
-        "Enter the version of the technology (or leave 'Static' if the technology has no version)"
-    ), "Static")
+    versao = st.text_input(
+        menu_config.get("enter_technology_version", "Enter the version of the technology (or leave 'Static' if the technology has no version)"),
+        "Static"
+    )
     categoria = st.selectbox(menu_config.get("select_category", "Select Category"), [""] + categories)
     urls_input = st.text_area(menu_config.get("enter_urls", "Enter up to 10 URLs separated by commas"), "")
     urls = [url.strip() for url in urls_input.split(",") if url.strip()]
@@ -80,104 +76,98 @@ def main():
 
             # Geração do ID
             id_unico = IDGenerator.generate_id(vendor, categoria, tecnologia, versao, ano_atual, 1)
-            st.success(f"ID gerado: {id_unico}")
 
-            # Processar URLs
             markdown_files = []
-            for url in urls:
-                html_content = url_processor.fetch_page_content(url)
-                if html_content:
-                    markdown_path = url_processor.save_as_markdown(url, html_content, section_id)
-                    generated_files.append(markdown_path)  # Rastrear arquivo Markdown gerado
-                    markdown_files.append(markdown_path)
-                    st.success(f"Conteúdo Markdown salvo em: {markdown_path}")
-                else:
-                    st.warning(f"Falha ao processar URL: {url}")
+            creation_responses_unified = ""
 
-            if not markdown_files:
-                st.error("Nenhum arquivo Markdown foi gerado. Verifique as URLs fornecidas.")
-                return
+            # Inicializar OpenAI Assistant
+            assistant_id = OpenAIService.initialize_assistant("config/config.json")
+            processor = PromptProcessor(assistant_id)
 
-            # Inicializa o OpenAI Assistant
             try:
-                assistant_id = openai_service.initialize_assistant("config/config.json")
-                st.success(f"Assistant initialized successfully")
-            except Exception as e:
-                st.error(f"Error initializing assistant: {e}")
-                return
+                # Processar URLs e gerar arquivos Markdown
+                st.info("Inciando o processamento da(s) URL(s)...")
+                for url in urls:
+                    html_content = url_processor.fetch_page_content(url)
+                    if html_content:
+                        markdown_path = url_processor.save_as_markdown(url, html_content, section_id)
+                        markdown_files.append(markdown_path)
+                        generated_files.append(markdown_path)
+                        st.success(f"URL: {url} processada com sucesso")
+                    else:
+                        st.warning(f"Falha ao processar URL: {url}")
 
-            # Processar prompts
-            try:
-                prompt_criacao, prompt_consolidacao = config_loader.get_prompts(selected_language)
+                if not markdown_files:
+                    st.error("Nenhum arquivo Markdown foi gerado. Verifique as URLs fornecidas.")
+                    return
 
-                if "Error" in prompt_criacao or "Error" in prompt_consolidacao:
-                    st.error("One or more prompt files could not be loaded. Check the file paths.")
-                else:
-                    output_file = os.path.join(ARTIFACTS_DIRECTORY, f"{section_id}_responses.md")
-                    for markdown_file in markdown_files:
-                        with open(markdown_file, "r", encoding="utf-8") as file:
-                            markdown_content = file.read()
+                # Processar cada arquivo Markdown individualmente com o primeiro prompt
+                st.info("Inciando a extração dos controles...")
+                for markdown_file in markdown_files:
+                    with open(markdown_file, "r", encoding="utf-8") as file:
+                        markdown_content = file.read()
 
-                        combined_content = f"ID: {id_unico}\n{prompt_criacao}\n\n{markdown_content}"
-                        responses = openai_service.run_assistant(combined_content, assistant_id)
+                    # Processar o prompt de criação dos controles
+                    creation_output_path, creation_responses = processor.process_prompt(
+                        prompt=f"ID: {id_unico}\n{config_loader.get_prompts(selected_language)[0]}",
+                        content=markdown_content,
+                        output_file=os.path.join(ARTIFACTS_DIRECTORY, f"{section_id}_responses.md")
+                    )
+                    creation_responses_unified += "\n".join(creation_responses) + "\n"
 
-                        with open(output_file, "a", encoding="utf-8") as response_file:
-                            response_file.write("\n".join(responses) + "\n")
-                            st.success("Prompt processing completed successfully!")
+                st.success("Controles extraídos com sucesso")
 
-                if os.path.exists(output_file):
-                    with open(output_file, "r", encoding="utf-8") as file:
-                        consolidated_content = file.read()
+                # Processar o prompt de consolidação dos controles
+                st.info("Inciando a consolidação dos controles...")
+                consolidation_output_path, consolidation_output_responses = processor.process_prompt(
+                    prompt=config_loader.get_prompts(selected_language)[1],
+                    content=creation_responses_unified,
+                    output_file=os.path.join(ARTIFACTS_DIRECTORY, f"{section_id}_consolidate.md")
+                )
+                st.success("Controles consolidados com sucesso.")
 
-                    combined_consolidation = f"ID: {id_unico}\n{prompt_consolidacao}\n\n{consolidated_content}"
-                    final_responses = openai_service.run_assistant(combined_consolidation, assistant_id)
+                # Processar o prompt de revisão dos controles
+                st.info("Inciando a revisão dos controles...")
+                review_output_path, review_output_responses = processor.process_prompt(
+                    prompt=config_loader.get_prompts(selected_language)[2],
+                    content=consolidation_output_responses,
+                    output_file=os.path.join(ARTIFACTS_DIRECTORY, f"{section_id}_final.md")
+                )
+                st.success("Controles revisados com sucesso.")
 
-                    final_output_file = os.path.join(ARTIFACTS_DIRECTORY, f"{section_id}_final.md")
-                    with open(final_output_file, "w", encoding="utf-8") as final_file:
-                        final_file.write("\n".join(final_responses))
+                generated_files.extend([creation_output_path, consolidation_output_path, review_output_path])
 
-                    st.success("Processamento do prompt de consolidação concluído com sucesso!")
-                else:
-                    st.error("Nenhum conteúdo gerado para consolidação. Verifique o processamento anterior.")
-            except ValueError as e:
-                st.error(f"Erro ao carregar prompts: {e}")
-            except Exception as e:
-                st.error(f"Erro durante o processamento dos prompts: {e}")
-
-            # Gerar HTML final
-            template_path = "templates/template_html.html"
-            final_output_file = os.path.join(ARTIFACTS_DIRECTORY, f"{section_id}_final.md")
-            output_html = os.path.join(ARTIFACTS_DIRECTORY, f"{section_id}_final.html")
-            generated_files.append(output_html)  # Rastrear arquivo HTML gerado
-
-            if os.path.exists(final_output_file):
+                # Gerar HTML final
+                st.info("Gerando Baseline...")
+                template_path = "templates/template_html.html"
+                output_html_path = os.path.join(ARTIFACTS_DIRECTORY, f"{section_id}_final.html")
                 html_sections = config_loader.get_html_sections(selected_language)
                 version_info = config_loader.get_version_info(selected_language)
                 history_table = config_loader.get_history_table(selected_language)
-                control_table_labels = config_loader.get_control_table(selected_language)  # Rótulos dinâmicos
+                control_table_labels = config_loader.get_control_table(selected_language)
+
                 html_content = html_generator.generate_html(
                     template_path=template_path,
-                    content_path=final_output_file,
-                    output_html=output_html,
+                    content_path=review_output_path,
+                    output_html=output_html_path,
                     html_sections=html_sections,
                     history_table=history_table,
                     control_table_labels=control_table_labels,
                     version_info=version_info
                 )
+                generated_files.append(output_html_path)
 
                 if html_content:
+                    st.success("Baseline gerado com sucesso")
                     st.download_button(
-                        label="Baixar Página Web",
+                        label="Download Web Page",
                         data=html_content,
-                        file_name=f"{section_id}_controles.html",
+                        file_name=f"{section_id}_controls.html",
                         mime="text/html",
                     )
-                    st.success("Documento HTML gerado com sucesso!")
-                else:
-                    st.error("Erro ao gerar o documento HTML. Verifique o template ou o conteúdo do Markdown.")
-            else:
-                st.error("Arquivo final de Markdown para HTML não encontrado. Verifique se o processamento anterior foi concluído com sucesso.")
 
+            except Exception as e:
+                st.error(f"Erro durante o processamento: {e}")
 
 if __name__ == "__main__":
     try:
