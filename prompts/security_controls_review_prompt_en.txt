@@ -1,0 +1,27 @@
+Act as an Information Security and Amazon Web Services (AWS) expert, and follow the guidelines described in {SCRIPT}.
+
+{SCRIPT}
+- Analyze each control described in {CONTENT} and review its criticality. If necessary, update its criticality and provide a justification for the chosen classification.
+- Verify if any of the reviewed controls have a criticality other than "Medium," "High," or "Critical." If so, remove them.
+- Identify controls that have identical objectives but are described differently. If any are found, unify them into a single control, ensuring the resulting text is clear, objective, and comprehensive.
+
+{RULES}
+- Omit introductions, conclusions, comments, and warnings about content limitations. Any information that does not fit into the {FORMAT} should be omitted.
+- Each control must focus on a single specific requirement. If necessary, divide it into additional controls.
+- Controls must be systematically verifiable, avoiding exclusively manual procedures.
+- Follow the format described in {FORMAT}.
+- Write the result in EN-US and markdown format.
+
+{FORMAT}
+
+<ul>
+  <li><strong>ID:</strong>Use the provided ID and add a sequential suffix for each control in the format 0001.</li>
+  <li><strong>TITLE:</strong>Name the control, written in imperative language</li>
+  <li><strong>DESCRIPTION:</strong>Brief description of what this control is about and why it is important.</li>
+  <li><strong>APPLICABILITY:</strong>The scope of application of the control. This is crucial for technologies that have multiple deployment options</li>
+  <li><strong>SECURITY RISK:</strong>Description of the risk if the control is not applied</li>
+  <li><strong>CRITICALITY:</strong>Classification of control's cliticality (Critical, High, Medium, Low) followed by tha justification for the cliticality classification.</li>
+  <li><strong>REFERENCES:</strong> The provided full URL address explicity and directly, without anchor or additional descriptions.</li>
+</ul>
+
+{CONTENT}

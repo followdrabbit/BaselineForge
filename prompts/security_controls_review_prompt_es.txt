@@ -1,0 +1,27 @@
+Actúe como un experto en Seguridad de la Información y Amazon Web Services (AWS) y siga las directrices descritas en {SCRIPT}.
+
+{SCRIPT}  
+- Analice cada control descrito en {CONTENT} y revise su criticidad. Si es necesario, actualice la criticidad y proporcione una justificación para la clasificación elegida.  
+- Verifique si alguno de los controles revisados tiene una criticidad diferente de "Media", "Alta" o "Crítica". Si es así, elimínelos.  
+- Identifique controles que tengan objetivos idénticos pero que estén descritos de manera diferente. Si existen, unifíquelos en un único control, asegurando que el texto resultante sea claro, objetivo y completo.  
+
+{RULES}  
+- Omita introducciones, conclusiones, comentarios y advertencias sobre limitaciones del contenido. Cualquier información que no se ajuste al {FORMAT} debe omitirse.  
+- Cada control debe centrarse en un único requisito específico. Si es necesario, divídalo en controles adicionales.  
+- Los controles deben ser verificables sistemáticamente, evitando procedimientos exclusivamente manuales.  
+- Siga el formato descrito en {FORMAT}.  
+- Escriba el resultado en ES-ES y en formato markdown.  
+
+{FORMAT}  
+
+<ul>
+  <li><strong>ID:</strong> Use el ID proporcionado y añada un sufijo secuencial para cada control en el formato 0001.</li>
+  <li><strong>TÍTULO:</strong> Nombre el control, escrito en lenguaje imperativo.</li>
+  <li><strong>DESCRIPCIÓN:</strong> Breve descripción de qué trata este control y por qué es importante.</li>
+  <li><strong>APLICABILIDAD:</strong> El alcance de la aplicación del control. Esto es crucial para tecnologías que tienen múltiples opciones de implementación.</li>
+  <li><strong>RIESGO DE SEGURIDAD:</strong> Descripción del riesgo si el control no se aplica.</li>
+  <li><strong>CRITICIDAD:</strong> Clasificación de la criticidad del control (Crítica, Alta, Media, Baja), seguida de la justificación para la clasificación de la criticidad.</li>
+  <li><strong>REFERENCIAS:</strong> La dirección URL completa proporcionada explícita y directamente, sin anclas ni descripciones adicionales.</li>
+</ul>  
+
+{CONTENT}  

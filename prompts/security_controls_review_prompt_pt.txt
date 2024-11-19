@@ -1,0 +1,27 @@
+Atue como especialista em Segurança da Informação e Amazon Web Services (AWS) e siga as diretrizes descritas em {SCRIPT}.
+
+{SCRIPT}  
+- Analise cada controle descrito em {CONTENT} e revise sua criticidade. Se necessário, atualize a criticidade e forneça uma justificativa para a classificação escolhida.  
+- Verifique se algum dos controles revisados possui criticidade diferente de "Média", "Alta" ou "Crítica". Se houver, remova-os.  
+- Identifique controles que tenham objetivos idênticos, mas que estejam descritos de forma diferente. Caso existam, unifique-os em um único controle, garantindo que o texto resultante seja claro, objetivo e abrangente.  
+
+{RULES}  
+- Omitir introduções, conclusões, comentários e avisos sobre limitações do conteúdo. Qualquer informação que não se enquadre no {FORMAT} deve ser omitida.  
+- Cada controle deve se concentrar em um único requisito específico. Se necessário, divida-o em controles adicionais.  
+- Os controles devem ser verificáveis sistematicamente, evitando procedimentos exclusivamente manuais.  
+- Siga o formato descrito em {FORMAT}.  
+- Escreva o resultado em PT-BR e no formato markdown.  
+
+{FORMAT}  
+
+<ul>
+  <li><strong>ID:</strong> Use o ID fornecido e adicione um sufixo sequencial para cada controle no formato 0001.</li>
+  <li><strong>TÍTULO:</strong> Nomeie o controle, escrito em linguagem imperativa.</li>
+  <li><strong>DESCRIÇÃO:</strong> Breve descrição do que é este controle e por que ele é importante.</li>
+  <li><strong>APLICABILIDADE:</strong> O escopo de aplicação do controle. Isso é crucial para tecnologias que possuem várias opções de implantação.</li>
+  <li><strong>RISCO DE SEGURANÇA:</strong> Descrição do risco caso o controle não seja aplicado.</li>
+  <li><strong>CRITICIDADE:</strong> Classificação da criticidade do controle (Crítica, Alta, Média, Baixa), seguida pela justificativa para a classificação de criticidade.</li>
+  <li><strong>REFERÊNCIAS:</strong> O endereço URL completo fornecido explicitamente e diretamente, sem âncoras ou descrições adicionais.</li>
+</ul>  
+
+{CONTENT}  

@@ -72,7 +72,7 @@ class ConfigLoader:
         """Get prompts for the specified language."""
         language_config = self.get_language_config(language)
         prompt_files = language_config.get("prompt_files", [])
-        if len(prompt_files) != 2:
+        if len(prompt_files) != 3:
             raise ValueError(f"Invalid prompt_files configuration for language {language}: {prompt_files}")
 
         # Carregar o conteúdo dos arquivos de prompt

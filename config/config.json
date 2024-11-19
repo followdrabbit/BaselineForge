@@ -62,7 +62,8 @@
             },
             "prompt_files": [
                 "prompts/security_controls_creation_prompt_en.txt",
-                "prompts/security_controls_consolidation_prompt_en.txt"
+                "prompts/security_controls_consolidation_prompt_en.txt",
+                "prompts/security_controls_review_prompt_en.txt"
             ]
         },
         "PT-BR": {
@@ -127,7 +128,8 @@
             },
             "prompt_files": [
                 "prompts/security_controls_creation_prompt_pt.txt",
-                "prompts/security_controls_consolidation_prompt_pt.txt"
+                "prompts/security_controls_consolidation_prompt_pt.txt",
+                "prompts/security_controls_review_prompt_pt.txt"
             ]
         },
         "ES-ES": {
@@ -192,7 +194,8 @@
             },
             "prompt_files": [
                 "prompts/security_controls_creation_prompt_es.txt",
-                "prompts/security_controls_consolidation_prompt_es.txt"
+                "prompts/security_controls_consolidation_prompt_es.txt",
+                "prompts/security_controls_review_prompt_es.txt"
             ]
         }
     },
