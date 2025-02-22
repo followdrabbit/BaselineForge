@@ -4,30 +4,26 @@ class IDGenerator:
     """Generates unique IDs for security baselines."""
 
     @staticmethod
-    def generate_id(vendor: str, category: str, technology: str, version: str, year: int, revision: int) -> str:
+    def generate_control_id(vendor: str, technology: str, year: int, counter: int) -> str:
         """
-        Generates a unique ID based on the provided parameters.
+        Generates a simplified control ID in the format: VENDOR-TECHNOLOGY-YEAR-COUNTER.
+        Any spaces in the vendor or technology names are replaced with '-' for consistency.
+        
+        Example:
+            AWS-AMAZON-S3-2025-0001
 
         Args:
-            vendor (str): Name of the vendor (e.g., AWS, Azure).
-            category (str): Category of the baseline (e.g., Security, Performance).
-            technology (str): Technology name (e.g., EC2, Lambda).
-            version (str): Version of the technology.
+            vendor (str): Name of the vendor.
+            technology (str): Name of the technology.
             year (int): Current year.
-            revision (int): Revision number.
+            counter (int): Sequential counter with 4 digits.
 
         Returns:
-            str: A unique ID in the format 'vendor.category.technology.version.year.r{revision}'.
+            str: The generated control ID.
         """
-        # Handle missing or empty values gracefully
-        if not all([vendor, category, technology, version]):
-            raise ValueError("All fields (vendor, category, technology, version) must be provided.")
-        
-        # Generate ID in the expected format
-        id_string = f"{vendor}.{category}.{technology}.{version}.{year}.r{revision}"
-        
-        # Ensure no double dots and return the result
-        return id_string.replace("..", ".")
+        vendor_normalized = vendor.upper().replace(" ", "-")
+        technology_normalized = technology.upper().replace(" ", "-")
+        return f"{vendor_normalized}-{technology_normalized}-{year}-{counter:04d}"
 
     @staticmethod
     def generate_uuid() -> str:
