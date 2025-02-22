@@ -46,21 +46,17 @@
           },
           "ControlGen": {
             "function": "Automated Security Controls Generation Assistant",
-            "identifier": "asst_ControlGen_PLACEHOLDER_EN"
+            "identifier": "asst_nHb24Cht7Iz40KSyJjrtqccu"
           },
           "RiskEvaluator": {
             "function": "Risk Assessment Assistant",
-            "identifier": "asst_RiskEvaluator_PLACEHOLDER_EN"
+            "identifier": "asst_TbJtsRIHliLNtgt68slILoQS"
           },
-          "AutoValidator": {
-            "function": "Controls Automation Validation Assistant",
-            "identifier": "asst_AutoValidator_PLACEHOLDER_EN"
-          },
-          "BaselineConsolidator": {
+          "Consolidator": {
             "function": "Baseline Consolidation Assistant",
             "identifier": "asst_BaselineConsolidator_PLACEHOLDER_EN"
           },
-          "FinalReviewer": {
+          "Reviewer": {
             "function": "Final Review Assistant",
             "identifier": "asst_FinalReviewer_PLACEHOLDER_EN"
           }
@@ -118,15 +114,11 @@
             "function": "Avaliação de Riscos",
             "identifier": "asst_RiskEvaluator_PLACEHOLDER_PT"
           },
-          "AutoValidator": {
-            "function": "Validação Automatizada de Controles",
-            "identifier": "asst_AutoValidator_PLACEHOLDER_PT"
-          },
-          "BaselineConsolidator": {
+          "Consolidator": {
             "function": "Consolidação de Baseline",
             "identifier": "asst_BaselineConsolidator_PLACEHOLDER_PT"
           },
-          "FinalReviewer": {
+          "Reviewer": {
             "function": "Revisão Final",
             "identifier": "asst_FinalReviewer_PLACEHOLDER_PT"
           }
@@ -184,15 +176,11 @@
             "function": "Evaluación de Riesgos",
             "identifier": "asst_RiskEvaluator_PLACEHOLDER_ES"
           },
-          "AutoValidator": {
-            "function": "Validación Automatizada de Controles",
-            "identifier": "asst_AutoValidator_PLACEHOLDER_ES"
-          },
-          "BaselineConsolidator": {
+          "Consolidator": {
             "function": "Consolidación de Baseline",
             "identifier": "asst_BaselineConsolidator_PLACEHOLDER_ES"
           },
-          "FinalReviewer": {
+          "Reviewer": {
             "function": "Revisión Final",
             "identifier": "asst_FinalReviewer_PLACEHOLDER_ES"
           }

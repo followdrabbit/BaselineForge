@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import markdown
 from jinja2 import Template
 from bs4 import BeautifulSoup
@@ -9,20 +10,12 @@ class HTMLGenerator:
     """Class to handle HTML generation from Markdown content using templates."""
 
     @staticmethod
-    def load_template(template_path: str) -> str:
-        """Load the HTML template file."""
-        if not os.path.exists(template_path):
-            raise FileNotFoundError(f"Template file not found: {template_path}")
-        with open(template_path, "r", encoding="utf-8") as file:
-            return file.read()
-
-    @staticmethod
-    def load_file_content(file_path: str) -> str:
-        """Load the content of a file."""
-        if not os.path.exists(file_path):
+    def load_file(file_path: str) -> str:
+        """Load the content of a file, ensuring it exists."""
+        file = Path(file_path)
+        if not file.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
-        with open(file_path, "r", encoding="utf-8") as file:
-            return file.read().strip()
+        return file.read_text(encoding="utf-8").strip()
 
     @staticmethod
     def markdown_to_html(md_content: str) -> str:
@@ -31,19 +24,19 @@ class HTMLGenerator:
 
     @staticmethod
     def extract_controls_from_html(html_content: str) -> list:
-        """Extract control information from HTML content."""
+        """Extract security controls from an HTML list structure."""
         soup = BeautifulSoup(html_content, "html.parser")
         controls = []
+        
         for ul in soup.find_all("ul"):
-            control = {}
-            for li in ul.find_all("li"):
-                strong_tag = li.find("strong")
-                if strong_tag:
-                    key = strong_tag.get_text(strip=True).replace(":", "").strip()
-                    value = li.get_text(strip=True).replace(f"{key}:", "").strip()
-                    control[key] = value
+            control = {
+                li.find("strong").get_text(strip=True).replace(":", "").strip(): 
+                li.get_text(strip=True).replace(f"{li.find('strong').get_text(strip=True)}:", "").strip()
+                for li in ul.find_all("li") if li.find("strong")
+            }
             if control:
                 controls.append(control)
+                
         return controls
 
     @staticmethod
@@ -52,160 +45,111 @@ class HTMLGenerator:
         if not controls:
             return "<p>No controls found in the Markdown content.</p>"
 
-        table_html = "<table id='controls_table'>\n<tr>" + "".join(f"<th>{header}</th>" for header in headers) + "</tr>\n"
-        for control in controls:
-            table_html += "<tr>"
-            for header in headers:
-                table_html += f"<td>{control.get(header, 'N/A')}</td>"
-            table_html += "</tr>\n"
-        table_html += "</table>"
+        table_rows = [
+            "<tr>" + "".join(f"<td>{control.get(header, 'N/A')}</td>" for header in headers) + "</tr>"
+            for control in controls
+        ]
 
-        return table_html
+        return f"""
+        <table id='controls_table'>
+            <tr>{"".join(f"<th>{header}</th>" for header in headers)}</tr>
+            {"".join(table_rows)}
+        </table>
+        """
 
     @staticmethod
-    def generate_version_table(version_info):
-        """
-        Generates the HTML for the version table using the provided version information.
-
-        Args:
-            version_info (dict): Dictionary containing version information (e.g., version, status, draft).
-
-        Returns:
-            str: HTML content for the version table.
-
-        Raises:
-            ValueError: If `version_info` is None or missing required keys.
-        """
-        # Verifica se version_info é válido
-        if not version_info:
-            raise ValueError("version_info is None. Please ensure it contains valid data.")
-
-        # Verifica se todas as chaves necessárias estão presentes
+    def generate_version_table(version_info: dict) -> str:
+        """Generate the HTML for the version table."""
         required_keys = ["version", "status", "draft"]
-        for key in required_keys:
-            if key not in version_info:
-                raise ValueError(f"Key '{key}' is missing in version_info.")
+        if not all(key in version_info for key in required_keys):
+            raise ValueError("Missing required keys in version_info.")
 
-        # Gera o HTML da tabela de versão
-        version_table_html = f"""
+        return f"""
         <table id="version_table">
             <tbody>
-                <tr>
-                    <th>{version_info['version']}</th>
-                    <td>1.0</td>
-                </tr>
-                <tr>
-                    <th>{version_info['status']}</th>
-                    <td>{version_info['draft']}</td>
-                </tr>
+                <tr><th>Version</th><td>{version_info['version']}</td></tr>
+                <tr><th>Status</th><td>{version_info['status']}</td></tr>
+                <tr><th>Draft</th><td>{version_info['draft']}</td></tr>
             </tbody>
         </table>
         """
-        return version_table_html
-
 
     @staticmethod
-    def generate_history_table(datetime_str: str, controls_info: list, history_table_labels: dict) -> str:
-        """
-        Generate the HTML content for the history table.
-
-        Args:
-            datetime_str (str): Date and time for the revision.
-            controls_info (list): List of controls (title and ID).
-            history_table_labels (dict): Translated texts for the table headers and content.
-
-        Returns:
-            str: Generated HTML content for the history table.
-        """
-        # Generate HTML for included controls
+    def generate_history_table(datetime_str: str, controls_info: list, history_labels: dict) -> str:
+        """Generate the HTML for the history table."""
         included_controls_html = "\n".join(
             f"<li>{control_id} - {control_title}</li>"
             for control_id, control_title in controls_info
         )
 
-        # Build the HTML structure for the history table
-        table_html = f"""
+        return f"""
         <table id='history_table'>
             <thead>
                 <tr>
-                    <th>{history_table_labels.get('version', 'Version')}</th>
-                    <th>{history_table_labels.get('revised_on', 'Revised On')}</th>
-                    <th>{history_table_labels.get('description', 'Description')}</th>
+                    <th>{history_labels.get('version', 'Version')}</th>
+                    <th>{history_labels.get('revised_on', 'Revised On')}</th>
+                    <th>{history_labels.get('description', 'Description')}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td style='width: 16%;'>
-                        <p><strong>1.0</strong></p>
-                    </td>
-                    <td style='width: 21%;'>
-                        <p><strong>{datetime_str}</strong></p>
-                    </td>
-                    <td style='width: 63%; text-align: left;'>
-                        <p><strong>{history_table_labels.get('short_description', 'Short Description')}</strong>: {history_table_labels.get('short_description_content', 'Document Created')}</p>
-                        <p>&nbsp;</p>
-                        <p><strong>{history_table_labels.get('excluded_controls', 'Excluded Controls')}</strong>:</p>
-                        <ul>
-                            <li>{history_table_labels.get('excluded_controls_content', 'None')}</li>
-                        </ul>
-                        <p>&nbsp;</p>
-                        <p><strong>{history_table_labels.get('included_controls', 'Included Controls')}</strong>:</p>
-                        <ul>
-                            {included_controls_html}
-                        </ul>
+                    <td><strong>1.0</strong></td>
+                    <td><strong>{datetime_str}</strong></td>
+                    <td>
+                        <p><strong>{history_labels.get('short_description', 'Short Description')}</strong>: {history_labels.get('short_description_content', 'Document Created')}</p>
+                        <p><strong>{history_labels.get('excluded_controls', 'Excluded Controls')}</strong>: {history_labels.get('excluded_controls_content', 'None')}</p>
+                        <p><strong>{history_labels.get('included_controls', 'Included Controls')}</strong>:</p>
+                        <ul>{included_controls_html}</ul>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <p>&nbsp;</p>
         """
-        return table_html
 
     @staticmethod
-    def generate_html(template_path: str, content_path: str, output_html: str, html_sections: dict, history_table: dict, control_table_labels: dict, version_info: dict) -> str:
+    def generate_html(
+        template_path: str,
+        content_path: str,
+        output_html: str,
+        html_sections: dict,
+        history_table: dict,
+        control_table_labels: dict,
+        version_info: dict
+    ) -> str:
         """Generate an HTML file from a Markdown file using a template."""
-        # Load the template and Markdown content
-        template_content = HTMLGenerator.load_template(template_path)
-        markdown_content = HTMLGenerator.load_file_content(content_path)
+        try:
+            template_content = HTMLGenerator.load_file(template_path)
+            markdown_content = HTMLGenerator.load_file(content_path)
+        except FileNotFoundError as e:
+            return str(e)
 
-        # Convert Markdown to HTML and extract controls
         html_content = HTMLGenerator.markdown_to_html(markdown_content)
         controls = HTMLGenerator.extract_controls_from_html(html_content)
 
-        # Use control table labels from the configuration
-        header_labels = [
-            control_table_labels.get("ID", "ID"),
-            control_table_labels.get("TITLE", "TITLE"),
-            control_table_labels.get("DESCRIPTION", "DESCRIPTION"),
-            control_table_labels.get("APPLICABILITY", "APPLICABILITY"),
-            control_table_labels.get("SECURITY_RISK", "SECURITY RISK"),
-            control_table_labels.get("CRITICALITY", "CRITICALITY"),
-            control_table_labels.get("REFERENCES", "REFERENCES")
-        ]
+        # Headers from control table labels
+        headers = [control_table_labels.get(k, k) for k in ["ID", "TITLE", "DESCRIPTION", "APPLICABILITY", "SECURITY_RISK", "CRITICALITY", "REFERENCES"]]
+        controls_table = HTMLGenerator.controls_to_html_table(controls, headers)
 
-        # Generate control and history tables
-        controls_table_content = HTMLGenerator.controls_to_html_table(controls, header_labels)
-        controls_info = [(c.get(header_labels[0], "N/A"), c.get(header_labels[1], "N/A")) for c in controls]
-
+        controls_info = [(c.get(headers[0], "N/A"), c.get(headers[1], "N/A")) for c in controls]
         datetime_str = datetime.now().strftime("%Y-%m-%d")
-        history_table_content = HTMLGenerator.generate_history_table(datetime_str, controls_info, history_table)
+        history_table_html = HTMLGenerator.generate_history_table(datetime_str, controls_info, history_table)
+        version_table_html = HTMLGenerator.generate_version_table(version_info)
 
-        # Generate version table content using `generate_version_table`
-        version_table_content = HTMLGenerator.generate_version_table(version_info)
-
-        # Render the final HTML using the template
         template = Template(template_content)
         final_html = template.render(
             title="Security Baseline Report",
             control_list_title=html_sections.get("control_list_title", "Security Controls List"),
-            controls_table_content=controls_table_content,
+            controls_table_content=controls_table,
             history_table_title=html_sections.get("history_table_title", "Change History"),
-            history_table_content=history_table_content,
-            version_table_content=version_table_content
+            history_table_content=history_table_html,
+            version_table_content=version_table_html
         )
 
-        # Write the final HTML to the output file
-        with open(output_html, "w", encoding="utf-8") as file:
-            file.write(final_html)
+        # Save output HTML
+        try:
+            with open(output_html, "w", encoding="utf-8") as file:
+                file.write(final_html)
+        except Exception as e:
+            return f"Error writing file: {str(e)}"
 
         return final_html

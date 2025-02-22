@@ -36,44 +36,55 @@ class OpenAIService:
             str: Assistant ID.
         """
         try:
-            # List existing assistants
+            # Lista os assistentes existentes
             assistants = client.beta.assistants.list(limit=20)
+            # Verifica se já existe um assistente com o nome especificado
             for assistant in assistants.data:
-                # Check if the assistant name matches "CyberSecurityAssistant"
-                if assistant.name == "CyberSecurityAssistant":
+                if assistant.name == assistant_info.get("name", "CyberSecurityAssistant"):
                     return assistant.id
 
-            # Create a new assistant
+            # Cria um novo assistente (pode ser necessário fornecer configurações adicionais)
             new_assistant = client.beta.assistants.create(
-                instructions=assistant_info["instructions"],
-                name=assistant_info["name"],
-                tools=assistant_info["tools"],
-                model=assistant_info["model"]
+                instructions=assistant_info.get("instructions", ""),
+                name=assistant_info.get("name", "CyberSecurityAssistant"),
+                tools=assistant_info.get("tools", []),
+                model=assistant_info.get("model", "gpt-4")
             )
             return new_assistant.id
         except Exception as e:
             raise RuntimeError(f"Error creating or retrieving assistant: {e}")
 
     @staticmethod
-    def initialize_assistant(config_path: str) -> str:
+    def initialize_assistant(config_path: str, selected_language: str) -> str:
         """
-        High-level method to initialize an assistant using the config file.
+        High-level method to initialize an assistant using the config file and selected language.
 
         Args:
             config_path (str): Path to the configuration file.
+            selected_language (str): Language code to select the appropriate assistant configuration.
 
         Returns:
             str: Assistant ID.
         """
-        # Load configuration
+        # Carrega a configuração utilizando o ConfigLoader
         config_loader = ConfigLoader(config_path)
-        assistant_info = config_loader.get("assistant_info")
+        try:
+            # Acessa a seção de agentes para o idioma selecionado
+            agents = config_loader.get("languages")[selected_language]["agents"]
+        except KeyError:
+            raise ValueError(f"Assistant information is missing in the configuration for language '{selected_language}'.")
 
+        # Selecionamos o agente "Requisitor" como padrão (ajuste se necessário)
+        assistant_info = agents.get("Requisitor")
         if not assistant_info:
-            raise ValueError("Assistant information is missing in the configuration.")
+            raise ValueError(f"Assistant 'Requisitor' information is missing in the configuration for language '{selected_language}'.")
 
-        # Initialize the client and create/retrieve the assistant
-        client = OpenAIService.setup_client()  # Directly fetches the API key
+        # Se o identificador já estiver definido, retorne-o diretamente
+        if "identifier" in assistant_info and assistant_info["identifier"]:
+            return assistant_info["identifier"]
+
+        # Caso contrário, inicializa o cliente e cria/recupera o assistente
+        client = OpenAIService.setup_client()  # Obtém a chave de API do Streamlit secrets
         return OpenAIService.create_or_get_assistant(client, assistant_info)
 
     @staticmethod
@@ -92,19 +103,19 @@ class OpenAIService:
             if not assistant_id:
                 raise ValueError("Assistant ID is required to run the OpenAI assistant.")
 
-            # Initialize the client
-            client = OpenAIService.setup_client()  # Directly fetches the API key
+            # Inicializa o cliente
+            client = OpenAIService.setup_client()  # Obtém a chave de API do Streamlit secrets
 
-            # Create a thread and send the message
+            # Cria uma thread e envia a mensagem
             thread = client.beta.threads.create()
             client.beta.threads.messages.create(thread.id, role="user", content=content)
 
-            # Run the assistant
+            # Executa o assistente
             run = client.beta.threads.runs.create(thread_id=thread.id, assistant_id=assistant_id)
 
             responses = []
             while True:
-                # Check the status of the run
+                # Verifica o status da execução
                 run_status = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id).status
                 if run_status == "completed":
                     messages = client.beta.threads.messages.list(thread_id=thread.id)
