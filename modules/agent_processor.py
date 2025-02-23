@@ -12,14 +12,12 @@ class AgentProcessor:
       3) Unifica todos os resultados de ControlGen
       4) ControlRefiner -> roda uma única vez no texto unificado de ControlGen
       5) RiskEvaluator -> roda uma única vez no resultado do ControlRefiner
-      6) ControlMerger -> junta (ControlGen unificado + RiskEvaluator)
-      7) Reviewer -> revisão final
 
     Observação:
-     - Não usamos session_id e run_id para nada aqui. Se quiser, crie os diretórios
-       no main.py antes de instanciar este AgentProcessor e passe "artifacts_dir" pronto.
-     - Os nomes dos arquivos .md gerados são baseados apenas no "md_file.stem" + "_<agent_name>.md".
-     - Logs são gravados em "agent.log" dentro de artifacts_dir.
+     - Removidos os passos 6) ControlMerger e 7) Reviewer.
+     - Não usamos session_id e run_id aqui. Se quiser, crie os diretórios no `main.py`.
+     - Os nomes dos arquivos .md gerados são baseados apenas em "<md_file.stem>_<agent_name>.md".
+     - Os logs são gravados em "agent.log" dentro de `artifacts_dir`.
     """
 
     def __init__(self, config_loader, selected_language: str, artifacts_dir: Path):
@@ -27,10 +25,10 @@ class AgentProcessor:
         self.selected_language = selected_language
         self.artifacts_dir = artifacts_dir
 
-        # Arquivo fixo de log dentro do diretório de artefatos
+        # Arquivo fixo de log no diretório de artefatos
         self.log_file_path = self.artifacts_dir / "agent.log"
 
-        # Carrega configs dos agentes a partir do config.json
+        # Carrega as configs dos agentes a partir do config.json
         self.agents_config = self.config_loader.get("languages")[self.selected_language]["agents"]
 
     def _log_message(self, message: str):
@@ -42,16 +40,14 @@ class AgentProcessor:
 
     def process_files(self, markdown_files: list) -> str:
         """
-        Executa o fluxo completo:
-          1) Requisitor em cada arquivo
-          2) ControlGen em cada arquivo
-          3) Unifica (ControlGen)
-          4) ControlRefiner
-          5) RiskEvaluator
-          6) ControlMerger
-          7) Reviewer
+        Executa o fluxo:
+          1) Requisitor por arquivo
+          2) ControlGen por arquivo
+          3) Unifica resultados de ControlGen
+          4) ControlRefiner no texto unificado
+          5) RiskEvaluator no resultado do ControlRefiner
 
-        Retorna o conteúdo final consolidado como string.
+        Retorna o texto final após o RiskEvaluator.
         """
 
         # -----------------------------
@@ -95,23 +91,7 @@ class AgentProcessor:
         # 5) RiskEvaluator
         # -----------------------------
         self._log_message("==[ETAPA 5] RiskEvaluator==")
-        risk_out = self.run_agent("RiskEvaluator", refiner_out, controlgen_merged_file)
-
-        # -----------------------------
-        # 6) ControlMerger
-        # -----------------------------
-        self._log_message("==[ETAPA 6] ControlMerger==")
-        consolidated_input = (
-            f"### ControlGen Outputs Unificados:\n{unified_controlgen}\n\n"
-            f"### RiskEvaluator Output:\n{risk_out}"
-        )
-        merged_out = self.run_agent("ControlMerger", consolidated_input, controlgen_merged_file)
-
-        # -----------------------------
-        # 7) Reviewer (Final)
-        # -----------------------------
-        self._log_message("==[ETAPA 7] Reviewer==")
-        final_out = self.run_agent("Reviewer", merged_out, controlgen_merged_file)
+        final_out = self.run_agent("RiskEvaluator", refiner_out, controlgen_merged_file)
 
         self._log_message("==[FLUXO FINALIZADO]==")
         return final_out
@@ -121,7 +101,7 @@ class AgentProcessor:
         Executa um agente. Gera:
            <md_file.stem>_<agent_name>.md
 
-        Exemplo: se md_file for "controlgen_unificado.md", e agent_name for "ControlRefiner",
+        Exemplo: se md_file = "controlgen_unificado.md", e agent_name = "ControlRefiner",
           -> "controlgen_unificado_ControlRefiner.md"
         """
         agent_info = self.agents_config.get(agent_name)
@@ -134,7 +114,6 @@ class AgentProcessor:
             self._log_message(f"[AVISO] Agente '{agent_name}' sem identifier válido. Pulando.")
             return content
 
-        # Monta o prompt, sem ID
         prompt = (
             f"Function: {agent_info['function']}\n\n"
             f"Content:\n{content}"
@@ -149,7 +128,7 @@ class AgentProcessor:
         # Loga a resposta
         self._log_message(f"--- [AGENTE: {agent_name}] RESPONSE ---\n{processed_content}\n--- END ---\n")
 
-        # Gera arquivo <md_file.stem>_<agent_name>.md
+        # Salva <md_file.stem>_<agent_name>.md
         output_path = self.artifacts_dir / f"{md_file.stem}_{agent_name}.md"
         output_path.write_text(processed_content, encoding="utf-8")
 
