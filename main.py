@@ -11,7 +11,7 @@ from modules.openai_service import OpenAIService
 from modules.html_generator import HTMLGenerator
 from modules.cleanup_util import cleanup_generated_files
 from modules.agent_processor import AgentProcessor
-
+from modules.data_importer import load_markdown_as_dataframe  # Módulo para importar dados
 
 def initialize_dependencies(selected_language: str) -> Tuple[ConfigLoader, URLProcessor, HTMLGenerator, dict, Path, str]:
     """
@@ -19,7 +19,6 @@ def initialize_dependencies(selected_language: str) -> Tuple[ConfigLoader, URLPr
     por sessão. O session_id é encurtado para evitar ultrapassar limites de path no Windows.
     """
     config_loader = ConfigLoader(config_file="config/config.json")
-
     try:
         menu_config = config_loader.get_menu(selected_language)
     except Exception as e:
@@ -37,7 +36,7 @@ def initialize_dependencies(selected_language: str) -> Tuple[ConfigLoader, URLPr
     base_session_dir = Path("artefacts") / f"s_{short_session_id}"
     base_session_dir.mkdir(parents=True, exist_ok=True)
 
-    # Instancia o URLProcessor, mas note que ele não vai usar session_id no nome dos arquivos
+    # Instancia o URLProcessor, mas note que ele não usa o session_id no nome dos arquivos
     url_processor = URLProcessor(str(base_session_dir), short_session_id)
     html_generator = HTMLGenerator()
 
@@ -68,28 +67,33 @@ def generate_baseline_html(
     selected_language: str,
     final_markdown_path: str,
     artifacts_dir: Path,
-    run_short_id: str
+    run_short_id: str,
+    id_unico: str
 ) -> str:
     """
     Gera o HTML final do baseline usando o HTMLGenerator.
-    O run_short_id é usado somente para nomear o arquivo de saída .html (opcional).
+    O run_short_id é usado para nomear o arquivo de saída e o id_unico é passado
+    para manter o padrão do ID na tabela de SECURITY CONTROLS.
     """
     template_path = "templates/template_html.html"
     output_html_path = artifacts_dir / f"r_{run_short_id}_final.html"
 
+    # Obtém as seções e informações de versão/histórico do config
     html_sections = config_loader.get_html_sections(selected_language)
     version_info = config_loader.get_version_info(selected_language)
     history_table = config_loader.get_history_table(selected_language)
     control_table_labels = config_loader.get_control_table(selected_language)
 
+    # Chama a função de geração do HTML, passando o id_unico como base para o padrão do ID
     html_content = html_generator.generate_html(
         template_path=template_path,
-        content_path=final_markdown_path,
         output_html=str(output_html_path),
         html_sections=html_sections,
-        history_table=history_table,
-        control_table_labels=control_table_labels,
-        version_info=version_info
+        version_info=version_info,
+        controls_df=load_markdown_as_dataframe(final_markdown_path.replace("final.md", "controlgen_unificado_ControlRefiner.md")),
+        risks_df=load_markdown_as_dataframe(final_markdown_path.replace("final.md", "controlgen_unificado_RiskEvaluator.md")),
+        history_config=history_table,
+        base_control_id=id_unico
     )
 
     return html_content
@@ -103,30 +107,26 @@ def run_pipeline(
     base_session_dir: Path,
     selected_language: str,
     short_session_id: str
-) -> Tuple[List[str], Path]:
+) -> Tuple[List[str], Path, str]:
     """
-    Executa todo o pipeline para gerar o baseline. A cada clique em "Gerar Baseline",
-    cria um subdiretório usando run_id. Esse run_id não compõe o nome dos arquivos .md,
-    mas apenas o nome da pasta.
+    Executa todo o pipeline para gerar o baseline.
+    A cada clique em "Gerar Baseline", cria um subdiretório usando run_id.
+    Retorna a lista de arquivos gerados, o diretório de artefatos e o id_unico.
     """
     vendor, tecnologia, urls = get_user_inputs(menu_config)
-
     with st.form("Formulário de ID"):
         submit_button = st.form_submit_button(menu_config.get("generate_baseline", "Gerar Baseline"))
-
     if not submit_button:
         st.info("Aguardando submissão do formulário...")
-        return [], base_session_dir
-
+        return [], base_session_dir, ""
     if not (vendor and tecnologia and urls):
         st.error("Por favor, preencha todos os campos obrigatórios.")
-        return [], base_session_dir
-
+        return [], base_session_dir, ""
     if len(urls) > 10:
         st.error("Por favor, insira no máximo 10 URLs.")
-        return [], base_session_dir
+        return [], base_session_dir, ""
 
-    # Gera um ID único para o controle
+    # Gera o id_unico seguindo o padrão (por exemplo: "AWS-TECH-2025-0001")
     id_unico = IDGenerator.generate_control_id(vendor, tecnologia, datetime.now().year, 1)
     st.info(f"ID do controle gerado: {id_unico}")
 
@@ -134,14 +134,14 @@ def run_pipeline(
     run_id = IDGenerator.generate_uuid()
     run_short_id = run_id[:8]
 
-    # Novo subdiretório
+    # Novo subdiretório para este run
     run_artifacts_dir = base_session_dir / f"r_{run_short_id}"
     run_artifacts_dir.mkdir(parents=True, exist_ok=True)
 
-    # (Opcional) Inicializa/Reaproveita assistente
+    # Inicializa/Reaproveita assistente (se necessário)
     assistant_id = OpenAIService.initialize_assistant("config/config.json", selected_language)
 
-    # Novo URLProcessor para este run (não usará run_id no nome do arquivo, mas salva na pasta r_<id>)
+    # Novo URLProcessor para este run
     run_url_processor = URLProcessor(str(run_artifacts_dir), run_short_id)
 
     # 1) Baixa e salva as URLs como Markdown
@@ -157,45 +157,17 @@ def run_pipeline(
 
     if not markdown_files:
         st.error("Nenhum arquivo Markdown foi gerado. Verifique as URLs fornecidas.")
-        return [], run_artifacts_dir
+        return [], run_artifacts_dir, id_unico
 
     # 2) Executa o AgentProcessor
-    agent_processor = AgentProcessor(
-        config_loader,
-        selected_language,
-        run_artifacts_dir
-    )
+    agent_processor = AgentProcessor(config_loader, selected_language, run_artifacts_dir)
     final_content = agent_processor.process_files(markdown_files)
 
     # 3) Salva o resultado final
     final_markdown_path = run_artifacts_dir / f"r_{run_short_id}_final.md"
     final_markdown_path.write_text(final_content, encoding="utf-8")
 
-    # 4) Gera HTML
-    html_content = generate_baseline_html(
-        html_generator,
-        config_loader,
-        selected_language,
-        str(final_markdown_path),
-        run_artifacts_dir,
-        run_short_id
-    )
-
-    # Disponibiliza para download
-    st.success("Baseline gerado com sucesso!")
-    st.download_button(
-        label="Download Web Page",
-        data=html_content,
-        file_name=f"r_{run_short_id}_controls.html",
-        mime="text/html",
-    )
-
-    # Retorna infos para logs externos ou limpeza
-    generated_files = [
-        str(final_markdown_path),
-        str(run_artifacts_dir / f"r_{run_short_id}_final.html")
-    ]
-    return generated_files, run_artifacts_dir
+    return [str(final_markdown_path)], run_artifacts_dir, id_unico
 
 
 def main():
@@ -206,11 +178,9 @@ def main():
         ["EN-US", "PT-BR", "ES-ES"]
     )
 
-    # Inicializa as dependências e obtem short_session_id
     config_loader, url_processor, html_generator, menu_config, base_session_dir, short_session_id = initialize_dependencies(selected_language)
 
-    # Roda todo o pipeline
-    generated_files, artifacts_dir = run_pipeline(
+    generated_files, artifacts_dir, id_unico = run_pipeline(
         config_loader,
         url_processor,
         html_generator,
@@ -220,8 +190,39 @@ def main():
         short_session_id
     )
 
-    return generated_files, artifacts_dir
+    # Após o pipeline, tenta carregar os DataFrames dos arquivos de controles e riscos.
+    # Estes arquivos devem ter sido gerados pelo AgentProcessor:
+    # "controlgen_unificado_ControlRefiner.md" e "controlgen_unificado_RiskEvaluator.md"
+    control_refiner_path = artifacts_dir / "controlgen_unificado_ControlRefiner.md"
+    risk_evaluator_path = artifacts_dir / "controlgen_unificado_RiskEvaluator.md"
+    if control_refiner_path.exists() and risk_evaluator_path.exists():
+        st.write("Carregando DataFrames dos arquivos de controles e riscos...")
+        df_controls = load_markdown_as_dataframe(str(control_refiner_path))
+        df_risks = load_markdown_as_dataframe(str(risk_evaluator_path))
+        st.write("DataFrame - ControlRefiner:", df_controls)
+        st.write("DataFrame - RiskEvaluator:", df_risks)
 
+        # Gera o HTML final, passando o id_unico para manter o padrão do ID
+        html_content = html_generator.generate_html(
+            template_path="templates/template_html.html",
+            output_html=str(artifacts_dir / f"r_{short_session_id}_final.html"),
+            html_sections=config_loader.get_html_sections(selected_language),
+            version_info=config_loader.get_version_info(selected_language),
+            controls_df=df_controls,
+            risks_df=df_risks,
+            history_config=config_loader.get("history_table", {}),
+            base_control_id=id_unico
+        )
+        st.download_button(
+            label="Download Web Page",
+            data=html_content,
+            file_name=f"r_{short_session_id}_controls.html",
+            mime="text/html",
+        )
+    else:
+        st.warning("Arquivos de controles e riscos não foram encontrados.")
+
+    return generated_files, artifacts_dir
 
 if __name__ == "__main__":
     generated_files = []
