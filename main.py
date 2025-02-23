@@ -205,7 +205,7 @@ def main():
         # Gera o HTML final, passando o id_unico para manter o padrão do ID
         html_content = html_generator.generate_html(
             template_path="templates/template_html.html",
-            output_html=str(artifacts_dir / f"r_{short_session_id}_final.html"),
+            output_html=str(artifacts_dir / f"{id_unico}_final.html"),
             html_sections=config_loader.get_html_sections(selected_language),
             version_info=config_loader.get_version_info(selected_language),
             controls_df=df_controls,

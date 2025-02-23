@@ -25,17 +25,14 @@ You will receive a list of security controls in the following JSON format:
 ```json
 [
   {
-    "ID": "AWS-AMAZON-S3-2025-0001",
-    "Category": "Auditing",
-    "Title": "Use a Separate Bucket for Amazon S3 Server Access Logs",
-    "Description": "Configure Amazon S3 server access logging to direct logs to a different S3 bucket dedicated solely for storing access logs. This prevents logs from being stored in the bucket being logged.",
-    "Applicability": "All Amazon S3 buckets with server access logging enabled",
-    "Security Risk": "Storing access logs in the source bucket can lead to unauthorized access or accidental deletions, affecting data integrity and audit capabilities.",
-    "Default Behavior / Limitations": "AWS does not enforce using separate buckets for logs by default.",
-    "Automation": "Can be configured and enforced through AWS CloudFormation and AWS Config rule `s3-account-level-public-access-blocks`.",
+    "Title": "Enable S3 Object Lock for Data Protection",
+    "Description": "Activate S3 Object Lock in WORM mode for critical buckets to prevent data deletion or modification.",
+    "Applicability": "S3 buckets containing critical data",
+    "Security Risk": "Without WORM, critical data may be deleted or altered, impacting compliance.",
+    "Default Behavior / Limitations": "Object Lock must be enabled per bucket.",
+    "Automation": "Manual setup with compliance monitored by AWS Config.",
     "References": [
-      "https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerLogs.html",
-      "https://www.trendmicro.com/cloudoneconformity/knowledge-base/aws/S3/server-access-log-storage-different-bucket.html"
+      "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html"
     ]
   }
 ]
@@ -49,8 +46,7 @@ Your evaluation must consider **Brazilian banking regulations (BACEN, LGPD)** an
 
 | **Field**            | **Description** |
 |----------------------|----------------|
-| **ID**               | Same as the control ID from the input. |
-| **Category**         | Maintain the original category from the input. |
+| **Title**            | Same as the control title from the input. |
 | **Risk Description** | Explanation of the potential security risk if the control is not implemented, considering financial sector threats. |
 | **Impact Analysis**  | Breakdown of how the control affects **Confidentiality, Integrity, and Availability (CIA Triad)**. |
 | **Regulatory & Compliance Impact** | Specify if failure to implement this control would **violate banking regulations (BACEN, LGPD, PCI DSS, ISO 27001, etc.)**. |
@@ -65,17 +61,16 @@ The output must be structured in JSON format as follows:
 ```json
 [
   {
-    "ID": "AWS-AMAZON-S3-2025-0001",
-    "Category": "Auditing",
-    "Risk Description": "Without a separate bucket for Amazon S3 server access logs, an attacker or insider with permissions to the primary bucket could delete or manipulate logs, making it difficult to track unauthorized access and detect security incidents.",
+    "Title": "Enable S3 Object Lock for Data Protection",
+    "Risk Description": "Without S3 Object Lock, critical data can be deleted or altered, resulting in compliance violations and loss of integrity.",
     "Impact Analysis": {
-      "Confidentiality": "Medium - Unauthorized deletions or modifications of logs could hinder forensic investigations.",
-      "Integrity": "High - Manipulated logs could obscure fraudulent or unauthorized activities.",
-      "Availability": "High - If logs are deleted from the primary bucket, security teams lose visibility into access history."
+      "Confidentiality": "Medium - Unauthorized deletions or modifications of locked data could hinder forensic investigations.",
+      "Integrity": "High - Data tampering can compromise regulatory compliance and forensic investigations.",
+      "Availability": "High - Without object lock, critical financial records could be lost, disrupting banking operations."
     },
-    "Regulatory & Compliance Impact": "Violates security logging requirements in PCI DSS and ISO 27001. May also conflict with BACEN's recommendations for auditing financial transactions.",
+    "Regulatory & Compliance Impact": "Failure to implement Object Lock may violate data retention and integrity requirements in ISO 27001 and PCI DSS. BACEN regulations also emphasize protection against data loss and tampering.",
     "Likelihood of Exploitation": "High",
-    "Detection and Mitigation Difficulty": "Difficult - If an attacker erases logs in the same bucket, there may be no trace left for detection.",
+    "Detection and Mitigation Difficulty": "Difficult - If an attacker erases or modifies critical records, detection may only occur post-incident with no means to recover original data.",
     "Risk Level": "Critical"
   }
 ]
@@ -114,4 +109,4 @@ The output must be structured in JSON format as follows:
 ### **Final Objective:**
 - **Evaluate security risks specific to a Brazilian financial institution, ensuring regulatory alignment.**  
 - **Clearly define how missing each control impacts AWS security, compliance, and operational risk.**  
-- **Provide well-reasoned risk classifications to help prioritize security measures in a banking environment.**  
+- **Provide well-reasoned risk classifications to help prioritize security measures in a banking environment.** 
