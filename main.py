@@ -3,6 +3,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Tuple
 
+# Módulos do projeto
 from modules.config_loader import ConfigLoader
 from modules.url_processor import URLProcessor
 from modules.id_generator import IDGenerator
@@ -12,21 +13,53 @@ from modules.cleanup_util import cleanup_generated_files
 from modules.agent_processor import AgentProcessor
 
 
-def process_urls(urls: List[str], url_processor: URLProcessor) -> List[Path]:
+def initialize_dependencies(selected_language: str) -> Tuple[ConfigLoader, URLProcessor, HTMLGenerator, dict, Path, str]:
     """
-    Processa as URLs, buscando o conteúdo HTML e salvando em arquivos Markdown.
-    Retorna uma lista de caminhos (Path) dos arquivos gerados.
+    Inicializa as dependências da aplicação garantindo que apenas UM session_id seja gerado
+    por sessão. O session_id é encurtado para evitar ultrapassar limites de path no Windows.
     """
-    markdown_files = []
-    for url in urls:
-        html_content = url_processor.fetch_page_content(url)
-        if html_content:
-            markdown_path = url_processor.save_as_markdown(url, html_content)
-            markdown_files.append(Path(markdown_path))
-            st.success(f"URL processada com sucesso: {url}")
-        else:
-            st.warning(f"Falha ao processar URL: {url}")
-    return markdown_files
+    config_loader = ConfigLoader(config_file="config/config.json")
+
+    try:
+        menu_config = config_loader.get_menu(selected_language)
+    except Exception as e:
+        st.error(f"Erro ao carregar as configurações do idioma {selected_language}: {e}")
+        st.stop()
+
+    # Gera apenas uma vez por sessão do Streamlit
+    if "session_id" not in st.session_state:
+        st.session_state.session_id = IDGenerator.generate_uuid()
+
+    session_id = st.session_state.session_id
+    short_session_id = session_id[:8]  # Reduz o ID para evitar caminhos muito grandes
+
+    # Diretório base da sessão
+    base_session_dir = Path("artefacts") / f"s_{short_session_id}"
+    base_session_dir.mkdir(parents=True, exist_ok=True)
+
+    # Instancia o URLProcessor, mas note que ele não vai usar session_id no nome dos arquivos
+    url_processor = URLProcessor(str(base_session_dir), short_session_id)
+    html_generator = HTMLGenerator()
+
+    return config_loader, url_processor, html_generator, menu_config, base_session_dir, short_session_id
+
+
+def get_user_inputs(menu_config: dict) -> Tuple[str, str, List[str]]:
+    """
+    Coleta os inputs do usuário (fornecedor, tecnologia e URLs) usando o menu de configuração.
+    """
+    vendor = st.selectbox(
+        menu_config.get("select_vendor", "Selecione o Fornecedor"),
+        ["AWS", "Azure", "GCP", "Huawei", "OCI"]
+    )
+    tecnologia = st.text_input(
+        menu_config.get("enter_technology_name", "Digite o nome da Tecnologia")
+    )
+    urls_input = st.text_area(
+        menu_config.get("enter_urls", "Digite até 10 URLs separadas por vírgula"), ""
+    )
+    urls = [url.strip() for url in urls_input.split(",") if url.strip()]
+    return vendor, tecnologia, urls
 
 
 def generate_baseline_html(
@@ -35,14 +68,15 @@ def generate_baseline_html(
     selected_language: str,
     final_markdown_path: str,
     artifacts_dir: Path,
-    session_id: str
+    run_short_id: str
 ) -> str:
     """
-    Gera o HTML final do baseline utilizando um template e dados de configuração.
-    Retorna o conteúdo HTML gerado.
+    Gera o HTML final do baseline usando o HTMLGenerator.
+    O run_short_id é usado somente para nomear o arquivo de saída .html (opcional).
     """
     template_path = "templates/template_html.html"
-    output_html_path = artifacts_dir / f"{session_id}_final.html"
+    output_html_path = artifacts_dir / f"r_{run_short_id}_final.html"
+
     html_sections = config_loader.get_html_sections(selected_language)
     version_info = config_loader.get_version_info(selected_language)
     history_table = config_loader.get_history_table(selected_language)
@@ -61,49 +95,19 @@ def generate_baseline_html(
     return html_content
 
 
-def initialize_dependencies(selected_language: str) -> Tuple[ConfigLoader, URLProcessor, HTMLGenerator, dict, Path, str]:
+def run_pipeline(
+    config_loader: ConfigLoader,
+    url_processor: URLProcessor,
+    html_generator: HTMLGenerator,
+    menu_config: dict,
+    base_session_dir: Path,
+    selected_language: str,
+    short_session_id: str
+) -> Tuple[List[str], Path]:
     """
-    Inicializa as dependências da aplicação garantindo que apenas UM session_id seja gerado por execução.
-    """
-    config_loader = ConfigLoader(config_file="config/config.json")
-
-    try:
-        menu_config = config_loader.get_menu(selected_language)
-    except Exception as e:
-        st.error(f"Erro ao carregar as configurações do idioma {selected_language}: {e}")
-        st.stop()
-
-    # Garante que apenas um session_id seja criado por execução do script
-    if "session_id" not in st.session_state:
-        st.session_state.session_id = IDGenerator.generate_uuid()
-
-    session_id = st.session_state.session_id  # Reutilizando session_id existente
-    artifacts_dir = Path("artefacts") / f"session_{session_id}"
-    artifacts_dir.mkdir(parents=True, exist_ok=True)
-
-    # Passamos o mesmo session_id para todas as instâncias
-    url_processor = URLProcessor(str(artifacts_dir), session_id)
-    html_generator = HTMLGenerator()
-
-    return config_loader, url_processor, html_generator, menu_config, artifacts_dir, session_id
-
-
-def get_user_inputs(menu_config: dict) -> Tuple[str, str, List[str]]:
-    """
-    Coleta os inputs do usuário (fornecedor, tecnologia e URLs) usando o menu de configuração.
-    """
-    vendor = st.selectbox(menu_config.get("select_vendor", "Selecione o Fornecedor"),
-                          ["AWS", "Azure", "GCP", "Huawei", "OCI"])
-    tecnologia = st.text_input(menu_config.get("enter_technology_name", "Digite o nome da Tecnologia"))
-    urls_input = st.text_area(menu_config.get("enter_urls", "Digite até 10 URLs separadas por vírgula"), "")
-    urls = [url.strip() for url in urls_input.split(",") if url.strip()]
-    return vendor, tecnologia, urls
-
-
-def run_pipeline(config_loader: ConfigLoader, url_processor: URLProcessor, html_generator: HTMLGenerator,
-                 menu_config: dict, artifacts_dir: Path, selected_language: str, session_id: str) -> Tuple[List[str], Path]:
-    """
-    Executa todo o pipeline para gerar o baseline garantindo que o session_id seja único na execução.
+    Executa todo o pipeline para gerar o baseline. A cada clique em "Gerar Baseline",
+    cria um subdiretório usando run_id. Esse run_id não compõe o nome dos arquivos .md,
+    mas apenas o nome da pasta.
     """
     vendor, tecnologia, urls = get_user_inputs(menu_config)
 
@@ -112,54 +116,86 @@ def run_pipeline(config_loader: ConfigLoader, url_processor: URLProcessor, html_
 
     if not submit_button:
         st.info("Aguardando submissão do formulário...")
-        return [], artifacts_dir
+        return [], base_session_dir
 
     if not (vendor and tecnologia and urls):
         st.error("Por favor, preencha todos os campos obrigatórios.")
-        return [], artifacts_dir
+        return [], base_session_dir
 
     if len(urls) > 10:
         st.error("Por favor, insira no máximo 10 URLs.")
-        return [], artifacts_dir
+        return [], base_session_dir
 
     # Gera um ID único para o controle
     id_unico = IDGenerator.generate_control_id(vendor, tecnologia, datetime.now().year, 1)
     st.info(f"ID do controle gerado: {id_unico}")
 
-    # Inicializa o assistente baseado no idioma selecionado
+    # Gera run_id para criar um subdiretório
+    run_id = IDGenerator.generate_uuid()
+    run_short_id = run_id[:8]
+
+    # Novo subdiretório
+    run_artifacts_dir = base_session_dir / f"r_{run_short_id}"
+    run_artifacts_dir.mkdir(parents=True, exist_ok=True)
+
+    # (Opcional) Inicializa/Reaproveita assistente
     assistant_id = OpenAIService.initialize_assistant("config/config.json", selected_language)
 
-    # Processa as URLs e gera arquivos Markdown
-    markdown_files = process_urls(urls, url_processor)
+    # Novo URLProcessor para este run (não usará run_id no nome do arquivo, mas salva na pasta r_<id>)
+    run_url_processor = URLProcessor(str(run_artifacts_dir), run_short_id)
+
+    # 1) Baixa e salva as URLs como Markdown
+    markdown_files = []
+    for url in urls:
+        html_content = run_url_processor.fetch_page_content(url)
+        if html_content:
+            markdown_path = run_url_processor.save_as_markdown(url, html_content)
+            markdown_files.append(Path(markdown_path))
+            st.success(f"URL processada com sucesso: {url}")
+        else:
+            st.warning(f"Falha ao processar URL: {url}")
+
     if not markdown_files:
         st.error("Nenhum arquivo Markdown foi gerado. Verifique as URLs fornecidas.")
-        return [], artifacts_dir
+        return [], run_artifacts_dir
 
-    # Processa os arquivos usando o AgentProcessor
-    agent_processor = AgentProcessor(config_loader, selected_language, artifacts_dir)
-    final_content = agent_processor.process_files(markdown_files, id_unico)
+    # 2) Executa o AgentProcessor
+    agent_processor = AgentProcessor(
+        config_loader,
+        selected_language,
+        run_artifacts_dir
+    )
+    final_content = agent_processor.process_files(markdown_files)
 
-    # Salva o conteúdo final consolidado
-    final_output_path = artifacts_dir / f"{id_unico}_final.md"
-    with final_output_path.open("w", encoding="utf-8") as f:
-        f.write(final_content)
+    # 3) Salva o resultado final
+    final_markdown_path = run_artifacts_dir / f"r_{run_short_id}_final.md"
+    final_markdown_path.write_text(final_content, encoding="utf-8")
 
-    # Gera o HTML final do baseline
+    # 4) Gera HTML
     html_content = generate_baseline_html(
-        html_generator, config_loader, selected_language,
-        str(final_output_path), artifacts_dir, session_id
+        html_generator,
+        config_loader,
+        selected_language,
+        str(final_markdown_path),
+        run_artifacts_dir,
+        run_short_id
     )
 
-    st.success("Baseline gerado com sucesso")
+    # Disponibiliza para download
+    st.success("Baseline gerado com sucesso!")
     st.download_button(
         label="Download Web Page",
         data=html_content,
-        file_name=f"{session_id}_controls.html",
+        file_name=f"r_{run_short_id}_controls.html",
         mime="text/html",
     )
 
-    generated_files = [str(final_output_path), str(artifacts_dir / f"{session_id}_final.html")]
-    return generated_files, artifacts_dir
+    # Retorna infos para logs externos ou limpeza
+    generated_files = [
+        str(final_markdown_path),
+        str(run_artifacts_dir / f"r_{run_short_id}_final.html")
+    ]
+    return generated_files, run_artifacts_dir
 
 
 def main():
@@ -170,12 +206,18 @@ def main():
         ["EN-US", "PT-BR", "ES-ES"]
     )
 
-    # Inicializa as dependências da aplicação garantindo um único session_id
-    config_loader, url_processor, html_generator, menu_config, artifacts_dir, session_id = initialize_dependencies(selected_language)
+    # Inicializa as dependências e obtem short_session_id
+    config_loader, url_processor, html_generator, menu_config, base_session_dir, short_session_id = initialize_dependencies(selected_language)
 
-    # Executa o pipeline de geração do baseline
+    # Roda todo o pipeline
     generated_files, artifacts_dir = run_pipeline(
-        config_loader, url_processor, html_generator, menu_config, artifacts_dir, selected_language, session_id
+        config_loader,
+        url_processor,
+        html_generator,
+        menu_config,
+        base_session_dir,
+        selected_language,
+        short_session_id
     )
 
     return generated_files, artifacts_dir

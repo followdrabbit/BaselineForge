@@ -2,7 +2,6 @@ import os
 import requests
 import html2text
 
-
 class URLProcessor:
     """Handles URL fetching and saving as Markdown."""
 
@@ -12,10 +11,10 @@ class URLProcessor:
 
         Args:
             artifacts_dir (str): Directory where artifacts (Markdown files) will be saved.
-            session_id (str): Unique session identifier to ensure consistency.
+            session_id (str): Unique session identifier (used if needed for directory structure).
         """
         self.artifacts_dir = artifacts_dir
-        self.session_id = session_id
+        self.session_id = session_id  # Não será usado para compor o nome dos arquivos
 
     def fetch_page_content(self, url):
         """
@@ -43,7 +42,7 @@ class URLProcessor:
 
     def save_as_markdown(self, url, html_content):
         """
-        Saves HTML content as a Markdown file using the stored session ID.
+        Saves HTML content as a Markdown file.
 
         Args:
             url (str): The URL being processed.
@@ -53,15 +52,17 @@ class URLProcessor:
             str: Path to the saved Markdown file.
         """
         try:
-            # Generate a unique and safe filename based on the URL
+            # Generate a safe filename based only on the URL, without session/run IDs
             sanitized_url = (
                 url.replace("https://", "")
-                .replace("http://", "")
-                .replace("/", "_")
-                .replace("?", "_")
-                .replace("&", "_")
+                   .replace("http://", "")
+                   .replace("/", "_")
+                   .replace("?", "_")
+                   .replace("&", "_")
             )
-            unique_filename = f"{sanitized_url}_{self.session_id}.md"
+            # Remove _{self.session_id} from filename
+            unique_filename = f"{sanitized_url}.md"
+
             markdown_file = os.path.join(self.artifacts_dir, unique_filename)
 
             # Convert HTML to Markdown
@@ -69,7 +70,7 @@ class URLProcessor:
             converter.ignore_links = False
             markdown_content = converter.handle(html_content)
 
-            # Add a header with reference information
+            # Optionally add a header with reference information
             header = f"# Processed Content from URL: {{'REFERENCE': '{url}'}}\n\n{markdown_content}"
 
             # Save the Markdown content

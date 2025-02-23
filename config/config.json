@@ -48,13 +48,17 @@
             "function": "Automated Security Controls Generation Assistant",
             "identifier": "asst_nHb24Cht7Iz40KSyJjrtqccu"
           },
+          "ControlRefiner": {
+            "function": "Consolidation and Refinement Assistant",
+            "identifier": "asst_8uwNhKQF217JgtmUvJHA3qor"
+          },
           "RiskEvaluator": {
             "function": "Risk Assessment Assistant",
             "identifier": "asst_TbJtsRIHliLNtgt68slILoQS"
           },
-          "Consolidator": {
+          "ControlMerger": {
             "function": "Baseline Consolidation Assistant",
-            "identifier": "asst_BaselineConsolidator_PLACEHOLDER_EN"
+            "identifier": "asst_CBKpDlNyG1Vp62P2YgRPHNlC"
           },
           "Reviewer": {
             "function": "Final Review Assistant",
@@ -110,11 +114,15 @@
             "function": "Geração Automatizada de Controles de Segurança",
             "identifier": "asst_ControlGen_PLACEHOLDER_PT"
           },
+          "ControlRefiner": {
+            "function": "Consolidation and Refinement Assistant",
+            "identifier": "asst_ControlRefiner_PLACEHOLDER_PT"
+          },
           "RiskEvaluator": {
             "function": "Avaliação de Riscos",
             "identifier": "asst_RiskEvaluator_PLACEHOLDER_PT"
           },
-          "Consolidator": {
+          "ControlMerger": {
             "function": "Consolidação de Baseline",
             "identifier": "asst_BaselineConsolidator_PLACEHOLDER_PT"
           },
@@ -172,11 +180,15 @@
             "function": "Generación Automatizada de Controles de Seguridad",
             "identifier": "asst_ControlGen_PLACEHOLDER_ES"
           },
+          "ControlRefiner": {
+            "function": "Consolidation and Refinement Assistant",
+            "identifier": "asst_ControlRefiner_PLACEHOLDER_ES"
+          },
           "RiskEvaluator": {
             "function": "Evaluación de Riesgos",
             "identifier": "asst_RiskEvaluator_PLACEHOLDER_ES"
           },
-          "Consolidator": {
+          "ControlMerger": {
             "function": "Consolidación de Baseline",
             "identifier": "asst_BaselineConsolidator_PLACEHOLDER_ES"
           },

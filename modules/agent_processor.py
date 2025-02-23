@@ -4,7 +4,22 @@ from modules.openai_service import OpenAIService
 
 class AgentProcessor:
     """
-    Responsável por gerenciar o processamento sequencial dos agentes.
+    Handles sequential processing of Markdown files through multiple AI assistants.
+
+    Fluxo sugerido:
+      1) Requisitor -> roda em cada arquivo separadamente
+      2) ControlGen -> roda em cada arquivo (lendo a saída do Requisitor)
+      3) Unifica todos os resultados de ControlGen
+      4) ControlRefiner -> roda uma única vez no texto unificado de ControlGen
+      5) RiskEvaluator -> roda uma única vez no resultado do ControlRefiner
+      6) ControlMerger -> junta (ControlGen unificado + RiskEvaluator)
+      7) Reviewer -> revisão final
+
+    Observação:
+     - Não usamos session_id e run_id para nada aqui. Se quiser, crie os diretórios
+       no main.py antes de instanciar este AgentProcessor e passe "artifacts_dir" pronto.
+     - Os nomes dos arquivos .md gerados são baseados apenas no "md_file.stem" + "_<agent_name>.md".
+     - Logs são gravados em "agent.log" dentro de artifacts_dir.
     """
 
     def __init__(self, config_loader, selected_language: str, artifacts_dir: Path):
@@ -12,67 +27,135 @@ class AgentProcessor:
         self.selected_language = selected_language
         self.artifacts_dir = artifacts_dir
 
-        # Ordem definida de agentes
-        self.agent_order = [
-            "Requisitor",
-            "ControlGen",
-            "RiskEvaluator",
-            "Consolidator",
-            "Reviewer"
-        ]
+        # Arquivo fixo de log dentro do diretório de artefatos
+        self.log_file_path = self.artifacts_dir / "agent.log"
 
-        # Carrega as configurações dos agentes a partir do config.json
+        # Carrega configs dos agentes a partir do config.json
         self.agents_config = self.config_loader.get("languages")[self.selected_language]["agents"]
 
-    def process_file(self, md_file: Path, id_unico: str) -> str:
+    def _log_message(self, message: str):
         """
-        Processa um arquivo Markdown através da cadeia de agentes.
-        Retorna o conteúdo final processado para o arquivo.
+        Escreve uma mensagem de log (prompt, resposta ou informativo) no arquivo de log.
         """
-        with md_file.open("r", encoding="utf-8") as file:
-            content = file.read()
+        with self.log_file_path.open("a", encoding="utf-8") as log_file:
+            log_file.write(message + "\n")
 
-        for agent in self.agent_order:
-            agent_info = self.agents_config.get(agent)
-            if not agent_info:
-                st.warning(f"Agente '{agent}' não configurado. Pulando para o próximo.")
-                continue
-            
-            agent_id = agent_info.get("identifier", "")
-            if not agent_id or "PLACEHOLDER" in agent_id:
-                st.info(f"Agente '{agent}' não implementado (placeholder). Pulando para o próximo.")
-                continue
-
-            # Constrói o prompt com base na função do agente e conteúdo atual
-            prompt = f"ID: {id_unico}\nFunção: {agent_info['function']}\n\nConteúdo:\n{content}"
-            output_file = self.artifacts_dir / f"{md_file.stem}_{agent}.md"
-            st.info(f"Processando com o agente: {agent} (ID: {agent_id})")
-
-            # Chama a API da OpenAI com o assistente correto
-            content = "\n".join(self._process_prompt(prompt, content, output_file, agent_id))
-
-        return content
-
-    def _process_prompt(self, prompt: str, content: str, output_file: Path, agent_id: str) -> list:
+    def process_files(self, markdown_files: list) -> str:
         """
-        Combina o prompt com o conteúdo e chama o assistente para processar.
-        Salva as respostas em um arquivo e retorna a lista de respostas.
-        """
-        combined_prompt = f"{prompt}\n\n{content}"
-        responses = OpenAIService.run_assistant(combined_prompt, agent_id)
+        Executa o fluxo completo:
+          1) Requisitor em cada arquivo
+          2) ControlGen em cada arquivo
+          3) Unifica (ControlGen)
+          4) ControlRefiner
+          5) RiskEvaluator
+          6) ControlMerger
+          7) Reviewer
 
-        with output_file.open("w", encoding="utf-8") as f:
-            f.write("\n".join(responses))
-
-        return responses
-
-    def process_files(self, markdown_files: list, id_unico: str) -> str:
+        Retorna o conteúdo final consolidado como string.
         """
-        Processa uma lista de arquivos Markdown e consolida as respostas finais.
-        Retorna o conteúdo consolidado.
-        """
-        final_content = ""
+
+        # -----------------------------
+        # 1) Requisitor em cada arquivo
+        # -----------------------------
+        self._log_message("==[ETAPA 1] Requisitor por arquivo==")
         for md_file in markdown_files:
-            file_content = self.process_file(md_file, id_unico)
-            final_content += file_content + "\n"
-        return final_content
+            original_text = self._read_file_content(md_file)
+            self.run_agent("Requisitor", original_text, md_file)
+
+        # -----------------------------
+        # 2) ControlGen em cada arquivo
+        # -----------------------------
+        self._log_message("==[ETAPA 2] ControlGen por arquivo==")
+        controlgen_outputs = []
+        for md_file in markdown_files:
+            requisitor_file = self.artifacts_dir / f"{md_file.stem}_Requisitor.md"
+            requisitor_output = self._read_file_content(requisitor_file)
+
+            gen_out = self.run_agent("ControlGen", requisitor_output, md_file)
+            controlgen_outputs.append(gen_out)
+
+        # -----------------------------
+        # 3) Unificar resultados do ControlGen
+        # -----------------------------
+        self._log_message("==[ETAPA 3] Unificando ControlGen==")
+        unified_controlgen = "\n\n".join(
+            f"### ControlGen Output - Arquivo {idx+1}\n{text}"
+            for idx, text in enumerate(controlgen_outputs)
+        )
+        controlgen_merged_file = self.artifacts_dir / "controlgen_unificado.md"
+        controlgen_merged_file.write_text(unified_controlgen, encoding="utf-8")
+
+        # -----------------------------
+        # 4) ControlRefiner
+        # -----------------------------
+        self._log_message("==[ETAPA 4] ControlRefiner==")
+        refiner_out = self.run_agent("ControlRefiner", unified_controlgen, controlgen_merged_file)
+
+        # -----------------------------
+        # 5) RiskEvaluator
+        # -----------------------------
+        self._log_message("==[ETAPA 5] RiskEvaluator==")
+        risk_out = self.run_agent("RiskEvaluator", refiner_out, controlgen_merged_file)
+
+        # -----------------------------
+        # 6) ControlMerger
+        # -----------------------------
+        self._log_message("==[ETAPA 6] ControlMerger==")
+        consolidated_input = (
+            f"### ControlGen Outputs Unificados:\n{unified_controlgen}\n\n"
+            f"### RiskEvaluator Output:\n{risk_out}"
+        )
+        merged_out = self.run_agent("ControlMerger", consolidated_input, controlgen_merged_file)
+
+        # -----------------------------
+        # 7) Reviewer (Final)
+        # -----------------------------
+        self._log_message("==[ETAPA 7] Reviewer==")
+        final_out = self.run_agent("Reviewer", merged_out, controlgen_merged_file)
+
+        self._log_message("==[FLUXO FINALIZADO]==")
+        return final_out
+
+    def run_agent(self, agent_name: str, content: str, md_file: Path) -> str:
+        """
+        Executa um agente. Gera:
+           <md_file.stem>_<agent_name>.md
+
+        Exemplo: se md_file for "controlgen_unificado.md", e agent_name for "ControlRefiner",
+          -> "controlgen_unificado_ControlRefiner.md"
+        """
+        agent_info = self.agents_config.get(agent_name)
+        if not agent_info:
+            self._log_message(f"[AVISO] Agente '{agent_name}' não configurado. Pulando.")
+            return content
+
+        agent_id = agent_info.get("identifier", "")
+        if not agent_id or "PLACEHOLDER" in agent_id:
+            self._log_message(f"[AVISO] Agente '{agent_name}' sem identifier válido. Pulando.")
+            return content
+
+        # Monta o prompt, sem ID
+        prompt = (
+            f"Function: {agent_info['function']}\n\n"
+            f"Content:\n{content}"
+        )
+
+        # Loga o prompt
+        self._log_message(f"\n--- [AGENTE: {agent_name}] PROMPT ---\n{prompt}\n---")
+
+        # Chama OpenAI
+        processed_content = "\n".join(OpenAIService.run_assistant(prompt, agent_id))
+
+        # Loga a resposta
+        self._log_message(f"--- [AGENTE: {agent_name}] RESPONSE ---\n{processed_content}\n--- END ---\n")
+
+        # Gera arquivo <md_file.stem>_<agent_name>.md
+        output_path = self.artifacts_dir / f"{md_file.stem}_{agent_name}.md"
+        output_path.write_text(processed_content, encoding="utf-8")
+
+        return processed_content
+
+    def _read_file_content(self, md_file: Path) -> str:
+        if not md_file.exists():
+            return ""
+        return md_file.read_text(encoding="utf-8")
