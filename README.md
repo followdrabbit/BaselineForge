@@ -1,70 +1,89 @@
 # BaselineForge
 
-**BaselineForge** is a sophisticated application that utilizes **Streamlit** and **OpenAI** to generate AI-enhanced security baselines. It enables users to create organized security controls based on vendor-specific inputs, dynamic prompts, and configuration settings tailored to their preferred language.
+**BaselineForge** is a sophisticated application that utilizes **Streamlit** and **OpenAI** to generate AI-enhanced security baselines. It enables users to create structured security controls based on vendor-specific inputs, dynamic prompts, and configuration settings tailored to their preferred language.
+
+**Note:** This version is currently functional only for AWS products and in the EN-US language.
 
 ## Project Evolution
 
-BaselineForge is the next step in the development of the [Demo-Baseline-Seguranca-IA](https://github.com/followdrabbit/-Demo-Baseline-Seguranca-IA) repository. This new version introduces:
-- Enhanced modularity with a dedicated structure for configurations and processing.
-- Expanded multi-language support for EN-US, PT-BR, and ES-ES.
-- Streamlined user experience with a clean UI and automatic cleanup features.
-- Improved integration with OpenAI for generating dynamic security baselines.
+BaselineForge is an evolution of the [Demo-Baseline-Seguranca-IA](https://github.com/followdrabbit/-Demo-Baseline-Seguranca-IA) repository. This updated version introduces:
+
+- Enhanced modularity with dedicated modules for configuration, data processing, and report generation.
+- Multi-language support planned for **EN-US**, **PT-BR**, and **ES-ES**, but currently only **EN-US** is functional.
+- Automated security control generation powered by OpenAI.
+- HTML report generation with structured tables and historical change tracking.
+- Streamlined artifact management with automatic cleanup of session files.
 
 ## Key Features
 
-- **Multi-language Support**: Supports **EN-US**, **PT-BR**, and **ES-ES**, dynamically loading configurations from `config.toml`:
-  - Language-specific labels for vendor, technology, version, category, and baseline generation prompts.
-  - Customized table headers for HTML output.
-  - Categories for organized and efficient control management.
-  
-- **Unique ID Generation**: Creates structured, unique IDs using vendor, technology, category, version, and year parameters for consistent tracking and organization.
+- **Multi-language Support (Planned)**: While support for **PT-BR** and **ES-ES** is being developed, the current functional implementation is limited to **EN-US**.
 
-- **OpenAI Assistant Integration**: Leverages OpenAI’s assistant for generating security controls. Automatically initializes or reuses an assistant configured with context-specific instructions.
+- **Unique ID Generation**: Uses `IDGenerator` to create structured, unique IDs using vendor, technology, version, and year parameters.
 
-- **HTML Conversion**: Consolidates Markdown content into dynamically labeled, language-specific HTML tables for professional reporting.
+- **OpenAI Assistant Integration**: Leverages OpenAI’s assistant for security control generation. Automates multiple AI-driven processing steps:
 
-- **Automated Cleanup**: Cleans up temporary session artifacts to optimize storage usage.
+  - `Requisitor`: Extracts security-relevant content.
+  - `ControlGen`: Generates security controls per document.
+  - `ControlRefiner`: Unifies and refines controls.
+  - `RiskEvaluator`: Assesses security risks.
+
+- **HTML Report Generation**: Converts Markdown content into structured, professional HTML reports using `HTMLGenerator`.
+
+- **Automated Cleanup**: Session artifacts are removed post-processing using `cleanup_util`.
 
 ## Project Structure
 
-- **main.py**: The core application script, handling user interface, data processing, and file management.
-- **modules/**: Contains modular code for ID generation, OpenAI integration, HTML generation, and configuration loading.
-- **config/config.json**: Configuration file for prompts, categories, and other settings.
-- **artefacts/**: Temporary storage for session files.
-- **templates/template_html.html**: Template for generating HTML reports.
+```
+BaselineForge/
+│── main.py               # Main Streamlit application
+│── modules/
+│   ├── config_loader.py   # Handles configuration management
+│   ├── url_processor.py   # Fetches and processes webpage content
+│   ├── id_generator.py    # Generates unique control IDs
+│   ├── openai_service.py  # Handles OpenAI API interaction
+│   ├── html_generator.py  # Generates HTML reports
+│   ├── agent_processor.py # Processes security controls with OpenAI
+│   ├── data_importer.py   # Converts Markdown files into structured data
+│   ├── cleanup_util.py    # Manages session cleanup
+│── config/config.json     # Configuration file for UI elements and prompts
+│── artefacts/             # Temporary session storage
+│── templates/
+│   ├── template_html.html # HTML template for reports
+```
 
-## Getting Started
-
-### Installation
+## Installation
 
 1. **Install Dependencies**:
+
    ```bash
    pip install -r requirements.txt
    ```
 
 2. **Run the Application**:
+
    ```bash
    streamlit run main.py
    ```
 
-### Usage
+## Usage
 
-1. **Select Language**: Choose from **EN-US**, **PT-BR**, or **ES-ES**.
+1. **Select Language**: Currently only **EN-US** is functional. 
 2. **Enter Details**:
-   - Select **Vendor** and **Category**.
-   - Enter **Technology Name** and **Version** (or "Static" if no version applies).
+   - Select **Vendor**.
+   - Enter **Technology Name**.
    - Provide up to **10 URLs**, separated by commas.
-3. **Generate Baseline**: A unique ID is created, and URLs are processed into Markdown and HTML formats.
-4. **Download**: The final HTML report is available for download, presenting security controls and details.
+3. **Generate Baseline**: The pipeline will execute, processing URLs and generating structured security controls.
+4. **Download Report**: The final HTML report will be available for download.
 
-## TO DO
+## To Do
 
-- [ ] Add dynamic language-specific labels for buttons and progress indicators.
-- [ ] Include technology name as a title in the generated document.
-- [ ] Integrate logging mechanisms for tracking actions.
-- [ ] Add a progress bar for better user experience.
-- [ ] Implement a quality check to refine generic controls.
+- [ ] Implement functional support for **PT-BR** and **ES-ES**.
+- [ ] Enhance AI processing pipeline with additional security evaluations.
+- [ ] Enhance logging for debugging and performance tracking.
+- [ ] Add dynamic language-specific UI enhancements.
+- [ ] Improve the user experience with a progress bar.
 
 ## Acknowledgments
 
 Special thanks to the OpenAI and Streamlit communities for providing the tools and resources that made BaselineForge possible.
+
