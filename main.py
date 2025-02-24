@@ -135,7 +135,7 @@ def run_pipeline(
     run_short_id = run_id[:8]
 
     # Novo subdiretório para este run
-    run_artifacts_dir = base_session_dir / f"r_{run_short_id}"
+    run_artifacts_dir = base_session_dir / f"r_{run_short_id}_{id_unico}"
     run_artifacts_dir.mkdir(parents=True, exist_ok=True)
 
     # Inicializa/Reaproveita assistente (se necessário)
@@ -216,7 +216,7 @@ def main():
         st.download_button(
             label="Download Web Page",
             data=html_content,
-            file_name=f"r_{short_session_id}_controls.html",
+            file_name=f"{id_unico}_controls.html",
             mime="text/html",
         )
     else:
