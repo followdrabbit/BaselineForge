@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0001</td><td>apply service control policies (scps) for aws organizations</td><td>Use SCPs to enforce the maximum permissions that identities can have in an AWS Organization.</td><td>All AWS Organizations and corresponding OUs</td><td>Without SCPs, organizations risk unauthorized actions beyond desired security limits.</td><td>SCPs must be manually configured and applied to OUs.</td><td>Enforced and managed using AWS Organizations and AWS Config.</td><td>['https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scp.html']</td><td>Absence of SCPs can result in exceeding desired permission levels across accounts, risking unauthorized operations.</td><td>{'Confidentiality': 'High - Excess permissions pose significant data exposure risks.', 'Integrity': 'High - Uncontrolled permissions can lead to data integrity issues.', 'Availability': 'Medium - Unauthorized changes can result in service disruptions.'}</td><td>Potential non-compliance with BACEN and ISO 27001 due to lack of stringent access controls.</td><td>High</td><td>High - SCP gaps are challenging to detect without proactive audits.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0002</td><td>centralized access management with aws iam identity center</td><td>Configure AWS IAM Identity Center to centralize user access management and synchronize with the organization's identity provider.</td><td>All organizations using AWS IAM Identity Center</td><td>Failure to centralize access can lead to inconsistent permission management and potential security gaps.</td><td>IAM Identity Center setup depends on the integration with external identity providers.</td><td>Requires manual integration setup but can be monitored via AWS IAM Identity Center logging capabilities.</td><td>['https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html']</td><td>Decentralized access management can lead to inconsistent policy enforcement and the risk of unauthorized access due to security gaps.</td><td>{'Confidentiality': 'High - Inconsistent permissions can lead to data leaks.', 'Integrity': 'Medium - Lack of central control increases the risk of unauthorized data modifications.', 'Availability': 'Medium - Mismanagement can lead to service interruptions.'}</td><td>Lack of centralized access could lead to non-compliance with BACEN and ISO 27001 concerning user access management.</td><td>Medium</td><td>Medium - Centralized tools can aid detection and remediation.</td><td>High</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0003</td><td>configure cloudwatch alarms for aws global accelerator metrics</td><td>Set up Amazon CloudWatch alarms to monitor AWS Global Accelerator metrics such as 'NewFlowCount', 'ProcessedBytesOut', and 'ConsumedLCUs'. Alarms should trigger notifications or automated actions if the defined thresholds are exceeded.</td><td>All AWS accounts using AWS Global Accelerator</td><td>Without real-time monitoring of Global Accelerator metrics, potential issues like exceeded capacity or DDoS attempts might go unnoticed, leading to service disruptions.</td><td>Amazon CloudWatch does not automatically configure alarms; they must be set up manually.</td><td>Can be configured using AWS CloudFormation templates to deploy and manage CloudWatch alarms for specified metrics.</td><td>['https://docs.aws.amazon.com/global-accelerator/latest/dg/logging-and-monitoring.html', 'https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html']</td><td>Without monitoring, performance issues or attacks may go undetected, leading to prolonged outages or compromised performance.</td><td>{'Confidentiality': 'Low - Predominantly an availability and performance risk.', 'Integrity': 'Low - Alarms primarily affect service performance monitoring.', 'Availability': 'High - Critical for maintaining performance and detecting potential DDoS attempts.'}</td><td>Not directly related to compliance, but can support SLAs and operational resilience outlined by regulatory expectations.</td><td>Low</td><td>Low - Set and forget; effectiveness depends on proper configuration.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0004</td><td>enable aws cloudtrail for global accelerator api activity</td><td>Activate AWS CloudTrail to log all API calls related to AWS Global Accelerator, capturing detailed information about every request made to the service.</td><td>All AWS accounts using AWS Global Accelerator</td><td>Without CloudTrail logging, crucial details of API-level activities are not preserved, impairing incident investigations and audit processes.</td><td>CloudTrail logging must be manually enabled for each account and region used.</td><td>Can be enforced using AWS Config rules to ensure CloudTrail is active and capturing necessary logs.</td><td>['https://docs.aws.amazon.com/global-accelerator/latest/dg/logging-and-monitoring.html', 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html']</td><td>Without CloudTrail, API activities are not logged, impairing forensic investigations and compliance audits.</td><td>{'Confidentiality': 'High - Unlogged API access may expose sensitive data operations.', 'Integrity': 'High - API misconfigurations or unauthorized use could alter data integrity.', 'Availability': 'Medium - Essential for monitoring and reacting to detrimental API activities.'}</td><td>Significant for ensuring compliance with BACEN and ISO 27001 guidelines for activity logging.</td><td>High</td><td>Medium - CloudTrail is a standard for auditing and detecting but needs regular review.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0005</td><td>enable global accelerator flow logs</td><td>Set up flow logs for AWS Global Accelerator to record detailed traffic data, including source/destination IPs, ports, protocols, and the number of packets and bytes transferred.</td><td>All AWS accounts using AWS Global Accelerator</td><td>Without flow logs, it is challenging to conduct thorough security audits and monitor traffic patterns, which might lead to undetected malicious activities.</td><td>Flow logs are not enabled by default and need to be configured manually.</td><td>Can be integrated with AWS CloudFormation or CLI scripts to automate the setup of Global Accelerator flow logs.</td><td>['https://docs.aws.amazon.com/global-accelerator/latest/dg/logging-and-monitoring.html', 'https://docs.aws.amazon.com/global-accelerator/latest/dg/monitoring-global-accelerator.flow-logs.html']</td><td>Lack of flow logs makes monitoring of traffic patterns difficult, potentially allowing malicious activities to remain undetected.</td><td>{'Confidentiality': 'Medium - Traffic analysis can indicate data leaks or misconfigurations.', 'Integrity': 'Medium - Aids in identifying unauthorized modifications through traffic anomalies.', 'Availability': 'High - Essential for quick reaction to attack detection and mitigation.'}</td><td>Flow logs are crucial for audit trails, supporting compliance with BACEN and ISO 27001 requirements for logging and monitoring.</td><td>Medium</td><td>Medium - Logs enhance analysis but require infrastructure for effective utilization.</td><td>High</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0006</td><td>enforce multi-factor authentication (mfa) for sign-in</td><td>All IAM users and root accounts must have multi-factor authentication enabled to enhance security during the sign-in process.</td><td>All AWS accounts</td><td>Without MFA, credentials can be easily compromised, leading to unauthorized account access and potential data breaches.</td><td>AWS does not enforce MFA by default for accounts. Manual configuration is required.</td><td>Can be enforced using AWS IAM policies and monitored using AWS Config rules `iam-user-mfa-enabled`.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html']</td><td>Without MFA, user credentials can be stolen and lead to unauthorized account access, posing severe risks such as data breaches and financial fraud.</td><td>{'Confidentiality': 'High - Unauthorized access could lead to sensitive data exposure.', 'Integrity': 'High - Compromised accounts could be used to alter critical data.', 'Availability': 'Medium - Unauthorized changes could disrupt access to services.'}</td><td>Lack of MFA may violate BACEN and ISO 27001 requirements for strong authentication controls. PCI DSS emphasizes the necessity of multi-factor authentication for access to cardholder data environments.</td><td>High</td><td>Medium - Compromise detection is typically post-incident, depending on log analysis.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0007</td><td>enforce signed requests for aws global accelerator</td><td>All API requests to AWS Global Accelerator must be signed using the caller's IAM principal credentials.</td><td>All API requests to AWS Global Accelerator</td><td>Unsigned requests can lead to unauthorized operations, making it difficult to attribute actions to specific users, affecting accountability.</td><td>AWS API requests require signature, but correct implementation must be ensured on client-side.</td><td>Enforce and monitor using AWS CloudTrail and AWS Config to ensure all requests are signed and track compliance against IAM policies.</td><td>['https://docs.aws.amazon.com/global-accelerator/latest/dg/infrastructure-security.html', 'https://docs.aws.amazon.com/general/latest/gr/signing_aws_api_requests.html']</td><td>Unsigned API requests jeopardize authentication integrity and accountability, risking unauthorized operations.</td><td>{'Confidentiality': 'Medium - Inadequate signing allows unauthorized data access.', 'Integrity': 'High - Unsigned requests can lead to untracked and unauthorized API changes.', 'Availability': 'Medium - Unauthorized controls can affect service reliability.'}</td><td>Non-compliance with BACEN, ISO 27001, and PCI DSS regarding secure access controls and request validations.</td><td>High</td><td>Medium - Requires periodic review to ensure signing standards are adhered to.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0008</td><td>enforce tls 1.2 or higher for aws global accelerator</td><td>Ensure that all communications with AWS Global Accelerator use Transport Layer Security (TLS) version 1.2 or higher.</td><td>All clients accessing AWS Global Accelerator</td><td>Using TLS versions below 1.2 exposes communications to vulnerabilities such as POODLE and BEAST attacks, compromising confidentiality and integrity.</td><td>AWS Global Accelerator supports TLS 1.2 and higher by default, however, enforcement must be configured.</td><td>This can be partially automated using AWS Global Accelerator settings. Continuous monitoring is recommended via AWS Config or AWS CloudTrail logs.</td><td>['https://docs.aws.amazon.com/global-accelerator/latest/dg/infrastructure-security.html']</td><td>Weak TLS versions allow for vulnerabilities that endanger encrypted communications, affecting data security.</td><td>{'Confidentiality': 'High - Older TLS exposes communication to interception.', 'Integrity': 'High - Compromised session integrity can lead to data tampering.', 'Availability': 'Medium - Vulnerabilities could be exploited to disrupt services.'}</td><td>Failure to ensure proper TLS may result in non-compliance with BACEN, ISO 27001, PCI DSS requirements for secure communication.</td><td>High</td><td>Medium - TLS configuration issues are usually detectable via network scans.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0009</td><td>ensure vpc has internet gateway for aws global accelerator</td><td>Attach an internet gateway to any VPC containing a Network Load Balancer, internal Application Load Balancer, or Amazon EC2 instance used as AWS Global Accelerator endpoints, to enable acceptance of internet traffic.</td><td>All VPCs containing AWS Global Accelerator endpoints</td><td>Without an internet gateway, AWS Global Accelerator cannot route internet traffic to the intended endpoints, potentially leading to loss of connectivity or service unavailability.</td><td>AWS does not automatically attach an internet gateway to VPCs. This requires manual configuration.</td><td>Can be enforced using AWS Config rule `vpc-gateway-attached` to ensure an internet gateway is attached to the target VPC.</td><td>['https://docs.aws.amazon.com/global-accelerator/latest/dg/secure-vpc-connections.html', 'https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html']</td><td>No internet gateway can prevent internet traffic routing to AWS endpoints, causing network connectivity issues.</td><td>{'Confidentiality': 'Low - Primarily a availability concern.', 'Integrity': 'Low - Less relevance to data integrity.', 'Availability': 'High - Critical for ensuring network availability and service functionality.'}</td><td>While not directly a regulatory issue, indirectly affects service availability, which may contravene SLAs.</td><td>Low</td><td>Low - Can be detected with proper network monitoring.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0010</td><td>implement service-linked roles for aws services</td><td>Configure service-linked roles to allow AWS services to interact securely with each other.</td><td>All AWS services requiring cross-service interaction</td><td>Improperly configured roles could lead to unauthorized access to services.</td><td>AWS services may create service-linked roles automatically when needed.</td><td>Monitoring via AWS Config and CloudTrail checks on role modifications.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html']</td><td>Improper role configuration may result in inadvertent service privileges being granted, leading to potential unauthorized service access.</td><td>{'Confidentiality': 'Medium - Unauthorized service actions could expose data.', 'Integrity': 'Medium - Misconfigured roles could allow improper data modifications.', 'Availability': 'Medium - Wrong service configurations may lead to disruptions.'}</td><td>Failure to restrict service interactions could breach BACEN and ISO 27001 requirements on restricted access control.</td><td>Low</td><td>Medium - Easier to detect with proper monitoring and audits.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0011</td><td>regular access key rotation</td><td>Implement policies to rotate IAM user access keys regularly to minimize the risk of credential exposure.</td><td>All IAM users with long-term credentials</td><td>Stale access keys increase the risk of unauthorized access if the keys are compromised.</td><td>AWS does not automatically enforce access key rotation.</td><td>Can be managed with AWS Secrets Manager or AWS Config rule `access-keys-rotated`.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_RotateAccessKey']</td><td>Stale access keys increase vulnerability to credential exposure, leading to unauthorized access over time.</td><td>{'Confidentiality': 'High - Exposure of keys can lead to unauthorized data access.', 'Integrity': 'Medium - Compromised keys can be used to alter or destroy data.', 'Availability': 'Medium - Unauthorized actions could cause disruptions in service.'}</td><td>Non-rotation violates best practices outlined in ISO 27001 and PCI DSS regarding key management.</td><td>Medium</td><td>Medium - Automated tools can enforce better practices.</td><td>High</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0012</td><td>require perfect forward secrecy (pfs) cipher suites for aws global accelerator</td><td>Ensure that AWS Global Accelerator only accepts connections encrypted with cipher suites that support perfect forward secrecy (PFS), such as DHE or ECDHE.</td><td>All clients accessing AWS Global Accelerator</td><td>Without PFS, the compromise of a private key can lead to decryption of all past and future sessions even if encrypted.</td><td>Supported depending on client configuration. Ensure client systems support required cipher suites.</td><td>Monitor and enforce compliance via AWS Config or custom CloudWatch metrics by inspecting SSL/TLS client connections to verify cipher suite usage.</td><td>['https://docs.aws.amazon.com/global-accelerator/latest/dg/infrastructure-security.html']</td><td>Without PFS, intercepted data remains vulnerable if keys are compromised, risking future and past data integrity.</td><td>{'Confidentiality': 'High - Maintains encrypted data confidentiality.', 'Integrity': 'High - Ensures past communications cannot be deciphered.', 'Availability': 'Low - Primarily encrypts data without affecting service.'}</td><td>Mandated by PCI DSS and recommended by ISO 27001 to enhance communication security and protect against retroactive decryption.</td><td>Medium</td><td>High - Requires continuous monitoring of cipher usage and configurations.</td><td>High</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0013</td><td>review iam policies for network perimeter configurations</td><td>Review and configure IAM policies to account for permissions affecting internet access and network perimeter security, ensuring compliance with organizational security postures.</td><td>IAM roles managing VPC configurations and internet access</td><td>Improper IAM policies may allow unauthorized changes to network configurations, potentially exposing internal resources to the internet.</td><td>IAM permissions related to network configurations are not explicitly managed by default and require detailed policy setup.</td><td>Manual validation required. Regular IAM policy reviews and audits can be performed using AWS IAM Access Analyzer and AWS Config rules.</td><td>['https://docs.aws.amazon.com/global-accelerator/latest/dg/secure-vpc-connections.html', 'https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html']</td><td>Improperly reviewed network-related IAM policies may lead to unauthorized changes, exposing internal resources.</td><td>{'Confidentiality': 'High - Inappropriate policies can expose sensitive infrastructure.', 'Integrity': 'Medium - Unauthorized adjustments can lead to data manipulation.', 'Availability': 'Medium - Misconfigured policies may lead to denial of service or exposure.'}</td><td>Ensuring IAM policies support compliance with BACEN, LGPD, and ISO 27001 requirements for access and configuration management.</td><td>Medium</td><td>Medium - Regular audits can help, but inherent IAM complexity adds to detection difficulty.</td><td>High</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0014</td><td>set permissions boundaries on iam entities</td><td>Use permissions boundaries to define the maximum permissions that any identity policy can grant.</td><td>All IAM users and roles</td><td>Lack of boundaries can lead to over-provisioning and increase the risk of policy mismanagement.</td><td>Permissions boundaries must be manually defined and applied.</td><td>Monitor and audit using AWS Config rules and IAM policy validations.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html']</td><td>Without permission boundaries, IAM policies may grant excessive permissions, leading to a heightened risk of unauthorized actions.</td><td>{'Confidentiality': 'Medium - Overly broad permissions could leak sensitive data.', 'Integrity': 'Medium - Excess permissions can enable unauthorized data changes.', 'Availability': 'Low - Access excess may not directly impact availability but can be used to launch attacks.'}</td><td>Potential violations of BACEN and ISO 27001 regarding accessing principle of least privilege.</td><td>Medium</td><td>Medium - Easy to detect with comprehensive audits.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0015</td><td>use iam roles for federated user access</td><td>Create and configure IAM roles for federated users to allow access using temporary credentials.</td><td>Organizations using federated authentications</td><td>Permanent credentials increase exposure compared to temporary credentials which have limited lifespan.</td><td>AWS supports federated authentication but setup and configuration are required.</td><td>Automate role creation and policies through CloudFormation or Terraform.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers.html']</td><td>Relying on permanent credentials increases exposure as they provide a longer time frame for misuse if compromised.</td><td>{'Confidentiality': 'Medium - Increased risk if credentials are shared or mishandled.', 'Integrity': 'Low - Limited temporal scope of federated access restricts unintended data modifications.', 'Availability': 'Low - Isolated to individual user impacts.'}</td><td>Non-compliance with ISO 27001's principle of minimizing access time to necessary tasks.</td><td>Medium</td><td>Low - Federated accounts are less persistent and easier to audit.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0016</td><td>use private subnets for amazon ec2 instances with aws global accelerator</td><td>Configure Amazon EC2 instances within private subnets to ensure that all traffic directed by AWS Global Accelerator is managed efficiently through security groups.</td><td>All deployments using AWS Global Accelerator with Amazon EC2 instances</td><td>Publicly accessible instances in public subnets may expose vulnerabilities and increase the attack surface.</td><td>AWS provides the capability to use private subnets, but configuration must be done manually.</td><td>Manual validation required for subnet configuration. Use AWS Config rules to ensure instances do not have public IPs.</td><td>['https://docs.aws.amazon.com/global-accelerator/latest/dg/secure-vpc-connections.html', 'https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html']</td><td>Placing instances in public subnets increases exposure and vulnerability to external attacks.</td><td>{'Confidentiality': 'High - Publicly accessible instances are vulnerable to unauthorized access.', 'Integrity': 'Medium - Direct attacks could manipulate data or configurations.', 'Availability': 'Medium - Increased attack surface can result in potential service disruptions.'}</td><td>Non-compliance with security requirements related to network segregation and access controls (ISO 27001, BACEN).</td><td>High</td><td>Medium - Subnet misconfigurations are typically detected post-exploitation.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0001: apply service control policies (scps) for aws organizations</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0002: centralized access management with aws iam identity center</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0003: configure cloudwatch alarms for aws global accelerator metrics</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0004: enable aws cloudtrail for global accelerator api activity</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0005: enable global accelerator flow logs</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0006: enforce multi-factor authentication (mfa) for sign-in</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0007: enforce signed requests for aws global accelerator</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0008: enforce tls 1.2 or higher for aws global accelerator</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0009: ensure vpc has internet gateway for aws global accelerator</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0010: implement service-linked roles for aws services</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0011: regular access key rotation</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0012: require perfect forward secrecy (pfs) cipher suites for aws global accelerator</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0013: review iam policies for network perimeter configurations</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0014: set permissions boundaries on iam entities</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0015: use iam roles for federated user access</li><li>AWS-AMAZON-GLOBAL-ACCELERATOR-2025-0016: use private subnets for amazon ec2 instances with aws global accelerator</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

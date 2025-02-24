@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON--SIMPLEDB-2025-0001</td><td>apply least privilege principle for simpledb read actions</td><td>Policies granting read access to Amazon SimpleDB should specify actions such as `sdb:GetAttributes` and `sdb:Select` to adhere to the principle of least privilege.</td><td>All IAM and resource-based policies granting read access to Amazon SimpleDB</td><td>Excessive permissions can lead to unauthorized data access and information exposure.</td><td>Broad permissions are allowed by default unless specific permissions are defined.</td><td>AWS IAM Access Analyzer can audit policies to ensure they respect least privilege principles.</td><td>['https://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/UsingIAMWithSDB.html']</td><td>Without adhering to least privilege, excessive permissions increase the risk of unauthorized data viewing or sharing, potentially leading to information exposure.</td><td>{'Confidentiality': 'High - Excessive read permissions can lead to unauthorized access to sensitive data.', 'Integrity': 'Low - Primary concern is data access, not modification.', 'Availability': 'Low - No direct impact on data availability unless incidental.'}</td><td>Failure to enforce least privilege contravenes LGPD data protection requirements and ISO 27001's access controls by allowing excessive access to sensitive data.</td><td>High</td><td>Moderate - Misconfigured policies are detectable with access reviews but could be overlooked without regular checks.</td><td>High</td></tr><tr><td>AWS-AMAZON--SIMPLEDB-2025-0002</td><td>enforce iam policy naming convention for amazon simpledb</td><td>IAM policies granting access to Amazon SimpleDB must specify actions with the prefix 'sdb:'. Ensure all actions like 'sdb:GetAttributes', 'sdb:Select', or 'sdb:*' are correctly defined within IAM policies.</td><td>All IAM policies related to Amazon SimpleDB</td><td>Improper permissions due to incorrect action prefixes might lead to unauthorized access to SimpleDB resources.</td><td>IAM does not enforce action prefixes by default. They must be explicitly defined.</td><td>AWS Config custom rules or AWS IAM Access Analyzer can audit adherence to the naming convention.</td><td>['https://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/UsingIAMWithSDB.html']</td><td>If IAM policies do not use the correct 'sdb:' action prefixes, it may lead to misconfigured permissions, allowing unauthorized users to access or alter SimpleDB resources.</td><td>{'Confidentiality': 'Medium - Unauthorized actions could expose sensitive data stored in SimpleDB.', 'Integrity': 'Medium - Incorrect permissions could allow unauthorized changes to data, affecting data integrity.', 'Availability': 'Low - Direct impact on availability is unlikely unless data alteration indirectly affects operations.'}</td><td>Incorrect access configurations could result in non-compliance with LGPD data protection, ISO 27001's access control requirements, and PCI DSS if applicable data is accessed.</td><td>Medium</td><td>Moderate - Misconfigurations can be detected with proper auditing tools but may not be immediately apparent.</td><td>High</td></tr><tr><td>AWS-AMAZON--SIMPLEDB-2025-0003</td><td>enforce use of temporary security credentials for amazon simpledb access</td><td>Configure IAM roles to provide temporary security credentials for accessing Amazon SimpleDB, replacing AWSAccessKeyId with these credentials and including a valid SecurityToken parameter.</td><td>All users accessing Amazon SimpleDB</td><td>Using permanent access keys increases risk of unauthorized access if compromised, leading to data exposure.</td><td>Temporary credentials need to be explicitly configured, AWS IAM does not enforce this automatically.</td><td>Automate through IAM roles configured with AWS STS and monitor access via AWS CloudTrail logs.</td><td>['https://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/UsingTemporarySecurityCredentials_SDB.html', 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html']</td><td>Using permanent credentials increases the risk of unauthorized access if they are compromised, leading to potential data breaches and unauthorized operations.</td><td>{'Confidentiality': 'High - Permanent credentials, if exposed, can allow unauthorized data access.', 'Integrity': 'Medium - Credentials can be used for unauthorized data changes.', 'Availability': 'Low - Impact on availability is indirect but possible if malicious changes disrupt service.'}</td><td>Permanent credential use compromises compliance with LGPD, BACEN, and ISO 27001 for secure credential management and access control.</td><td>High</td><td>Difficult - Compromised credentials can be used without detection if access patterns mimic legitimate use.</td><td>Critical</td></tr><tr><td>AWS-AMAZON--SIMPLEDB-2025-0004</td><td>ensure hmac-sha256 signing method for simpledb requests using temporary credentials</td><td>Verify that all requests to Amazon SimpleDB using temporary security credentials are signed with the HMAC-SHA256 method, setting the SignatureMethod field to HmacSHA256.</td><td>All API requests to Amazon SimpleDB using temporary security credentials</td><td>Insecure signing methods can allow unauthorized request modification, leading to replay attacks or data integrity issues.</td><td>AWS SDKs default to HMAC-SHA256, but custom implementations must enforce this explicitly.</td><td>Automate verification using tools inspecting API request headers and events analyzed via AWS CloudTrail.</td><td>['https://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/UsingTemporarySecurityCredentials_SDB.html', 'https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html']</td><td>Failure to enforce HMAC-SHA256 for signing may result in insecure communications, facilitating unauthorized request modifications or man-in-the-middle attacks.</td><td>{'Confidentiality': 'High - Without secure signing, communications can be intercepted and analyzed.', 'Integrity': 'High - Request tampering could occur if insecure signing is used.', 'Availability': 'Medium - Availability could be affected if tampered requests disrupt service.'}</td><td>Insecure request signing methods could breach PCI DSS and ISO 27001 requirements for cryptographic controls.</td><td>High</td><td>Difficult - Man-in-the-middle attacks are often complex to detect without thorough monitoring.</td><td>Critical</td></tr><tr><td>AWS-AMAZON--SIMPLEDB-2025-0005</td><td>specify correct amazon simpledb domain arns including region</td><td>Ensure Amazon SimpleDB domains are specified using the ARN format `arn:aws:sdb:<region>:<account_ID>:domain/<domain_name>`, ensuring the <region> parameter is included.</td><td>All IAM policies and resource-based policies utilizing SimpleDB domains</td><td>Incorrect ARN formats can lead to misconfigured access and potential security breaches.</td><td>IAM policy validation does not automatically enforce correct ARN formats.</td><td>AWS Config custom rules can monitor the correctness of ARNs, particularly focusing on region specification.</td><td>['https://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/UsingIAMWithSDB.html']</td><td>Failure to include correct region specifications in ARNs could lead to misconfigured access, potentially exposing sensitive data or allowing unauthorized data alterations.</td><td>{'Confidentiality': 'High - Incorrect ARNs can inadvertently allow data access from unintended roles or users.', 'Integrity': 'High - Potential for unauthorized data modifications if incorrect resource permissions are granted.', 'Availability': 'Low - While primarily affecting access, misconfigurations can indirectly affect data availability.'}</td><td>Incorrect ARN usage can breach BACEN norms for secure configuration management and LGPD data security mandates by incorrectly securing resources.</td><td>High</td><td>Difficult - Misconfigurations might go unnoticed until unauthorized access or operations are executed.</td><td>Critical</td></tr><tr><td>AWS-AMAZON--SIMPLEDB-2025-0006</td><td>utilize deny statements for restricting unwanted simpledb actions</td><td>Include `Deny` statements in IAM policies to explicitly prevent unwanted actions, especially when using broad permissions.</td><td>All IAM policies with conditional broad permissions for Amazon SimpleDB</td><td>Policies without explicit deny conditions may become overly permissive, resulting in data manipulation or exposure.</td><td>IAM allows all actions not explicitly denied, so careful deny conditions must be defined.</td><td>AWS IAM Access Analyzer evaluates policy effectiveness in applying least privilege principles.</td><td>['https://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/UsingIAMWithSDB.html']</td><td>Without explicit deny statements, policies might be unintentionally permissive, leading to unauthorized data modifications or exposure.</td><td>{'Confidentiality': 'Medium - Broad permissions without denies may leak sensitive data.', 'Integrity': 'High - Ability to inadvertently perform unauthorized modifications increases without explicit restrictions.', 'Availability': 'Low - Deny statements primarily affect integrity and confidentiality.'}</td><td>Overly permissive policies could violate LGPD and ISO 27001 strictures on data access control by lacking necessary restrictions.</td><td>Medium</td><td>Moderate - While detection might be possible through audits, properly crafting denies requires experience.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON--SIMPLEDB-2025-0001: apply least privilege principle for simpledb read actions</li><li>AWS-AMAZON--SIMPLEDB-2025-0002: enforce iam policy naming convention for amazon simpledb</li><li>AWS-AMAZON--SIMPLEDB-2025-0003: enforce use of temporary security credentials for amazon simpledb access</li><li>AWS-AMAZON--SIMPLEDB-2025-0004: ensure hmac-sha256 signing method for simpledb requests using temporary credentials</li><li>AWS-AMAZON--SIMPLEDB-2025-0005: specify correct amazon simpledb domain arns including region</li><li>AWS-AMAZON--SIMPLEDB-2025-0006: utilize deny statements for restricting unwanted simpledb actions</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

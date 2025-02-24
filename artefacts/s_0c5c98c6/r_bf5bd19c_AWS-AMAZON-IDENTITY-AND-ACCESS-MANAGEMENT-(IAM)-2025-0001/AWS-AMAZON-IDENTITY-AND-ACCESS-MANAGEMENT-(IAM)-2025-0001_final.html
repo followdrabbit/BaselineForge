@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0001</td><td>apply least-privilege permissions</td><td>Grant the minimum necessary permissions to users and resources based on specific tasks, using AWS IAM policies and AWS IAM Access Analyzer for policy compliance.</td><td>All AWS resources and accounts</td><td>Excessive permissions can increase the attack surface and risk of abuse.</td><td>AWS allows creation of permissive policies. Implementation of least-privilege is manual.</td><td>AWS IAM Access Analyzer and AWS Config can enforce and audit compliance.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html']</td><td>Excessive permissions increase the attack surface, leading to potential misuse or exploitation of privileges.</td><td>{'Confidentiality': 'Medium - Excessive permissions could result in unauthorized data access.', 'Integrity': 'High - Users may alter or delete critical configurations and data.', 'Availability': 'Medium - Expanded permissions may enable users to disrupt operations.'}</td><td>Non-compliance with principles of least privilege as outlined in ISO 27001 and CIS standards for financial institutions.</td><td>Medium</td><td>Medium - Over-permissioning may not be immediately evident and could permit unnoticed exploitation.</td><td>High</td></tr><tr><td>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0002</td><td>central management of root user credentials via aws organizations</td><td>Utilize AWS Organizations to centrally manage root credentials of member accounts, implementing Organizational Units (OU) for management policies.</td><td>AWS Organization management accounts</td><td>Lack of central management can lead to mismanaged root credentials.</td><td>Central management is not enforced by default.</td><td>Enforce management policies using AWS Organizations and SCPs.</td><td>['https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_type-auth.html']</td><td>Decentralized management can lead to inconsistent security policies and potential misuse of root credentials.</td><td>{'Confidentiality': 'Medium - Inconsistent policies might allow undesired access.', 'Integrity': 'Medium - Inconsistent management could lead to unauthorized changes.', 'Availability': 'Medium - Ineffective management could impact system stability.'}</td><td>Using AWS Organizations for central management supports regulatory compliance by ensuring uniform security configurations.</td><td>Medium</td><td>Medium - Centralization aids in quick detection and policy enforcement.</td><td>High</td></tr><tr><td>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0003</td><td>enable aws cloudtrail for comprehensive logging</td><td>Configure AWS CloudTrail to capture all API and user activity in all regions and store logs centrally in an S3 bucket for compliance and auditing.</td><td>All AWS accounts</td><td>Without logging, monitoring and auditing changes and unauthorized activities is challenging.</td><td>CloudTrail is not enabled globally by default.</td><td>Use AWS Config rule `cloud-trail-enabled` to enforce CloudTrail activation across all regions.</td><td>['https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-trails.html']</td><td>Without logging, unauthorized access or changes may go undetected, hindering incident response and audits.</td><td>{'Confidentiality': 'Medium - Lack of visibility into actions could hide unauthorized data access.', 'Integrity': 'High - Unlogged changes could invalidate data for compliance and operations.', 'Availability': 'Medium - Difficulties auditing availability-impacting events.'}</td><td>Essential for auditing as per BACEN and LGPD. Logging is a key requirement in ISO 27001 and PCI DSS for traceability and auditing.</td><td>High</td><td>High - Without logs, identifying and responding to unauthorized access becomes substantially harder.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0004</td><td>enforce mfa for iam users and root access</td><td>Require multi-factor authentication (MFA) for IAM users and the root user to access AWS accounts, leveraging AWS Config and IAM policies for compliance checks.</td><td>All AWS accounts</td><td>Compromised credentials could enable unauthorized access, posing significant security risks.</td><td>AWS does not enforce MFA by default. It must be configured manually.</td><td>AWS Config rules like `iam-user-mfa-enabled` and IAM policies can be used to enforce MFA requirements.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds.html']</td><td>Without MFA, compromised credentials can easily lead to unauthorized access, posing significant security risks.</td><td>{'Confidentiality': 'High - Unauthorized access to sensitive data could occur.', 'Integrity': 'High - Potential for unauthorized activity leading to data corruption.', 'Availability': 'High - Could lead to system lockdowns or disruptions by malicious users.'}</td><td>Failure to enforce MFA may result in non-compliance with BACEN, LGPD, and PCI DSS, which demand strong authentication controls.</td><td>High</td><td>Medium - Use of MFA makes it significantly more challenging for attackers to leverage stolen credentials.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0005</td><td>implement service control policies (scps) for organizational guardrails</td><td>Apply SCPs in AWS Organizations to restrict and manage permissions across member accounts, ensuring consistent policy enforcement.</td><td>AWS Organizations</td><td>Without SCPs, accounts may drift from compliance standards.</td><td>AWS Organizations required for SCPs.</td><td>Automated through AWS Organizations.</td><td>['https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_type-auth.html']</td><td>Without SCPs, accounts might drift from compliance standards and introduce security risks.</td><td>{'Confidentiality': 'Medium - SCPs help in maintaining controlled access to resources.', 'Integrity': 'Medium - Guardrails prevent unauthorized operational changes.', 'Availability': 'Medium - Ensures consistent service availability across accounts.'}</td><td>Supports BACEN and ISO 27001 compliance by enforcing consistent security policies and access controls across the organization.</td><td>Medium</td><td>Medium - SCPs provide a robust framework for early detection and policy enforcement.</td><td>High</td></tr><tr><td>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0006</td><td>invalidate and remove unused access keys regularly</td><td>Conduct periodic audits of IAM access keys to identify and remove unused or stale credentials, ensuring keys in use are only for active accounts.</td><td>All AWS accounts with IAM users</td><td>Stale or unused credentials pose potential security risks.</td><td>AWS does not automatically disable or remove unused keys.</td><td>Regular reports through AWS IAM Credential Reports and AWS Lambda for automation.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/credential-reports.html']</td><td>Unused or stale access keys are a latent security risk, potentially used for unauthorized access if discovered.</td><td>{'Confidentiality': 'Medium - Unused keys could provide unauthorized data access.', 'Integrity': 'Medium - These keys can be used to alter data if misused.', 'Availability': 'Low - Unused keys mostly affect confidentiality and integrity.'}</td><td>Regular audits of keys assist in adhering to CIS benchmarks and ensure compliance with BACEN's security standards on key management.</td><td>Medium</td><td>Low - Regular auditing makes this manageable.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0007</td><td>prevent creation of access keys for root user</td><td>Ensure that AWS access keys are not created for the root user. Manage access through IAM users with defined permissions.</td><td>Root user of all AWS accounts</td><td>Long-lived root user access keys increase credential leakage risk.</td><td>AWS allows creation of access keys for root users, but it's discouraged.</td><td>Manual validation required. Regularly audit IAM credentials.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html#root-user-no-access-keys']</td><td>Access keys for the root user can lead to severe security risks if leaked, as they provide full access to AWS resources.</td><td>{'Confidentiality': 'High - Root access means complete data exposure risk.', 'Integrity': 'High - Root access can alter any configuration or data.', 'Availability': 'High - Misuse can disrupt all services and operations.'}</td><td>Using root access keys goes against best security practices as recommended by ISO 27001 and CIS benchmarks.</td><td>High</td><td>Medium - Once keys are leaked, they enable high-impact operations.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0008</td><td>use federation for human user access</td><td>Enforce the use of an identity provider for federated access to AWS, allowing human users to obtain temporary credentials for access, reducing long-term credential usage.</td><td>All AWS accounts with human users</td><td>Long-term credentials could be exposed, leading to unauthorized access and credential misuse.</td><td>AWS IAM does not enforce federation by default. Requires configuration via identity provider.</td><td>Configuration can be monitored via AWS IAM Identity Center.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html']</td><td>Long-term credentials can be exposed, leading to credential misuse and unauthorized access to sensitive data and AWS resources.</td><td>{'Confidentiality': 'High - Exposed long-term credentials can lead to unauthorized data access, violating customer confidentiality.', 'Integrity': 'High - Unauthorized access could result in tampering or deletion of critical data.', 'Availability': 'Medium - Misuse of credentials could lead to service disruptions.'}</td><td>Non-compliance with BACEN requirements for user authentication and LGPD for data protection. Federated access aligns with ISO 27001 standards.</td><td>High</td><td>Difficult - Credential theft might not be detected immediately, and misuse could occur without immediate visibility.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0009</td><td>use temporary credentials via iam roles and federation</td><td>Configure workloads and human users to use temporary credentials by associating them with IAM roles or federated access, avoiding long-term credential use.</td><td>All AWS accounts and applications</td><td>Long-term credentials are susceptible to compromise, increasing the risk of unauthorized access.</td><td>Both permanent and temporary credentials are allowed by default.</td><td>Use AWS IAM Access Analyzer and AWS Config to verify adherence to temporary credential usage.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds.html']</td><td>Using long-term credentials increases the risk of unauthorized access, compromising security.</td><td>{'Confidentiality': 'High - Persistent credentials are a known liability for unauthorized access.', 'Integrity': 'High - Credentials misuse can lead to unauthorized data manipulation.', 'Availability': 'Medium - Unauthorized access can disrupt services and systems.'}</td><td>Federation and temporary credentials support compliance with BACEN and ISO 27001 in reducing credential abuse.</td><td>High</td><td>Difficult - Long-term credential compromise may remain undetected.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0010</td><td>utilize iam access analyzer for policy generation and verification</td><td>Use IAM Access Analyzer to automatically generate least-privilege policies and validate compliance with best practice security configurations.</td><td>All AWS accounts</td><td>Overly permissive or misconfigured policies could lead to data breaches.</td><td>IAM Access Analyzer requires activation.</td><td>Fully automate using AWS IAM Access Analyzer.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html']</td><td>Without automated verification, policies may become overly permissive, leading to possible data breaches.</td><td>{'Confidentiality': 'Medium - Overly permissive policies may expose sensitive data.', 'Integrity': 'High - Misconfigured policies could result in unauthorized data changes.', 'Availability': 'Low - Indirectly affects if data integrity issues arise.'}</td><td>Ensures policy compliance with BACEN and ISO 27001 by validating against least-privilege principles.</td><td>Medium</td><td>Medium - Automated analysis improves vulnerability identification.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0001: apply least-privilege permissions</li><li>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0002: central management of root user credentials via aws organizations</li><li>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0003: enable aws cloudtrail for comprehensive logging</li><li>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0004: enforce mfa for iam users and root access</li><li>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0005: implement service control policies (scps) for organizational guardrails</li><li>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0006: invalidate and remove unused access keys regularly</li><li>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0007: prevent creation of access keys for root user</li><li>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0008: use federation for human user access</li><li>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0009: use temporary credentials via iam roles and federation</li><li>AWS-AMAZON-IDENTITY-AND-ACCESS-MANAGEMENT-(IAM)-2025-0010: utilize iam access analyzer for policy generation and verification</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

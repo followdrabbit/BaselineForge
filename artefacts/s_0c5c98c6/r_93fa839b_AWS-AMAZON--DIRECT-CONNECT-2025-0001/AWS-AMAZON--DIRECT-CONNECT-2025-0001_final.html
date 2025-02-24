@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON--DIRECT-CONNECT-2025-0001</td><td>avoid storing sensitive information in aws tags and text fields</td><td>Ensure that no confidential or sensitive information is stored in free-form text fields or tags within AWS resources to prevent exposure in logs.</td><td>All AWS resources across accounts</td><td>Sensitive data in tags or text fields can lead to privacy violations if exposed.</td><td>AWS does not restrict sensitive data entry in tags by default.</td><td>Requires manual policy enforcement; AWS Config can alert on detected sensitive patterns.</td><td>['https://docs.aws.amazon.com/directconnect/latest/UserGuide/data-protection.html']</td><td>Sensitive data exposed through resource tags may be visible in logs and APIs, leading to privacy infringements and unauthorized disclosures.</td><td>{'Confidentiality': 'High - Exposure through tags can lead to serious data privacy violations.', 'Integrity': 'Low - Primary concern is confidentiality rather than data modification.', 'Availability': 'Low - No direct impact on service availability.'}</td><td>Violation of LGPD and other regulations on data protection and privacy, leading to fines and enforcement actions.</td><td>Medium</td><td>Moderate - Detecting sensitive data in tags is complex without automated scans.</td><td>High</td></tr><tr><td>AWS-AMAZON--DIRECT-CONNECT-2025-0002</td><td>configure cloudwatch alarms for aws direct connect</td><td>Set up Amazon CloudWatch Alarms for AWS Direct Connect to monitor essential metrics. Configure alarms to trigger actions like notifications or scale actions when thresholds are crossed.</td><td>All AWS Direct Connect connections</td><td>Without CloudWatch Alarms, issues like network downtime or unexpected data transfer spikes could go undetected.</td><td>CloudWatch Alarms require manual setup and configuration for each metric and action.</td><td>Can be automated using AWS CloudFormation or AWS CLI.</td><td>['https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html']</td><td>Without CloudWatch Alarms, network performance issues and anomalous activities may go unnoticed, leading to service disruption and increased vulnerability to attacks.</td><td>{'Confidentiality': 'Low - Indirect impact through unmonitored access or attack vectors.', 'Integrity': 'Medium - Unnoticed attacks could change or manipulate data flow.', 'Availability': 'High - Network issues can cause significant operational downtime.'}</td><td>Impacts on operational continuity directly affect adherence to SLAs and could trigger BACEN scrutiny due to outage impacts.</td><td>Medium</td><td>Moderate - Real-time monitoring is feasible but needs systematic alarm configurations.</td><td>Medium</td></tr><tr><td>AWS-AMAZON--DIRECT-CONNECT-2025-0003</td><td>enable api and user activity logging with aws cloudtrail</td><td>Configure AWS CloudTrail to log all API calls and user activities, including management and data events, across accounts and regions for auditing purposes.</td><td>All AWS accounts</td><td>Without logging, unauthorized actions may go undetected, hindering incident detection and forensic capabilities.</td><td>AWS CloudTrail is not enabled by default for all activities; configuration is necessary.</td><td>Enforceable using AWS Config with the `cloudtrail-enabled` rule.</td><td>['https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html']</td><td>Without CloudTrail logging, unauthorized activities can go undetected, complicating incident response, investigations, and compliance audits.</td><td>{'Confidentiality': 'Low - Direct impact on confidentiality is minimal, but indirect risks exist without audit trails.', 'Integrity': 'High - Lack of logs can prevent identification of data tampering.', 'Availability': 'Medium - Unmonitored destructive actions could disrupt service availability.'}</td><td>Non-compliance with BACEN requirements for auditability and ISO 27001, impacting forensic readiness and risk management protocols.</td><td>High</td><td>Difficult - Without logging, detecting unauthorized changes or access is challenging.</td><td>High</td></tr><tr><td>AWS-AMAZON--DIRECT-CONNECT-2025-0004</td><td>enforce data encryption at rest and in transit using aws services</td><td>Use AWS KMS or AWS-managed keys to encrypt data at rest for various AWS services, and enforce TLS 1.2 or higher to secure data in transit. Utilize AWS Config to verify encryption compliance.</td><td>All data storage and transmission within AWS</td><td>Unencrypted data may be exposed to unauthorized access and tampering, compromising confidentiality and integrity.</td><td>Many AWS services provide encryption by default, but specific configuration is necessary for compliance with customer policies.</td><td>Enable using AWS Config rules to verify encryption for both data at rest and in transit.</td><td>['https://docs.aws.amazon.com/kms/latest/developerguide/overview.html', 'https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-tls.html']</td><td>Without encryption, data stored and transmitted across AWS services may be accessed or modified by unauthorized parties, risking data breaches and regulatory violations.</td><td>{'Confidentiality': 'High - Unencrypted sensitive customer data is vulnerable to exposure and interception.', 'Integrity': 'High - Data may be altered during transmission without encryption, affecting transaction accuracy.', 'Availability': 'Low - Encryption primarily protects confidentiality and integrity rather than availability.'}</td><td>Failure to encrypt data at rest and in transit may lead to non-compliance with LGPD, PCI DSS, and ISO 27001 standards, exposing the bank to penalties and reputational damage.</td><td>Medium</td><td>Difficult - Data breaches involving unencrypted data may remain unnoticed until significant damage occurs.</td><td>High</td></tr><tr><td>AWS-AMAZON--DIRECT-CONNECT-2025-0005</td><td>ensure aws direct connect is secured with encryption</td><td>Use IPsec VPN or MACsec for AWS Direct Connect connections to encrypt data in transit, ensuring confidentiality and integrity between on-premises networks and AWS.</td><td>All AWS Direct Connect connections</td><td>Without encryption, data is susceptible to interception, compromising confidentiality and data integrity.</td><td>AWS Direct Connect does not encrypt traffic in transit by default; manual configuration is required.</td><td>Monitored using AWS Config for compliance with encryption requirements.</td><td>['https://docs.aws.amazon.com/directconnect/latest/UserGuide/encryption-in-transit.html']</td><td>Without encryption, data transmitted over Direct Connect is vulnerable to interception, threatening confidentiality and data integrity during transit.</td><td>{'Confidentiality': 'High - Intercepted unencrypted data breaches customer privacy.', 'Integrity': 'High - Data modification can occur during transit without encryption.', 'Availability': "Low - Direct Connect's core benefit is reliable connectivity, though interception risks exist."}</td><td>Failure to encrypt could breach BACEN's stringent data security mandates and ISO standards on secure communications.</td><td>Medium</td><td>Difficult - Intercepting data packets often go undetected unless closely monitored.</td><td>High</td></tr><tr><td>AWS-AMAZON--DIRECT-CONNECT-2025-0006</td><td>implement multi-factor authentication (mfa) for aws accounts</td><td>Enable MFA for all AWS accounts to enhance security and prevent unauthorized access. Configure IAM policies to require MFA for accessing sensitive resources and monitor compliance using AWS Config.</td><td>All AWS accounts</td><td>Without MFA, unauthorized individuals may gain access to AWS accounts, potentially leading to data breaches and unauthorized changes.</td><td>AWS does not enable MFA by default; it requires manual configuration.</td><td>Can be enforced using IAM policies and AWS Config with the `iam-user-mfa-enabled` rule.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html']</td><td>Without MFA, unauthorized users can access AWS accounts with just a username and password, leading to potential control over AWS resources. This can result in data breaches, unauthorized modifications, and potentially facilitate insider threats, impacting the bank's operations and customer trust.</td><td>{'Confidentiality': 'High - Unauthorized access can expose sensitive banking data stored in AWS.', 'Integrity': 'High - Malicious changes to critical systems and data can occur if unauthorized access is gained.', 'Availability': 'Medium - Unauthorized users could disrupt services by deleting or altering resources.'}</td><td>Lack of MFA may lead to non-compliance with BACEN guidelines and ISO 27001 requirements concerning strict access controls, posing legal and financial risks to the bank.</td><td>High</td><td>Moderate - Unauthorized access through brute-force or phishing attacks is challenging to detect without proper monitoring.</td><td>Critical</td></tr><tr><td>AWS-AMAZON--DIRECT-CONNECT-2025-0007</td><td>implement resource-based access policies for aws direct connect</td><td>Ensure AWS Direct Connect resource-based policies are in place to restrict access based on source IP or specific VPC endpoints.</td><td>All AWS Direct Connect resources</td><td>Without proper access controls, unauthorized access to Direct Connect resources could occur.</td><td>Resource-based policies must be configured by the user.</td><td>Use AWS Config and IAM policies to enforce and audit resource-based access controls.</td><td>['https://docs.aws.amazon.com/directconnect/latest/UserGuide/infrastructure-security.html']</td><td>Insufficient access controls on Direct Connect resources facilitate unauthorized access, potentially exposing critical network and data.</td><td>{'Confidentiality': 'High - Unauthorized access could lead to exposure of sensitive data.', 'Integrity': 'Medium - Resource manipulation could occur without adequate controls.', 'Availability': 'Medium - Unauthorized changes might interrupt network connections.'}</td><td>Violations of BACEN's requirements for access controls and ISO standards for network security.</td><td>High</td><td>Moderate - Easier to manage with strong monitoring and policy enforcement.</td><td>High</td></tr><tr><td>AWS-AMAZON--DIRECT-CONNECT-2025-0008</td><td>protect sensitive data in amazon s3 with amazon macie</td><td>Leverage Amazon Macie to automatically discover, classify, and protect sensitive data stored in Amazon S3, ensuring compliance with data protection regulations.</td><td>All S3 buckets containing sensitive data</td><td>Unprotected sensitive data can lead to data breaches and compliance violations.</td><td>Amazon Macie requires explicit setup and configurations.</td><td>Automated through Amazon Macie setup and integrations.</td><td>['https://docs.aws.amazon.com/macie/latest/user-guide/what-is-macie.html']</td><td>Unprotected sensitive data in S3 can lead to data breaches, non-compliance with data protection laws, and erosion of customer trust.</td><td>{'Confidentiality': 'High - Sensitive data exposure could result in privacy breaches.', 'Integrity': 'Medium - Macie primarily focuses on confidentiality; however, misclassification might affect integrity of data categorization.', 'Availability': "Low - Doesn't directly impact availability but could lead to restrictions or seizures by authorities."}</td><td>Non-compliance with LGPD and other data protection regulations could result in substantial fines and operational restrictions.</td><td>High</td><td>Moderate - While data is constantly generated, monitoring all for compliance without Macie is complex.</td><td>High</td></tr><tr><td>AWS-AMAZON--DIRECT-CONNECT-2025-0009</td><td>sign aws direct connect requests with iam credentials</td><td>Ensure all requests to AWS Direct Connect are signed using an IAM access key or AWS STS-generated credentials to authenticate operations.</td><td>All AWS Direct Connect requests</td><td>Unsigned requests can lead to unauthorized operations or data leakage.</td><td>Signing requests is required for authentication; proper management of access keys is essential.</td><td>IAM and AWS Config can monitor and alert on unsanctioned API usage.</td><td>['https://docs.aws.amazon.com/directconnect/latest/UserGuide/infrastructure-security.html']</td><td>Unsigned requests can allow unauthorized access and operations, leading to misuse of resources and data breaches.</td><td>{'Confidentiality': 'Medium - Lack of request validation risks unauthorized data access.', 'Integrity': 'High - Unauthorized changes to configurations could lead to system integrity issues.', 'Availability': 'Low - Direct impact on service availability is minimal but could facilitate attacks impacting it.'}</td><td>Failure to authenticate requests properly contravenes BACEN and ISO 27001 mandates for secure operations.</td><td>Medium</td><td>Moderate - Unauthenticated operations difficult to trace without stringent monitoring.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON--DIRECT-CONNECT-2025-0001: avoid storing sensitive information in aws tags and text fields</li><li>AWS-AMAZON--DIRECT-CONNECT-2025-0002: configure cloudwatch alarms for aws direct connect</li><li>AWS-AMAZON--DIRECT-CONNECT-2025-0003: enable api and user activity logging with aws cloudtrail</li><li>AWS-AMAZON--DIRECT-CONNECT-2025-0004: enforce data encryption at rest and in transit using aws services</li><li>AWS-AMAZON--DIRECT-CONNECT-2025-0005: ensure aws direct connect is secured with encryption</li><li>AWS-AMAZON--DIRECT-CONNECT-2025-0006: implement multi-factor authentication (mfa) for aws accounts</li><li>AWS-AMAZON--DIRECT-CONNECT-2025-0007: implement resource-based access policies for aws direct connect</li><li>AWS-AMAZON--DIRECT-CONNECT-2025-0008: protect sensitive data in amazon s3 with amazon macie</li><li>AWS-AMAZON--DIRECT-CONNECT-2025-0009: sign aws direct connect requests with iam credentials</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON--RDS-PROXY-2025-0001</td><td>configure rds proxy idle client timeout</td><td>Set the IdleClientTimeout in RDS Proxy to manage idle client connections, ensuring efficient resource utilization.</td><td>All RDS Proxy configurations</td><td>Improper configuration could lead to prolonged inactive connections consuming resources.</td><td>The default value is 1,800 seconds.</td><td>Configuration can be automated and monitored using AWS CloudFormation or AWS CLI.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy-connections.html']</td><td>Inadequate idle client timeout settings could result in resource hogging, diminishing application performance and resource allocation.</td><td>{'Confidentiality': 'Low - No direct confidentiality risks.', 'Integrity': 'Medium - Potential interference with transaction processing.', 'Availability': 'High - Mismanaged resources can cause performance bottlenecks.'}</td><td>Indirect impact through SLA compliance related to service performance.</td><td>Medium</td><td>Easy - Can be adjusted based on performance monitoring data.</td><td>Medium</td></tr><tr><td>AWS-AMAZON--RDS-PROXY-2025-0002</td><td>encrypt secrets in aws secrets manager with a custom aws kms key</td><td>Utilize a custom AWS KMS key for encrypting secrets in AWS Secrets Manager to enhance security by controlling who can access and manage the key.</td><td>AWS accounts using AWS Secrets Manager</td><td>Secrets may be inadequately protected if not encrypted with a custom KMS key.</td><td>Secrets Manager uses the default KMS key for encryption unless specified.</td><td>Manual configuration of KMS key usage during secret creation or modification.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy-secrets-arns.html']</td><td>Not using a custom KMS key limits control over who can access and manage sensitive encryption keys, increasing the risk of unauthorized access.</td><td>{'Confidentiality': 'High - Protects sensitive data encryption keys.', 'Integrity': 'Medium - Mismanagement of keys could lead to data exposure.', 'Availability': 'Low - Misconfigured keys don’t impact service availability directly.'}</td><td>Violating key management best practices may affect ISO 27001 compliance concerning cryptographic controls.</td><td>High</td><td>Moderate - Requires proper identity and access management oversight.</td><td>High</td></tr><tr><td>AWS-AMAZON--RDS-PROXY-2025-0003</td><td>enforce tls for rds proxy connections</td><td>Ensure that all connections between RDS Proxy and your database require TLS for data in transit. This setting can be configured during RDS Proxy setup.</td><td>All RDS Proxy configurations</td><td>Without TLS, data in transit may be intercepted or altered, compromising data integrity and confidentiality.</td><td>TLS is not enforced by default.</td><td>Can be enforced by setting the TLS requirement during RDS Proxy setup in the AWS Management Console.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.howitworks.html']</td><td>Without TLS, data transmitted between the proxy and database may be exposed to interception, risking confidentiality.</td><td>{'Confidentiality': 'High - Data in transit is vulnerable to interception without TLS.', 'Integrity': 'High - Allows potential man-in-the-middle attacks.', 'Availability': 'Medium - Network attacks might disrupt service continuity.'}</td><td>Non-compliance with PCI DSS and LGPD mandating encryption for data in transit.</td><td>High</td><td>Moderate - Encryption issues can be initially overlooked, requiring thorough audits.</td><td>Critical</td></tr><tr><td>AWS-AMAZON--RDS-PROXY-2025-0004</td><td>ensure rds proxy is in the same vpc as associated database</td><td>Configure the RDS Proxy to reside within the same Virtual Private Cloud (VPC) as the associated database to ensure network connectivity and security.</td><td>RDS Proxy configurations</td><td>Placing an RDS Proxy in a different VPC than its associated database could result in connectivity issues and potential security vulnerabilities.</td><td>RDS Proxy cannot be publicly accessible, ensuring that it operates within the correct network configuration.</td><td>AWS Config can be used to establish a rule that checks if the RDS Proxy is in the same VPC as the associated database.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html']</td><td>RDS Proxy in a different VPC as the associated database can result in connectivity issues and widen the network attack surface.</td><td>{'Confidentiality': 'High - Cross-VPC communication may be susceptible to interception.', 'Integrity': 'High - Risk of data manipulation if connections are compromised.', 'Availability': 'Medium - Network connectivity issues could cause application downtime.'}</td><td>Non-compliance with network security best practices could result in breaches affecting data protection regulations (LGPD).</td><td>High</td><td>Easy - AWS Config can assess and alert on misconfiguration automatically.</td><td>High</td></tr><tr><td>AWS-AMAZON--RDS-PROXY-2025-0005</td><td>implement rds proxy for high frequency short-lived db connections</td><td>Deploy RDS Proxy for applications that frequently open and close connections to the database, reducing overhead by pooling connections.</td><td>Applications with short-lived, frequent database connections</td><td>High overhead from frequent connections can degrade performance and increase costs.</td><td>RDS Proxy is not enabled by default.</td><td>Configuration can be automated using AWS CloudFormation templates.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy-planning.html']</td><td>Frequent opening and closing of database connections without RDS Proxy increases latency and operational cost.</td><td>{'Confidentiality': 'Low - Configuration mainly affects performance.', 'Integrity': 'Low - Primarily impacts efficiency.', 'Availability': 'High - Critical for managing connection scalability.'}</td><td>No direct impact on compliance, but performance degradation could affect SLA adherence.</td><td>Low</td><td>Moderate - Generally identified during performance monitoring.</td><td>Medium</td></tr><tr><td>AWS-AMAZON--RDS-PROXY-2025-0006</td><td>limit rds proxies in a single aws account</td><td>Ensure that the number of RDS Proxies within a single AWS account does not exceed 20. Requests for an increase should be made via the AWS Management Console Service Quotas.</td><td>All AWS accounts using Amazon RDS Proxy</td><td>Exceeding the proxy limit without proper request and approval can lead to disruption in setting up new proxies for applications.</td><td>The default limit is 20 RDS Proxies. AWS enforces this limitation and an increase requires AWS approval.</td><td>Monitoring can be implemented using AWS Service Quotas and CloudWatch to alert when the limit is approached.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html']</td><td>Exceeding the proxy limit without proper request and approval could disrupt the ability to set up new proxies for applications, potentially affecting application scalability and availability.</td><td>{'Confidentiality': 'Low - Limited impact as the issue mainly affects availability.', 'Integrity': 'Medium - Misconfigured proxy settings could lead to unoptimized database interactions.', 'Availability': 'High - Crucial for ensuring scale and performance under varying load conditions.'}</td><td>There are no direct regulatory impacts, but service disruptions can indirectly affect SLA commitments and customer trust, which are critical in banking.</td><td>Medium</td><td>Moderate - AWS monitoring tools provide alerts, but remediation requires manual intervention.</td><td>Medium</td></tr><tr><td>AWS-AMAZON--RDS-PROXY-2025-0007</td><td>monitor 'databaseconnectionscurrentlysessionpinned' metric in aws cloudwatch</td><td>Configure AWS CloudWatch to monitor the 'DatabaseConnectionsCurrentlySessionPinned' metric for RDS Proxy to notify administrators of performance issues due to excessive session pinning.</td><td>All AWS accounts using RDS Proxy</td><td>Without monitoring, excessive session pinning could degrade database performance.</td><td>Requires manual configuration of alarms.</td><td>Automated using AWS CloudWatch alarms.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy-pinning.html']</td><td>Excessive session pinning without monitoring can lead to degraded database performance and resource saturation.</td><td>{'Confidentiality': 'Low - Primarily a performance issue.', 'Integrity': 'Medium - Influences transaction processing efficiency.', 'Availability': 'High - Directly affects database performance and uptime.'}</td><td>Indirect effects on SLA commitments, essential for maintaining operational continuity.</td><td>Medium</td><td>Easy - Implementing monitoring alerts can be straightforward but needs proactive configuration.</td><td>Medium</td></tr><tr><td>AWS-AMAZON--RDS-PROXY-2025-0008</td><td>monitor cloudwatch metrics for db connection limits</td><td>Configure CloudWatch to track metrics related to RDS DB connections and memory usage. Set alarms to signal potential need for RDS Proxy.</td><td>RDS instances nearing connection or memory limits</td><td>Failing to monitor these metrics may lead to unexpected service disruptions or incapacity to handle peak loads.</td><td>Default metric monitoring is available, but specific alarms must be set up.</td><td>Can be enforced using AWS CloudWatch Metrics and Alarms.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy-planning.html']</td><td>Neglecting to monitor database connection limits can lead to unexpected app crashes and service outages due to unmanageable load.</td><td>{'Confidentiality': 'Low - Primarily impacts service stability.', 'Integrity': 'Medium - Service disruptions can interfere with transaction integrity.', 'Availability': 'High - Key for detecting potential availability issues.'}</td><td>While not directly regulatory, operational impacts could breach SLA terms, indirectly affecting compliance commitments.</td><td>Medium</td><td>Easy - Metrics are readily available; timely intervention required.</td><td>Medium</td></tr><tr><td>AWS-AMAZON--RDS-PROXY-2025-0009</td><td>store database credentials in aws secrets manager</td><td>All database credentials for RDS DB instances accessed by RDS Proxy must be stored in AWS Secrets Manager, ensuring secure and isolated credential management.</td><td>All RDS DB instances accessed through RDS Proxy</td><td>Storing credentials directly on servers or applications increases the risk of credential theft or exposure.</td><td>Credentials must be manually stored in Secrets Manager.</td><td>Can be automated using AWS Secrets Manager API to manage credentials for RDS Proxy.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.howitworks.html']</td><td>Directly storing database credentials on servers increases the risk of theft, potentially compromising database security.</td><td>{'Confidentiality': 'High - Credential theft can lead to unauthorized database access.', 'Integrity': 'High - Leaked credentials pose a risk to data integrity.', 'Availability': 'Medium - Compromised credentials could lead to service disruption if exploited.'}</td><td>Failure to secure credentials violates LGPD data security requirements and the access management controls in ISO 27001 and PCI DSS.</td><td>High</td><td>Difficult - Manual checks are needed to ensure credential security across systems.</td><td>Critical</td></tr><tr><td>AWS-AMAZON--RDS-PROXY-2025-0010</td><td>use iam roles for rds proxy connections</td><td>Always use IAM roles for application connections to RDS Proxy to ensure robust authentication, enhancing security posture through IAM policies.</td><td>All applications connecting through RDS Proxy</td><td>Relying solely on native authentication limits security posture available through IAM policies.</td><td>IAM roles require configuration as this is not the default setting.</td><td>Can be automated through the configuration of IAM roles and associated policies.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.howitworks.html']</td><td>Not using IAM roles restricts the security benefits of fine-grained access control and may expose the database to unauthorized access.</td><td>{'Confidentiality': 'High - Without IAM, unauthorized entities may gain database access.', 'Integrity': 'Medium - Lack of IAM roles can lead to inadequate access control.', 'Availability': 'Low - Primarily impacts access and control.'}</td><td>Lack of robust access controls may violate ISO 27001 and PCI DSS access management requirements.</td><td>High</td><td>Moderate - Configuration can be remedied, but initially difficult to spot during live operations.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON--RDS-PROXY-2025-0001: configure rds proxy idle client timeout</li><li>AWS-AMAZON--RDS-PROXY-2025-0002: encrypt secrets in aws secrets manager with a custom aws kms key</li><li>AWS-AMAZON--RDS-PROXY-2025-0003: enforce tls for rds proxy connections</li><li>AWS-AMAZON--RDS-PROXY-2025-0004: ensure rds proxy is in the same vpc as associated database</li><li>AWS-AMAZON--RDS-PROXY-2025-0005: implement rds proxy for high frequency short-lived db connections</li><li>AWS-AMAZON--RDS-PROXY-2025-0006: limit rds proxies in a single aws account</li><li>AWS-AMAZON--RDS-PROXY-2025-0007: monitor 'databaseconnectionscurrentlysessionpinned' metric in aws cloudwatch</li><li>AWS-AMAZON--RDS-PROXY-2025-0008: monitor cloudwatch metrics for db connection limits</li><li>AWS-AMAZON--RDS-PROXY-2025-0009: store database credentials in aws secrets manager</li><li>AWS-AMAZON--RDS-PROXY-2025-0010: use iam roles for rds proxy connections</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

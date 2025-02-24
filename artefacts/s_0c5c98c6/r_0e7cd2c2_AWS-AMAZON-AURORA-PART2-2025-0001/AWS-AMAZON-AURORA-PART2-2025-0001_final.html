@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-AURORA-PART2-2025-0001</td><td>enable aws cloudtrail for logging api calls</td><td>Activate AWS CloudTrail to capture all API calls, including source and user identities, for comprehensive auditing.</td><td>All AWS accounts</td><td>Without logs, unauthorized access detection and incident investigation are hindered.</td><td>CloudTrail must be manually set up.</td><td>AWS Config rule `cloud-trail-enabled` ensures CloudTrail is active.</td><td>['https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html']</td><td>Without logging, detecting unauthorized access and performing incident investigations is highly impaired.</td><td>{'Confidentiality': 'Medium - Lack of logging reduces ability to detect and respond to data access violations.', 'Integrity': 'Medium - Without logs, data integrity violations may go unnoticed.', 'Availability': 'Low - Availability is generally not impacted by logging.'}</td><td>Essential for compliance with BACEN audit requirements, ISO 27001, and PCI DSS.</td><td>High</td><td>Intermediate - While logs can help detect incidents, without them, invisible breaches can occur.</td><td>High</td></tr><tr><td>AWS-AMAZON-AURORA-PART2-2025-0002</td><td>enable encryption for amazon s3 buckets</td><td>Enforce encryption of all objects stored in Amazon S3 to protect data at rest using server-side encryption with AWS-managed keys.</td><td>All Amazon S3 buckets</td><td>Unencrypted data at rest can be accessed if unauthorized access occurs.</td><td>Server-side encryption must be configured.</td><td>Use AWS Config rules to monitor encryption settings.</td><td>['https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html']</td><td>Unencrypted data can be exposed if unauthorized access occurs, endangering sensitive information.</td><td>{'Confidentiality': 'High - Unencrypted data breaches can expose financial and personal data.', 'Integrity': 'Medium - Tampering with unencrypted data can occur without detection.', 'Availability': 'Low - Encryption indirectly affects availability, mainly during access.'}</td><td>Essential for LGPD compliance regarding data protection and ISO 27001 standards.</td><td>Medium</td><td>Intermediate - Encryption status is easier to verify compared to monitoring access]</td><td>High</td></tr><tr><td>AWS-AMAZON-AURORA-PART2-2025-0003</td><td>enforce multi-factor authentication (mfa) for aws accounts</td><td>Ensure MFA is enabled across all AWS accounts for added security. Use AWS IAM policies and enforce compliance with AWS Config rules.</td><td>All AWS accounts and IAM users</td><td>Without MFA, unauthorized access is more likely, leading to potential data breaches.</td><td>AWS IAM requires manual MFA setup.</td><td>Enforce and monitor using AWS Config rule `iam-user-mfa-enabled`.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html']</td><td>Without MFA, accounts are vulnerable to unauthorized access, potentially leading to data breaches and financial fraud.</td><td>{'Confidentiality': 'High - Compromised credentials can lead to unauthorized access to sensitive customer data.', 'Integrity': 'High - Unauthorized access can result in data manipulation or malicious activities.', 'Availability': 'Medium - Service disruption possible if accounts are compromised.'}</td><td>Non-compliance with ISO 27001 and PCI DSS. Could violate LGPD's data protection requirements.</td><td>High</td><td>Difficult - Credential-based attacks are often hard to detect without vigilant monitoring.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-AURORA-PART2-2025-0004</td><td>ensure vpc security group best practices</td><td>VPC security groups must limit inbound and outbound traffic to necessary IP ranges and ports.</td><td>All AWS security groups in use</td><td>Improper security group rules can expose resources to unauthorized access.</td><td>AWS security groups require manual configuration.</td><td>AWS Config rule `vpc-sg-open-only-authorized-ports` restricts access and monitors compliance.</td><td>['https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html']</td><td>Improper configuration can allow unauthorized network access, increasing breach risks.</td><td>{'Confidentiality': 'High - Open ports can expose sensitive data.', 'Integrity': 'Medium - Exploitable services might allow data manipulation.', 'Availability': 'Medium - Unauthorized access can lead to network resource depletion or DoS.'}</td><td>Necessary for maintaining network security as required by ISO 27001 and PCI DSS.</td><td>Medium</td><td>Intermediate - Misconfigurations can be manually audited but pose ongoing risk until resolved.</td><td>High</td></tr><tr><td>AWS-AMAZON-AURORA-PART2-2025-0005</td><td>implement multi-az deployments for high availability</td><td>Configure AWS services like Amazon RDS and Aurora to operate in multiple availability zones to ensure redundancy and failover capabilities.</td><td>All AWS setups for critical databases</td><td>Single-zone deployments are susceptible to outages in case of zone failure.</td><td>Multi-AZ setup requires manual configuration.</td><td>AWS CloudFormation templates support the Multi-AZ setup.</td><td>['https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html']</td><td>Single-AZ setups risk downtime during zone failures, impacting critical banking operations.</td><td>{'Confidentiality': 'Low - Doesn’t directly impact confidentiality.', 'Integrity': 'Low - Doesn’t directly impact integrity.', 'Availability': 'High - Ensures services remain operational during regional outages.'}</td><td>Aligns with BACEN's requirements for operational resilience and availability.</td><td>Medium</td><td>Easy - Failures are typically sudden but mitigated by redundancy.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-AURORA-PART2-2025-0006</td><td>restrict use of aws root user</td><td>Limit access to the AWS root user and monitor any activity for suspicious access patterns.</td><td>All AWS accounts</td><td>Root user credentials are critical points of failure and a target for attacks.</td><td>No automatic restriction on root access.</td><td>Track with AWS CloudTrail and alert via AWS Security Hub.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html']</td><td>Root credentials provide full access, and their compromise can lead to total loss of control over resources.</td><td>{'Confidentiality': 'High - Root access can lead to exposure of all customer data.', 'Integrity': 'High - An attacker can modify or delete critical data.', 'Availability': 'Critical - Services can be disrupted or terminated.'}</td><td>Non-compliance with BACEN's operational resilience requirements and general best security practices.</td><td>High</td><td>Difficult - Root access is often unnoticed until major damage is done.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-AURORA-PART2-2025-0007</td><td>use aws privatelink for amazon rds api access</td><td>Leverage AWS PrivateLink to access Amazon RDS APIs securely and privately without using public IPs.</td><td>All VPCs interacting with Amazon RDS</td><td>Without PrivateLink, traffic may expose sensitive data.</td><td>Manually configure PrivateLink.</td><td>Use AWS CloudFormation for setup.</td><td>['https://aws.amazon.com/privatelink/']</td><td>Without PrivateLink, API traffic may traverse the public internet, risking data exposure.</td><td>{'Confidentiality': 'High - Directly addresses data exposure concerns.', 'Integrity': 'Medium - Protects against man-in-the-middle attacks.', 'Availability': 'Low - Generally unaffected.'}</td><td>Supports LGPD mandates for data privacy and secure communications.</td><td>Medium</td><td>Intermediate - Public exposure can be hard to manage without robust monitoring.</td><td>High</td></tr><tr><td>AWS-AMAZON-AURORA-PART2-2025-0008</td><td>use iam roles for ec2 instances</td><td>Assign IAM roles to EC2 instances to provide temporary credentials, avoiding embedded keys in configurations.</td><td>All Amazon EC2 instances</td><td>Hard-coded keys risk exposure if the instance is compromised.</td><td>IAM roles require manual attachment.</td><td>Enforced by AWS Config rule `ec2-instance-profile-attached`.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html']</td><td>Hard-coded credentials in instances can be easily compromised, leading to unauthorized access.</td><td>{'Confidentiality': 'High - Hard-coded credentials can provide access to sensitive data if exposed.', 'Integrity': 'High - Compromised credentials can be used to alter data.', 'Availability': 'Medium - Instances may be manipulated or destroyed using stolen credentials.'}</td><td>Non-compliance with security best practices as highlighted in ISO 27001.</td><td>Medium</td><td>Intermediate - Compromise detection may require manual inspection unless robust IAM policies are active.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-AURORA-PART2-2025-0001: enable aws cloudtrail for logging api calls</li><li>AWS-AMAZON-AURORA-PART2-2025-0002: enable encryption for amazon s3 buckets</li><li>AWS-AMAZON-AURORA-PART2-2025-0003: enforce multi-factor authentication (mfa) for aws accounts</li><li>AWS-AMAZON-AURORA-PART2-2025-0004: ensure vpc security group best practices</li><li>AWS-AMAZON-AURORA-PART2-2025-0005: implement multi-az deployments for high availability</li><li>AWS-AMAZON-AURORA-PART2-2025-0006: restrict use of aws root user</li><li>AWS-AMAZON-AURORA-PART2-2025-0007: use aws privatelink for amazon rds api access</li><li>AWS-AMAZON-AURORA-PART2-2025-0008: use iam roles for ec2 instances</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

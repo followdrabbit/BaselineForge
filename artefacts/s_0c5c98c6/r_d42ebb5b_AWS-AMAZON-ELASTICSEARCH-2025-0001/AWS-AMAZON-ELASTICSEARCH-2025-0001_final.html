@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-ELASTICSEARCH-2025-0001</td><td>configure at least three dedicated master nodes in elasticsearch domains</td><td>Ensure Elasticsearch domains are configured with at least three dedicated master nodes to enhance cluster stability and fault tolerance.</td><td>All critical Elasticsearch domains</td><td>Without adequate master nodes, cluster instability can lead to data loss or service outages during node or network failures.</td><td>May increase costs; Manual Configuration required.</td><td>Manually enforceable; monitor configuration via AWS Config.</td><td>['https://docs.aws.amazon.com/opensearch-service/latest/developerguide/managedomains-advanced-options.html']</td><td>Without sufficient master nodes, the cluster is prone to instability, risking data loss and unplanned outages.</td><td>{'Confidentiality': "Low - Master node quantity doesn't impact confidentiality directly.", 'Integrity': 'High - Node failure could result in data alterations or losses.', 'Availability': 'High - Cluster instability increases the likelihood of service outages.'}</td><td>Indirectly impacts compliance by affecting operational stability required under BACEN framework.</td><td>Medium</td><td>Medium - Node stability issues require proactive monitoring.</td><td>High</td></tr><tr><td>AWS-AMAZON-ELASTICSEARCH-2025-0002</td><td>enable audit logging for elasticsearch domains</td><td>Track all access and modifications within Elasticsearch domains by sending audit logs to CloudWatch Logs for detailed tracking and investigation of user actions.</td><td>All Elasticsearch domains in AWS</td><td>Without audit logs, it's challenging to track and investigate user actions, potentially leaving security breaches undetected.</td><td>Audit logs must be explicitly enabled.</td><td>Can be enforced through AWS Management Console or API, audited via AWS Config.</td><td>['https://docs.aws.amazon.com/opensearch-service/latest/developerguide/audit-logs.html#audit-log-enabling']</td><td>Without audit logs, tracking user actions and investigating security breaches becomes challenging, leaving unauthorized activities undetected.</td><td>{'Confidentiality': 'Medium - Lack of audit trails makes it difficult to track data access.', 'Integrity': 'High - Without logs, data integrity breaches may go undetected.', 'Availability': "Low - While primarily affecting tracking and investigation, lack of logging doesn't directly impact availability."}</td><td>Non-compliance with audit and logging requirements of LGPD, PCI DSS, and ISO 27001, which could lead to fines from BACEN.</td><td>High</td><td>High - Breaches and misuse can go undetected without audits.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-ELASTICSEARCH-2025-0003</td><td>enable encryption at rest for elasticsearch domains</td><td>Ensure encryption at rest is enabled for all Elasticsearch domains using AWS KMS with AES-256 keys to protect data in storage.</td><td>All Elasticsearch domains in AWS</td><td>Without encryption at rest, sensitive data stored in Elasticsearch domains may be exposed if the underlying storage is compromised.</td><td>Some instance types may not support encryption at rest.</td><td>Can be enforced using AWS Config rule `opensearch-encrypted-at-rest-enabled`.</td><td>['https://docs.aws.amazon.com/opensearch-service/latest/developerguide/encryption-at-rest.html']</td><td>Without encryption at rest, sensitive data stored in Elasticsearch domains could be accessed by unauthorized individuals if the underlying storage is compromised.</td><td>{'Confidentiality': 'High - Exposed data could include sensitive financial information or personal data, leading to unauthorized access.', 'Integrity': 'Medium - Data alterations could occur if unauthorized access is gained.', 'Availability': 'Low - Encryption primarily protects confidentiality and integrity, but not availability directly.'}</td><td>Failure to implement encryption at rest could violate LGPD data protection mandates and ISO 27001 requirements for protecting stored data. BACEN regulations also emphasize securing customer data at rest.</td><td>Medium</td><td>Difficult - Storage compromise could go undetected until misuse of data surfaces.</td><td>High</td></tr><tr><td>AWS-AMAZON-ELASTICSEARCH-2025-0004</td><td>enable error logging to cloudwatch logs for elasticsearch domains</td><td>Configure Elasticsearch domains to publish error logs to CloudWatch Logs for effective auditing, access control monitoring, and incident response.</td><td>All Elasticsearch domains in AWS</td><td>Without proper logging, it becomes difficult to audit access, troubleshoot issues, and respond to security incidents.</td><td>Only 'error' log types are considered in this context.</td><td>Can be configured through AWS CLI or Console, monitored via AWS Config rule.</td><td>['https://docs.aws.amazon.com/opensearch-service/latest/developerguide/createdomain-configure-slow-logs.html#createdomain-configure-slow-logs-console']</td><td>Without error logging, it's difficult to troubleshoot issues and respond to security incidents, leading to prolonged service disruptions.</td><td>{'Confidentiality': 'Low - Logging issues primarily affect auditing capabilities.', 'Integrity': 'Medium - Lack of logs might hinder forensic investigations following data integrity breaches.', 'Availability': 'High - Inadequate logging may delay detection and response to incidents impacting service availability.'}</td><td>Potential non-compliance with PCI DSS and ISO 27001 requirements for logging and monitoring, impacting operational resilience as per BACEN guidelines.</td><td>Medium</td><td>High - Insufficient logging makes it challenging to identify and respond to issues quickly.</td><td>High</td></tr><tr><td>AWS-AMAZON-ELASTICSEARCH-2025-0005</td><td>enable node-to-node encryption for elasticsearch domains</td><td>Configure Elasticsearch domains to use node-to-node encryption to secure communications between cluster nodes.</td><td>All Elasticsearch clusters in AWS</td><td>Without encryption, data traveling between nodes may be intercepted, compromising data integrity and confidentiality.</td><td>Performance may be impacted.</td><td>Can be enforced via AWS Config rule and validated using the `opensearch-node-to-node-encryption-enabled` rule.</td><td>['https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ntn.html#enabling-ntn']</td><td>Without node-to-node encryption, data traveling between nodes can be intercepted, potentially leading to unauthorized data access.</td><td>{'Confidentiality': 'High - Intercepted data in transit can lead to data breaches.', 'Integrity': 'High - Intercepted communications can be altered.', 'Availability': 'Medium - While primarily affecting confidentiality and integrity, service disruptions could result from interception.'}</td><td>Lack of node-to-node encryption may contravene PCI DSS and ISO 27001, which emphasize secure communication protocols.</td><td>Medium</td><td>Moderate - Hard to detect data interception until data misuse occurs.</td><td>High</td></tr><tr><td>AWS-AMAZON-ELASTICSEARCH-2025-0006</td><td>enforce single connection encryption using latest tls policy</td><td>Ensure Elasticsearch domains use the latest AWS TLS policies to secure communication and protect against man-in-the-middle (MITM) attacks.</td><td>All Elasticsearch domains exposed to networks</td><td>Using outdated TLS policies could expose communication to MITM attacks, risking data confidentiality and integrity.</td><td>Ensure compatibility with clients; may impact performance.</td><td>Can be enforced using AWS Config and validated through `tls-policy-enabled` checks.</td><td>['https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ntn.html#ntn-tls']</td><td>Outdated TLS policies increase vulnerability to man-in-the-middle attacks, compromising sensitive data in transit.</td><td>{'Confidentiality': 'High - Outdated policies might expose sensitive customer data to interception.', 'Integrity': 'High - Man-in-the-middle attacks can alter data in transit.', 'Availability': 'Medium - Service disruptions can occur due to exploitation.'}</td><td>Failure to use the latest TLS policies could contravene PCI DSS requirements for encryption and BACEN regulations for secure data transfer.</td><td>High</td><td>Difficult - MitM attacks are often sophisticated and hard to detect.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-ELASTICSEARCH-2025-0007</td><td>ensure elasticsearch domains are tagged correctly</td><td>Apply appropriate resource tags to Elasticsearch domains to facilitate better management, billing, and resource identification, avoiding the use of PII in tags.</td><td>All managed Elasticsearch resources in AWS</td><td>Lack of tagging can lead to unmanaged resources, complicating billing, access control, and inventory management.</td><td>Tags should not contain PII.</td><td>Can be audited using AWS Config rule `required-tags`. AWS Tag Editor may be used for tag management.</td><td>['https://docs.aws.amazon.com/opensearch-service/latest/developerguide/managedomains-awsresourcetagging.html']</td><td>Unmanaged resources due to lack of tagging complicate billing, access control, and resource tracking, increasing operational risk.</td><td>{'Confidentiality': 'Low - Tagging has minimal direct impact on confidentiality.', 'Integrity': "Low - Resource identification doesn't directly impact data integrity.", 'Availability': 'Medium - Poor tagging practices can lead to mismanagement, affecting service operations.'}</td><td>Primarily impacts operational management; doesn't directly violate BACEN or LGPD, but poor management may affect compliance indirectly.</td><td>Low</td><td>Easy - Tagging issues are straightforward to identify and correct.</td><td>Low</td></tr><tr><td>AWS-AMAZON-ELASTICSEARCH-2025-0008</td><td>ensure minimum of three data nodes in elasticsearch domains</td><td>Configure Elasticsearch domains with at least three data nodes to ensure high availability and fault tolerance.</td><td>Elasticsearch domains requiring high availability</td><td>Having fewer data nodes reduces fault tolerance, increasing the risk of data loss or availability issues during failures.</td><td>Requires manual configuration for additional nodes.</td><td>Manual validation required; can use AWS CloudFormation templates to enforce.</td><td>['https://docs.aws.amazon.com/opensearch-service/latest/developerguide/sizing-domains.html']</td><td>Insufficient data nodes reduce fault tolerance, increasing the risk of data loss and availability issues during failures.</td><td>{'Confidentiality': "Low - Node quantity doesn't directly influence confidentiality.", 'Integrity': 'Medium - Failures might lead to incomplete transactions affecting data integrity.', 'Availability': 'High - Less fault tolerance increases service disruption risk during node failures.'}</td><td>Non-adherence may not directly violate LGPD or BACEN standards but impacts operational resilience, a critical aspect of compliance frameworks.</td><td>Medium</td><td>Medium - Requires constant monitoring for failures.</td><td>High</td></tr><tr><td>AWS-AMAZON-ELASTICSEARCH-2025-0009</td><td>restrict public access to elasticsearch domains</td><td>Ensure Elasticsearch domains are hosted within a VPC to prevent public access, which can lead to unauthorized data exposure.</td><td>All Elasticsearch domains in AWS</td><td>Publicly accessible Elasticsearch domains can be accessed by unauthorized users, leading to potential data exposure and integrity issues.</td><td>Domains should be within a VPC, and public subnets are not recommended.</td><td>Can be audited using AWS Config rule `opensearch-in-vpc-only`.</td><td>['https://docs.aws.amazon.com/opensearch-service/latest/developerguide/vpc.html']</td><td>Publicly accessible Elasticsearch domains can be accessed by unauthorized users, potentially leading to data leakage or tampering.</td><td>{'Confidentiality': 'High - Data exposed to the public could lead to significant breaches of confidential information.', 'Integrity': 'High - Unauthorized public access could lead to data tampering.', 'Availability': 'Medium - Public access could lead to denial of service from malicious actions.'}</td><td>Non-compliance with BACEN and LGPD data protection standards by allowing sensitive data to be publicly accessible.</td><td>High</td><td>Moderate - While misconfigurations can be detected, unauthorized access can occur quickly.</td><td>Critical</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-ELASTICSEARCH-2025-0001: configure at least three dedicated master nodes in elasticsearch domains</li><li>AWS-AMAZON-ELASTICSEARCH-2025-0002: enable audit logging for elasticsearch domains</li><li>AWS-AMAZON-ELASTICSEARCH-2025-0003: enable encryption at rest for elasticsearch domains</li><li>AWS-AMAZON-ELASTICSEARCH-2025-0004: enable error logging to cloudwatch logs for elasticsearch domains</li><li>AWS-AMAZON-ELASTICSEARCH-2025-0005: enable node-to-node encryption for elasticsearch domains</li><li>AWS-AMAZON-ELASTICSEARCH-2025-0006: enforce single connection encryption using latest tls policy</li><li>AWS-AMAZON-ELASTICSEARCH-2025-0007: ensure elasticsearch domains are tagged correctly</li><li>AWS-AMAZON-ELASTICSEARCH-2025-0008: ensure minimum of three data nodes in elasticsearch domains</li><li>AWS-AMAZON-ELASTICSEARCH-2025-0009: restrict public access to elasticsearch domains</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

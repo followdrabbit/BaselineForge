@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-SERVICECATALOG-2025-0001</td><td>enable and configure aws cloudtrail for comprehensive logging</td><td>Enable AWS CloudTrail in all regions and configure it to log management and data events for auditing API calls and changes within the account.</td><td>All AWS accounts</td><td>Without logging, unauthorized activities might remain undetected, impeding audit and traceability.</td><td>AWS CloudTrail is available but not enabled by default.</td><td>Can be enforced using AWS Config rule `cloud-trail-enabled`.</td><td>['https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html']</td><td>Without comprehensive logging, unauthorized activities might remain undetected, which impairs the ability to audit and trace changes, critical in regulated environments like banking.</td><td>{'Confidentiality': 'Low - Logging does not directly affect confidentiality.', 'Integrity': 'High - Lack of logs impedes detection of unauthorized modifications to systems and data.', 'Availability': 'Medium - Delays in addressing issues can indirectly affect availability.'}</td><td>Not enabling CloudTrail could breach BACEN's directives on operational continuity and auditability, and PCI DSS requirements for audit logs.</td><td>Medium</td><td>High - Undetected actions due to no logs make tracing attacker actions difficult post-incident.</td><td>High</td></tr><tr><td>AWS-AMAZON-SERVICECATALOG-2025-0002</td><td>enforce multi-factor authentication (mfa) for all aws accounts</td><td>Ensure that all AWS accounts have multi-factor authentication (MFA) enabled, particularly for users with administrative privileges. Implement IAM policies to deny access if MFA is not enabled.</td><td>All AWS accounts with IAM users</td><td>Without MFA, accounts are susceptible to unauthorized access, increasing the risk of data breaches or unauthorized actions.</td><td>AWS IAM does not enforce MFA by default. It requires manual configuration.</td><td>Can be enforced using IAM policies and AWS Config rule `iam-user-mfa-enabled`.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html']</td><td>Without MFA, accounts are vulnerable to unauthorized access through credential theft, increasing the chances of data breaches or unauthorized actions which are critical in a high-risk environment like banking.</td><td>{'Confidentiality': 'High - Unauthorized access can lead to data breaches impacting customer data and transaction records.', 'Integrity': 'High - Compromise of accounts can result in unauthorized changes to system configurations or financial records.', 'Availability': 'Medium - Unauthorized users could disrupt services, affecting system availability.'}</td><td>Failure to implement MFA is likely a violation of BACEN's security controls requirements and potentially ISO 27001, PCI DSS mandates for strong authentication mechanisms.</td><td>High</td><td>Medium - Unauthorized access through compromised credentials without MFA is challenging to detect and remediate promptly.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-SERVICECATALOG-2025-0003</td><td>enforce tls 1.2 or higher for communication</td><td>Ensure all AWS resources use SSL/TLS for communication, requiring TLS 1.2 as a minimum and recommending TLS 1.3 where possible. Implement security policies and network settings to enforce these protocols.</td><td>All services communicating with AWS resources</td><td>Communication using outdated protocols can result in data interception and man-in-the-middle attacks.</td><td>AWS supports TLS 1.2 or higher, but enforcement is dependent on customer configuration.</td><td>Can be monitored using AWS Config rules like `cloudfront-encryption-protocols-policy`.</td><td>['https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-policy-table.html']</td><td>The use of outdated protocols may lead to data interception and man-in-the-middle attacks, compromising the confidentiality and integrity of communication within a financial institution.</td><td>{'Confidentiality': 'High - Insufficient encryption exposes customer data and transactions to interception.', 'Integrity': 'High - Data integrity can be compromised through intercepted and altered messages.', 'Availability': 'Low - The impact on availability is minimal unless used in combination with other attacks.'}</td><td>Non-compliance with BACEN security guidelines and PCI DSS requirements for secure communications. ISO 27001 emphasizes encrypted communications.</td><td>Medium</td><td>Medium - While detecting unencrypted sessions is feasible, actively man-in-the-middle attacks might go undetected.</td><td>High</td></tr><tr><td>AWS-AMAZON-SERVICECATALOG-2025-0004</td><td>ensure cloudtrail logs for service catalog api calls</td><td>AWS CloudTrail must capture all API calls to AWS Service Catalog, ensuring logs are delivered to a secure Amazon S3 bucket.</td><td>All AWS accounts using AWS Service Catalog</td><td>Without logging, unauthorized actions could go undetected, leading to security incidents.</td><td>CloudTrail logging must be manually configured for AWS Service Catalog.</td><td>Use AWS Config to ensure CloudTrail is logging AWS Service Catalog API calls.</td><td>['https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html']</td><td>Without logs, unauthorized API activities within the Service Catalog can go undetected, potentially leading to service misuse or configuration errors.</td><td>{'Confidentiality': 'Low - Direct confidentiality impact is minimal if access controls are properly configured.', 'Integrity': 'High - Unauthorized use of API calls might modify service configurations or launch unwanted services.', 'Availability': 'Medium - Uncontrolled actions could inadvertently or maliciously affect service availability.'}</td><td>Mandatory logging is aligned with BACEN's operational continuity and integrity requisites, as well as PCI DSS audit trail enforcement.</td><td>Medium</td><td>Medium - While enabled, oversight can detect unauthorized activities; without it, issues may persist longer.</td><td>High</td></tr><tr><td>AWS-AMAZON-SERVICECATALOG-2025-0005</td><td>ensure use of fips 140-3 validated cryptographic modules</td><td>Configure services to use FIPS 140-3 validated cryptographic modules where compliance with federal standards is required.</td><td>AWS accounts under federal compliance requirements</td><td>Non-compliance can lead to legal and regulatory challenges.</td><td>AWS offers FIPS-compliant endpoints; user selection is required.</td><td>Manual configuration of FIPS-compliant endpoints is necessary.</td><td>['https://aws.amazon.com/compliance/fips/']</td><td>Failure to use FIPS 140-3 validated modules could lead to non-compliance with federal and local standards, affecting certification and trust.</td><td>{'Confidentiality': 'High - Compliant encryption is crucial for safeguarding sensitive information.', 'Integrity': 'Medium - While central, not using validated modules could weaken cryptographic assurance.', 'Availability': 'Low - Minimal impact unless poorly configured security affects availability.'}</td><td>Violations of compliance mandates such as BACEN for secure cryptographic practices may ensue.</td><td>Medium</td><td>Medium - Misconfigurations can be audited but may be complex to correct once systemic.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-SERVICECATALOG-2025-0006</td><td>implement aws service catalog configuration and constraints</td><td>Apply template constraints within AWS Service Catalog for CloudFormation templates to control parameter values, and ensure restrictive constraints for product provisioning.</td><td>All products and services deployed via AWS Service Catalog</td><td>Lack of constraints may lead to non-compliance and security vulnerabilities.</td><td>Constraints are not applied by default; customers must specify them.</td><td>Managed through AWS Service Catalog configurations.</td><td>['https://docs.aws.amazon.com/servicecatalog/latest/adminguide/security-best-practices.html']</td><td>Without controlled configurations, users could inadvertently deploy non-compliant or insecure resources, leading to vulnerabilities.</td><td>{'Confidentiality': 'Medium - Misconfigured services can indirectly lead to exposure.', 'Integrity': 'High - Unauthorized updates or incorrect configurations often directly affect system integrity.', 'Availability': 'Medium - Integrity issues can cascade into availability concerns if critical services are misconfigured.'}</td><td>Improper constraints can result in non-compliance with BACEN's system integrity safeguards, potentially violating regulatory frameworks.</td><td>Medium</td><td>High - Misconfigurations can be obscure without stringent monitoring, making detection difficult.</td><td>High</td></tr><tr><td>AWS-AMAZON-SERVICECATALOG-2025-0007</td><td>leverage vpc endpoints for private access</td><td>Configure Virtual Private Cloud (VPC) endpoints to privately access AWS resources, reducing dependency on internet gateways.</td><td>All VPCs interacting with AWS services</td><td>Public internet gateways increase exposure to potential attack vectors.</td><td>VPC endpoints are not configured by default; manual setup required.</td><td>Can be automated using AWS CloudFormation or scripts.</td><td>['https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html']</td><td>Relying on public internet gateways increases exposure to attack vectors, including DDoS attacks that can compromise availability.</td><td>{'Confidentiality': 'Medium - Potential for exposure though not directly targeted.', 'Integrity': "Low - There's little direct risk to data integrity.", 'Availability': 'High - Public accessibility increases vulnerability to attacks disrupting service.'}</td><td>Non-compliance with BACEN requirements for secure and private communications networks.</td><td>Medium</td><td>Medium - Network anomalies can be detectable but challenging to mitigate efficiently.</td><td>High</td></tr><tr><td>AWS-AMAZON-SERVICECATALOG-2025-0008</td><td>prohibit sensitive data in tags or free-form text</td><td>Implement policies and monitoring to prevent the inclusion of sensitive information in resource tags or free-form text fields.</td><td>All AWS resources utilizing tagging or metadata</td><td>Exposure through metadata retrieval if sensitive data is included in tags.</td><td>AWS does not natively enforce tag content; manual checks required.</td><td>Manual validation required; AWS Lambda functions or custom AWS Config rules can be used.</td><td>['https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html']</td><td>Sensitive information in tags can be easily exposed during metadata retrieval, posing serious confidentiality risks.</td><td>{'Confidentiality': 'High - Sensitive data exposure directly impacts data confidentiality.', 'Integrity': 'Low - Not often impacted as data integrity is not primarily at risk here.', 'Availability': "Low - There's little to no direct impact on availability."}</td><td>May result in violations against LGPD regarding protection of personal data and regulatory requirements for confidentiality of sensitive data.</td><td>Medium</td><td>High - Enforcement and monitoring involve complex resource scanning and validation.</td><td>High</td></tr><tr><td>AWS-AMAZON-SERVICECATALOG-2025-0009</td><td>utilize aws encryption solutions for data protection</td><td>Ensure that all data at rest is encrypted using AWS-native solutions such as AWS KMS, and secure data in transit using SSL/TLS protocols.</td><td>All AWS resources storing or processing sensitive data</td><td>Unencrypted data is vulnerable to unauthorized access and breaches.</td><td>AWS provides encryption solutions, but implementation requires customer configuration.</td><td>Monitored through AWS Config rules like `s3-bucket-server-side-encryption-enabled`.</td><td>['https://docs.aws.amazon.com/kms/latest/developerguide/overview.html']</td><td>Unencrypted data is highly vulnerable to unauthorized access, particularly in a financial sector dealing with sensitive customer information and transaction data.</td><td>{'Confidentiality': 'High - Unencrypted sensitive data can easily be accessed unauthorized.', 'Integrity': 'Medium - While primarily affecting confidentiality, unauthorized access can lead to potential data tampering.', 'Availability': 'Low - Encryption primarily affects confidentiality and integrity.'}</td><td>Non-encryption could violate LGPD, BACEN data protection norms, and PCI DSS requirements for encrypting cardholder data.</td><td>High</td><td>Medium - While unauthorized access can be detected through service logs or anomaly detection, remediation post-breach can be complicated.</td><td>Critical</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-SERVICECATALOG-2025-0001: enable and configure aws cloudtrail for comprehensive logging</li><li>AWS-AMAZON-SERVICECATALOG-2025-0002: enforce multi-factor authentication (mfa) for all aws accounts</li><li>AWS-AMAZON-SERVICECATALOG-2025-0003: enforce tls 1.2 or higher for communication</li><li>AWS-AMAZON-SERVICECATALOG-2025-0004: ensure cloudtrail logs for service catalog api calls</li><li>AWS-AMAZON-SERVICECATALOG-2025-0005: ensure use of fips 140-3 validated cryptographic modules</li><li>AWS-AMAZON-SERVICECATALOG-2025-0006: implement aws service catalog configuration and constraints</li><li>AWS-AMAZON-SERVICECATALOG-2025-0007: leverage vpc endpoints for private access</li><li>AWS-AMAZON-SERVICECATALOG-2025-0008: prohibit sensitive data in tags or free-form text</li><li>AWS-AMAZON-SERVICECATALOG-2025-0009: utilize aws encryption solutions for data protection</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

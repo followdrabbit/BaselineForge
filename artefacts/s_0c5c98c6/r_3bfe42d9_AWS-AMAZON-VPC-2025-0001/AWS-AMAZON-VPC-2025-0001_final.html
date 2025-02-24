@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-VPC-2025-0001</td><td>activate amazon guardduty for threat detection</td><td>Enable GuardDuty across accounts to utilize VPC Flow Logs, CloudTrail event logs, and DNS logs for detecting threats.</td><td>All AWS accounts</td><td>Threats may go undetected without GuardDuty.</td><td>GuardDuty must be manually enabled.</td><td>Managed via AWS Management Console or CLI.</td><td>['https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html']</td><td>Without GuardDuty, advanced threats may persist undetected, leaving systems vulnerable.</td><td>{'Confidentiality': 'High - Undetected threats can lead to data breaches involving sensitive information.', 'Integrity': 'High - Successful attacks can modify transaction data and system integrity.', 'Availability': 'Medium - Attack patterns could cause service disruptions if not detected early.'}</td><td>Non-compliance with BACEN and ISO 27001 requirements for threat detection and response measures.</td><td>High</td><td>Moderate - Advanced threats require real-time detection capabilities.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-VPC-2025-0002</td><td>block public access for vpc resources</td><td>Implement VPC Block Public Access (BPA) to prevent unauthorized public internet access to VPC resources across all AWS accounts in an organization. Configure BPA in 'Bidirectional,' 'Ingress-only,' or specific modes as needed, and manage exceptions carefully to ensure minimal exposure.</td><td>All AWS accounts within an AWS Organization or specific VPCs as defined</td><td>Public resource exposure can result in unauthorized access and data breaches.</td><td>VPC BPA is not enabled by default and requires manual configuration.</td><td>Can be enforced using AWS Organization SCPs and AWS Config rules for monitoring compliance.</td><td>['https://docs.aws.amazon.com/vpc/latest/userguide/security-vpc-bpa.html']</td><td>Without blocking public access, VPC resources may be exposed to unauthorized entities, leading to data breaches and unauthorized access to sensitive banking information.</td><td>{'Confidentiality': 'High - Public exposure can lead to data leaks involving sensitive customer information.', 'Integrity': 'Medium - Unauthorized access could result in data manipulation affecting transaction accuracy.', 'Availability': 'Medium - Public access could be used for denial-of-service attacks, impacting availability.'}</td><td>Public exposure of VPC resources violates LGPD and BACEN data protection mandates, requiring robust access controls.</td><td>High</td><td>Moderate - While public access might be logged, identifying and blocking unwanted traffic in real-time is challenging.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-VPC-2025-0003</td><td>enable aws cloudtrail for comprehensive logging</td><td>Activate AWS CloudTrail in all regions to log API calls and user activity, covering both management and data events for comprehensive auditing.</td><td>All AWS accounts</td><td>Without logging, unauthorized activities may go undetected.</td><td>CloudTrail is not enabled by default.</td><td>Managed using AWS Config rule `cloud-trail-enabled`.</td><td>['https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html']</td><td>Without CloudTrail, it would be difficult to detect and trace unauthorized activities, leading to undetected security incidents.</td><td>{'Confidentiality': 'Medium - Lack of logging reduces ability to detect unauthorized data access.', 'Integrity': 'High - Modifications or malicious activities could go unlogged.', 'Availability': 'Medium - Unable to verify actions leading to service disruptions.'}</td><td>Logging and monitoring are essential compliance requirements under BACEN and ISO 27001.</td><td>High</td><td>Moderate - Without logs, forensic capabilities are severely limited.</td><td>High</td></tr><tr><td>AWS-AMAZON-VPC-2025-0004</td><td>encrypt data at rest and in transit</td><td>Configure AWS services to use encryption for both data at rest and data in transit, utilizing AWS KMS for key management.</td><td>All AWS accounts</td><td>Unencrypted data is vulnerable to unauthorized access.</td><td>AWS provides encryption options, but setup is required.</td><td>Ensure compliance using AWS Config rules like `rds-storage-encrypted`.</td><td>['https://docs.aws.amazon.com/general/latest/gr/aws_security.html#aws-security-encryption']</td><td>Without encryption, both data at rest and in transit are vulnerable to unauthorized access and disclosure.</td><td>{'Confidentiality': 'High - Unencrypted data could be exposed through various attack vectors.', 'Integrity': 'Medium - Lack of encryption does not directly affect integrity, but breaches can lead to unauthorized data tampering.', 'Availability': 'Low - Encryption primarily protects confidentiality rather than availability.'}</td><td>Failure to encrypt violates LGPD and BACEN policies, severely impacting regulatory alignment.</td><td>High</td><td>Moderate - Encryption deficiencies might be detected but retrospective action on leaked data is limited.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-VPC-2025-0005</td><td>enforce multi-factor authentication (mfa) for iam users</td><td>Enable MFA for all IAM users, emphasizing those with administrative privileges, to enhance account security. Use IAM policies and AWS Config to enforce MFA compliance.</td><td>All AWS accounts and IAM users</td><td>Without MFA, accounts are vulnerable to unauthorized access.</td><td>AWS IAM does not enable MFA by default.</td><td>Enforced using IAM policies and AWS Config rule `iam-user-mfa-enabled`.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html']</td><td>Without MFA, IAM accounts are vulnerable to unauthorized access, which can result in significant data breaches.</td><td>{'Confidentiality': 'High - Account compromise could lead to access to all data accessible by the user.', 'Integrity': 'High - Unauthorized users could tamper with data or system settings.', 'Availability': 'Medium - Accounts without MFA may be disabled during breach investigations, impacting access.'}</td><td>BACEN and PCI DSS require strong authentication mechanisms to protect sensitive financial data.</td><td>High</td><td>Difficult - Breaches may go undetected until significant damage occurs.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-VPC-2025-0006</td><td>ensure proper network acl configuration</td><td>Configure Network Access Control Lists (ACLs) to control inbound and outbound subnet traffic, applying DENY rules to unauthorized access attempts.</td><td>All AWS VPCs with subnets</td><td>Improper ACL configurations can allow unauthorized access.</td><td>Network ACLs are stateless and configurable.</td><td>Audit using AWS Config for compliance.</td><td>['https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html']</td><td>Improper network ACLs can result in unauthorized access, data leaks, and security breaches.</td><td>{'Confidentiality': 'High - Misconfigured ACLs can expose sensitive data to unauthorized users.', 'Integrity': 'High - Unauthorized network traffic could tamper with data or inject malicious content.', 'Availability': 'Medium - Incorrect ACLs could allow traffic patterns leading to service outages.'}</td><td>Inadequate network security management violates BACEN and ISO 27001 network security standards.</td><td>High</td><td>Moderate - Misconfigurations might be identified in routine audits but not in real-time.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-VPC-2025-0007</td><td>ensure vpc flow logs are enabled</td><td>Enable VPC Flow Logs in all VPCs to capture network traffic information for security analysis and troubleshooting.</td><td>All VPCs</td><td>Without flow logs, security incidents may go undetected.</td><td>Flow logs are not enabled by default.</td><td>Managed using AWS Config rule `vpc-flow-logs-enabled`.</td><td>['https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html']</td><td>Without VPC Flow Logs, unauthorized network activities may go undetected, compromising security.</td><td>{'Confidentiality': 'Medium - Lack of traffic logs impairs detection of unauthorized access attempts.', 'Integrity': 'Medium - Alterations in network configurations could be carried out undetected.', 'Availability': 'Medium - Increased risk of DoS attacks without proper traffic visibility.'}</td><td>Monitoring network interactions is required under BACEN, LGPD, and ISO 27001 for detecting anomalies.</td><td>Medium</td><td>Difficult - Without logs, tracking and response to network breaches are hindered.</td><td>High</td></tr><tr><td>AWS-AMAZON-VPC-2025-0008</td><td>implement least privilege access for iam users</td><td>Ensure all IAM users have the least privileges necessary to perform their duties. Use IAM Access Analyzer and AWS Config to monitor and audit IAM policies for compliance with this principle.</td><td>All IAM policies across AWS accounts</td><td>Excessive permissions can lead to unauthorized access and potential data breaches.</td><td>AWS IAM does not enforce least privilege by default; permissions must be configured manually.</td><td>Can be monitored using AWS IAM Access Analyzer and AWS Config.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html']</td><td>Without enforcing least privilege, users may have excessive rights, leading to unauthorized data access and accidental changes.</td><td>{'Confidentiality': 'High - Overprivileged users can access confidential information without need.', 'Integrity': 'High - Users can alter data or system configurations outside their roles.', 'Availability': 'Medium - Excess permissions could lead to accidental disruptions.'}</td><td>Violates BACEN and ISO 27001 principles that emphasize minimal necessary access for operational roles.</td><td>High</td><td>Challenging - Monitoring and managing excessive permissions require extensive configuration and regular audits.</td><td>High</td></tr><tr><td>AWS-AMAZON-VPC-2025-0009</td><td>restrict and monitor iam permissions using scps</td><td>Utilize Service Control Policies (SCPs) to manage permissions centrally within AWS Organizations, ensuring a consistent security posture across accounts.</td><td>All AWS accounts within an organization</td><td>Inconsistent permissions can lead to vulnerabilities.</td><td>SCPs require manual setup.</td><td>Managed using AWS Organizations.</td><td>['https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scp.html']</td><td>Without SCPs, organizations risk inconsistent permission settings that could result in security breaches.</td><td>{'Confidentiality': 'High - Unregulated permissions can expose sensitive financial data.', 'Integrity': 'High - Overpermissive accounts could alter data or system configurations.', 'Availability': 'Medium - Misuse of permissions can lead to disruptions in service availability.'}</td><td>Fails to comply with BACEN and ISO 27001 mandates for access control governance.</td><td>High</td><td>Challenging - Centralized permissions management is complex but crucial for oversight.</td><td>High</td></tr><tr><td>AWS-AMAZON-VPC-2025-0010</td><td>use iam roles for ec2 instances</td><td>Configure EC2 instances to use IAM roles for obtaining temporary security credentials through instance profiles, minimizing the use of long-term credentials.</td><td>All EC2 instances running applications</td><td>Long-term credentials increase the risk of exposure.</td><td>IAM roles must be manually configured.</td><td>Monitored using AWS Config rule `ec2-instance-no-associated-iam-instance-profile`.</td><td>['https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html']</td><td>Without IAM roles, EC2 instances may use long-term credentials, increasing the risk of exposure and unauthorized access.</td><td>{'Confidentiality': 'Medium - Credentials could be compromised, leading to unauthorized data access.', 'Integrity': 'Medium - Exposed credentials can be misused to alter data or configurations.', 'Availability': 'Medium - Compromised credentials could be used to disrupt services by executing instance terminations.'}</td><td>Poor credential management violates BACEN and ISO 27001 standards for access control and security.</td><td>Medium</td><td>Moderate - Exposing credentials via logs or backups can be difficult to track.</td><td>High</td></tr><tr><td>AWS-AMAZON-VPC-2025-0011</td><td>use tls 1.2 or higher for secure communications</td><td>Ensure all communications with AWS services enforce a minimum TLS version of 1.2, configuring endpoints accordingly.</td><td>All AWS services and endpoints</td><td>Old protocols can be vulnerable to attacks.</td><td>TLS 1.2 is generally supported by AWS services.</td><td>Monitor compliance with AWS Config and Security Hub.</td><td>['https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/create-https-listener.html']</td><td>Old or weak protocols can be exploited to compromise communications, leading to data interception and unauthorized access.</td><td>{'Confidentiality': 'High - Communication interception can expose sensitive customer transactions and details.', 'Integrity': 'Medium - Man-in-the-middle attacks could modify data in transition.', 'Availability': 'Low - Primary impact is on data integrity and confidentiality, not availability.'}</td><td>Non-compliance with BACEN, LGPD, and PCI DSS which mandate secure communication protocols.</td><td>Medium</td><td>Challenging - Old protocol usage might not be directly apparent without thorough audit.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-VPC-2025-0001: activate amazon guardduty for threat detection</li><li>AWS-AMAZON-VPC-2025-0002: block public access for vpc resources</li><li>AWS-AMAZON-VPC-2025-0003: enable aws cloudtrail for comprehensive logging</li><li>AWS-AMAZON-VPC-2025-0004: encrypt data at rest and in transit</li><li>AWS-AMAZON-VPC-2025-0005: enforce multi-factor authentication (mfa) for iam users</li><li>AWS-AMAZON-VPC-2025-0006: ensure proper network acl configuration</li><li>AWS-AMAZON-VPC-2025-0007: ensure vpc flow logs are enabled</li><li>AWS-AMAZON-VPC-2025-0008: implement least privilege access for iam users</li><li>AWS-AMAZON-VPC-2025-0009: restrict and monitor iam permissions using scps</li><li>AWS-AMAZON-VPC-2025-0010: use iam roles for ec2 instances</li><li>AWS-AMAZON-VPC-2025-0011: use tls 1.2 or higher for secure communications</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

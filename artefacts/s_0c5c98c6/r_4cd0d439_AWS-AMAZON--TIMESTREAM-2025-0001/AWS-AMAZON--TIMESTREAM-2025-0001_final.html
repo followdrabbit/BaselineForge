@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON--TIMESTREAM-2025-0001</td><td>audit amazon timestream api access with aws cloudtrail</td><td>Configure AWS CloudTrail to log all API calls for Amazon Timestream, enabling ongoing security monitoring and compliance verification.</td><td>All AWS accounts utilizing Amazon Timestream</td><td>Unauthorized access can lead to data breaches if not monitored.</td><td>CloudTrail must be explicitly configured.</td><td>AWS Config rule `cloudtrail-enabled` can be employed to ensure setup.</td><td>['https://docs.aws.amazon.com/timestream/latest/developerguide/logging-using-cloudtrail.html']</td><td>Without monitoring, unauthorized access to Timestream APIs might lead to data breaches and unauthorized data exposure.</td><td>{'Confidentiality': 'Medium - Undetected API calls may expose sensitive data.', 'Integrity': 'Medium - Unauthorized operations could affect data correctness.', 'Availability': 'Low - Direct effect on availability is minimal but crucial for operational continuity.'}</td><td>Non-compliance with audit practices can breach BACEN's operational risk management requirements, alongside PCI DSS and ISO 27001 norms.</td><td>Medium</td><td>High - Absence of logs increases the difficulty of detecting unauthorized access.</td><td>High</td></tr><tr><td>AWS-AMAZON--TIMESTREAM-2025-0002</td><td>automate security checks in deployment pipelines</td><td>Integrate automated security assessments and penetration testing into CI/CD pipelines for AWS Timestream, adhering to AWS testing guidelines.</td><td>All Timestream deployments</td><td>Undetected vulnerabilities can compromise security.</td><td>Security practices need manual integration.</td><td>Use AWS CodePipeline with security tools for automated checks.</td><td>['https://aws.amazon.com/security/penetration-testing/', 'https://docs.aws.amazon.com/timestream/latest/developerguide/ConfigAndVulnerability.html']</td><td>Failure to integrate security checks could allow undetected vulnerabilities in Timestream deployments, leading to potential exploitation.</td><td>{'Confidentiality': 'Medium - Vulnerabilities might expose sensitive data.', 'Integrity': 'Medium - Issues in deployment could affect data integrity.', 'Availability': 'Medium - Unpatched vulnerabilities could be exploited to disrupt services.'}</td><td>This may result in non-compliance with BACEN requirements for operational resilience and PCI DSS mandates for software development and maintenance security.</td><td>Medium</td><td>Low - Automation in CI/CD pipelines streamlines detection, necessitating proper integration.</td><td>Medium</td></tr><tr><td>AWS-AMAZON--TIMESTREAM-2025-0003</td><td>configure private networking for amazon timestream</td><td>Utilize AWS PrivateLink to create VPC endpoints, ensuring secure, private network traffic to Amazon Timestream and reducing reliance on public internet paths.</td><td>All VPCs utilizing Amazon Timestream</td><td>Public network exposure can increase risk of interception.</td><td>PrivateLink requires manual setup.</td><td>Enforceable using AWS Config rules like `vpc-endpoint-exists`.</td><td>['https://docs.aws.amazon.com/timestream/latest/developerguide/VPCEndpoints.html']</td><td>Public network exposure increases the risk of interception, leading to potential data breaches.</td><td>{'Confidentiality': 'High - Data traversing public networks can be intercepted.', 'Integrity': 'Medium - Data intercepted can be altered.', 'Availability': 'Low - Risk impact on availability is indirect.'}</td><td>Failure to secure network paths could breach BACEN and LGPD security requirements, alongside PCI DSS mandates for secure data handling.</td><td>Medium</td><td>Medium - While private networking greatly improves security, breach attempts can be challenging to detect without comprehensive monitoring.</td><td>High</td></tr><tr><td>AWS-AMAZON--TIMESTREAM-2025-0004</td><td>enable aws cloudtrail for comprehensive auditing</td><td>Configure AWS CloudTrail to log all AWS account activities across all regions, facilitating auditing and forensic analysis.</td><td>All AWS accounts</td><td>Lack of logging can result in undetected unauthorized actions.</td><td>CloudTrail must be enabled; it is not active by default.</td><td>Use AWS Config rule `cloud-trail-enabled` to verify enforcement.</td><td>['https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html']</td><td>Lack of logging can result in undetected unauthorized actions, leading to a gap in identifying and responding to security incidents.</td><td>{'Confidentiality': 'Medium - Lack of audit logs can prevent detection of data breaches.', 'Integrity': 'Medium - Unauthorized changes may go unnoticed.', 'Availability': 'Low - Direct availability impact is minimal.'}</td><td>Not enabling CloudTrail may fail compliance with BACEN's operational risk management requirements and breach PCI DSS and ISO 27001 standards for audit and accountability.</td><td>Medium</td><td>High - Without logs, detecting unauthorized activities becomes challenging.</td><td>High</td></tr><tr><td>AWS-AMAZON--TIMESTREAM-2025-0005</td><td>enforce multi-factor authentication (mfa) for aws accounts</td><td>Enable multi-factor authentication (MFA) for all AWS IAM users and root accounts to ensure enhanced security, involving virtual MFA devices, hardware devices, or biometric-based solutions.</td><td>All AWS accounts</td><td>Without MFA, compromised credentials could lead to unauthorized access to AWS resources.</td><td>AWS IAM does not enforce MFA by default; requires account-level configuration.</td><td>Enforce using AWS IAM settings and verify compliance with AWS Config rule `iam-user-mfa-enabled`.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html']</td><td>Without MFA, compromised credentials could lead to unauthorized access to AWS resources, potentially resulting in data breaches, fraud, and significant financial losses.</td><td>{'Confidentiality': 'High - Unauthorized access could expose sensitive customer data.', 'Integrity': 'High - Malicious actors could alter or delete critical financial data.', 'Availability': 'Medium - Unauthorized changes or deletions could disrupt service operations.'}</td><td>Failure to implement MFA could violate BACEN and LGPD's data protection requirements, as well as PCI DSS and ISO 27001 standards for secure access control.</td><td>High</td><td>Medium - Intrusion detection systems may flag unauthorized access, but attack prevention is more effective when MFA is enforced.</td><td>Critical</td></tr><tr><td>AWS-AMAZON--TIMESTREAM-2025-0006</td><td>implement aws encryption solutions</td><td>Employ AWS-native encryption tools ensuring data is encrypted at rest and in transit. Use AWS KMS for cryptographic key management.</td><td>All AWS services storing or transmitting data</td><td>Exposed data could lead to unauthorized access.</td><td>Encryption features require user activation.</td><td>Monitor using AWS Config rules such as `kms-key-enabled`.</td><td>['https://docs.aws.amazon.com/cryptography/index.html']</td><td>Exposed data could lead to unauthorized access and breaches of sensitive financial information.</td><td>{'Confidentiality': 'High - Data not encrypted can be easily accessed by unauthorized entities.', 'Integrity': 'Medium - Lack of encryption may affect the trustworthiness of data.', 'Availability': 'Low - Direct impact on availability is minimal.'}</td><td>Failure to encrypt data at rest and in transit may result in non-compliance with LGPD and BACEN data protection mandates as well as PCI DSS encryption standards.</td><td>High</td><td>Medium - Identifying unencrypted data is possible with automated tools, but implementing encryption solutions is necessary.</td><td>Critical</td></tr><tr><td>AWS-AMAZON--TIMESTREAM-2025-0007</td><td>implement least privilege for timestream access</td><td>Adopt IAM policies granting only necessary permissions for Timestream operations, using managed policies, customer policies, or tags.</td><td>All AWS accounts using Timestream</td><td>Excessive permissions increase risk of unintended actions.</td><td>Least privilege must be actively enforced by users.</td><td>Audit permissions with AWS IAM and compliance with AWS Config.</td><td>['https://docs.aws.amazon.com/timestream/latest/developerguide/best-practices-security-preventative.html']</td><td>Granting excessive permissions increases the risk of unintended actions that could compromise data security and integrity.</td><td>{'Confidentiality': 'Medium - Excessive rights could expose sensitive data unnecessarily.', 'Integrity': 'High - Improper permissions can enable unauthorized data changes.', 'Availability': 'Medium - Unintended deletions or modifications may disrupt service.'}</td><td>Violations occur under PCI DSS for failing least privilege, and BACEN requirements for access control are breached.</td><td>Medium</td><td>Medium - Policies and permissions need regular audits for effective enforcement.</td><td>High</td></tr><tr><td>AWS-AMAZON--TIMESTREAM-2025-0008</td><td>require secure tls communication</td><td>Ensure all AWS communications use TLS version 1.2 or higher to secure data transmissions, with a preference for TLS 1.3 where supported.</td><td>All services communicating with AWS</td><td>Unsecured transmissions can be intercepted or altered.</td><td>Some AWS services use secure connections by default but configurations may vary.</td><td>Monitor using AWS Config custom rules or AWS Security Hub.</td><td>['https://docs.aws.amazon.com/general/latest/gr/aws-security.html#https-protocols']</td><td>Unsecured transmissions can be intercepted or altered, leading to data breaches and potential exposure of sensitive financial transactions.</td><td>{'Confidentiality': 'High - Unencrypted data in transit can be intercepted by attackers.', 'Integrity': 'Medium - Data integrity might be compromised during transmission.', 'Availability': 'Low - Direct impact on availability is minimal, but security incidents could indirectly affect uptime.'}</td><td>Not requiring secure TLS communication may breach LGPD and BACEN guidelines, along with PCI DSS requirements for secure data transmission.</td><td>Medium</td><td>Low - Implementing and monitoring TLS encryption can be straightforward with modern tools.</td><td>High</td></tr><tr><td>AWS-AMAZON--TIMESTREAM-2025-0009</td><td>use aws kms and customer managed keys for timestream</td><td>Ensure data in Amazon Timestream is encrypted using AWS Key Management Service (KMS) and offer the option for customer managed keys for customized encryption and control.</td><td>All Amazon Timestream databases</td><td>Weak encryption practices could expose sensitive data.</td><td>Timestream uses service default keys if no custom key is provided.</td><td>Encryption is enforced by AWS Timestream; customer managed keys require manual setup.</td><td>['https://docs.aws.amazon.com/timestream/latest/developerguide/EncryptionAtRest.html']</td><td>Weak encryption practices could expose sensitive data to unauthorized access.</td><td>{'Confidentiality': 'High - Data may be exposed if encryption keys are inadequately managed.', 'Integrity': 'Medium - Improper encryption could impact data trustworthiness.', 'Availability': 'Low - Encryption indirectly affects availability through possible data corruption recovery challenges.'}</td><td>Lack of strong encryption and key management can violate standards mandated by BACEN and LGPD, as well as PCI DSS for cryptographic controls.</td><td>Medium</td><td>Medium - Weak crypto practices are hard to detect without rigorous audit processes.</td><td>High</td></tr><tr><td>AWS-AMAZON--TIMESTREAM-2025-0010</td><td>use iam roles for secure timestream access</td><td>Implement IAM roles to provide EC2 instances and applications with temporary access credentials to AWS Timestream, avoiding exposed long-term credentials.</td><td>All applications accessing Timestream</td><td>Hardcoded credentials pose significant security risks.</td><td>Roles must be implemented by the user.</td><td>Manage using AWS IAM, reinforced with AWS Config for role adherence.</td><td>['https://docs.aws.amazon.com/timestream/latest/developerguide/best-practices-security-preventative.html']</td><td>Hardcoded credentials pose significant security risks, leading to credential exposure and unauthorized AWS access.</td><td>{'Confidentiality': 'High - Exposed credentials can lead to unauthorized access.', 'Integrity': 'Medium - Exposed credentials can lead to unauthorized data modifications.', 'Availability': 'Medium - Unauthorized access might cause service disruptions.'}</td><td>Not using IAM roles could breach BACEN's control requirements and violate PCI DSS standards regarding secure access methods.</td><td>High</td><td>Medium - Hardcoded credentials can be detected with static code analysis tools, but attacks can occur instantly if not mitigated.</td><td>Critical</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON--TIMESTREAM-2025-0001: audit amazon timestream api access with aws cloudtrail</li><li>AWS-AMAZON--TIMESTREAM-2025-0002: automate security checks in deployment pipelines</li><li>AWS-AMAZON--TIMESTREAM-2025-0003: configure private networking for amazon timestream</li><li>AWS-AMAZON--TIMESTREAM-2025-0004: enable aws cloudtrail for comprehensive auditing</li><li>AWS-AMAZON--TIMESTREAM-2025-0005: enforce multi-factor authentication (mfa) for aws accounts</li><li>AWS-AMAZON--TIMESTREAM-2025-0006: implement aws encryption solutions</li><li>AWS-AMAZON--TIMESTREAM-2025-0007: implement least privilege for timestream access</li><li>AWS-AMAZON--TIMESTREAM-2025-0008: require secure tls communication</li><li>AWS-AMAZON--TIMESTREAM-2025-0009: use aws kms and customer managed keys for timestream</li><li>AWS-AMAZON--TIMESTREAM-2025-0010: use iam roles for secure timestream access</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

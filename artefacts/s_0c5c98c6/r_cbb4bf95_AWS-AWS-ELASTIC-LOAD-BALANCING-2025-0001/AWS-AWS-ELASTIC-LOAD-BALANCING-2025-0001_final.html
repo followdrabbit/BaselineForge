@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0001</td><td>block public access to s3 buckets</td><td>Configure all S3 buckets to block public access at the bucket level to prevent unauthorized data exposure. Ensure AWS Config rules are in place to enforce and monitor this setting.</td><td>All Amazon S3 buckets</td><td>Public buckets can lead to data leaks.</td><td>AWS S3 does not block public access by default.</td><td>Enforce and monitor using AWS Config rules such as `s3-bucket-public-read-prohibited`.</td><td>['https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-best-practices.html']</td><td>Publicly accessible S3 buckets can result in unauthorized data access and data leaks, which could lead to exposure of sensitive financial and customer information and significant compliance violations.</td><td>{'Confidentiality': 'High - Public access can lead to unauthorized viewing or downloading of sensitive data.', 'Integrity': 'Medium - While direct data alteration is less likely, exposure increases risk of unauthorized actions.', 'Availability': 'Low - Public access does not typically affect availability directly.'}</td><td>Violating LGPD and BACEN's strict data protection guidelines and international standards like PCI DSS can result in severe penalties.</td><td>High</td><td>Moderate - Misconfigurations can be detected through AWS Config, but existing public access may already be exploited if unnoticed.</td><td>Critical</td></tr><tr><td>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0002</td><td>configure elb listeners to use secure protocols</td><td>Ensure that Elastic Load Balancer (ELB) listeners, including both Application and Network Load Balancers, use TLS or HTTPS protocols for secure data transmission. Configure AWS Config rules to monitor compliance.</td><td>All Elastic Load Balancers</td><td>Insecure protocols can lead to data breaches through interception.</td><td>Secure protocols must be manually configured; not enforced by default.</td><td>AWS Config rules like `elasticloadbalancer-tls-protocols-restricted` can enforce secure protocols.</td><td>['https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/create-tls-listener.html']</td><td>Using insecure protocols (HTTP rather than HTTPS) can lead to data being intercepted during transmission, exposing sensitive financial information.</td><td>{'Confidentiality': 'High - Data interception can compromise confidentiality.', 'Integrity': 'Medium - May lead to data manipulation attacks.', 'Availability': 'Low - More of a confidentiality impact.'}</td><td>Non-compliance with PCI DSS requirements and BACEN regulations if secure data transmission is not ensured.</td><td>High</td><td>Moderate - Monitoring for unsecured connections is feasible, but interception could occur before detection.</td><td>Critical</td></tr><tr><td>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0003</td><td>enable access logging for load balancers</td><td>Activate access logging on all Elastic Load Balancers (ALBs and NLBs) to ensure requests are logged for audit and troubleshooting.</td><td>All Elastic Load Balancers</td><td>Without logging, it's difficult to track access patterns and identify anomalous activities.</td><td>Logging is disabled by default and needs to be enabled manually.</td><td>Can be enforced with AWS Config rules and monitored through AWS CloudWatch Logs.</td><td>['https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html']</td><td>Without access logs, detecting and responding to unauthorized access attempts and understanding access patterns becomes challenging.</td><td>{'Confidentiality': "Medium - Lack of logs won't directly impact confidentiality but hinders forensic analysis.", 'Integrity': 'Medium - Difficult to audit alterations or unauthorized access without logs.', 'Availability': 'Medium - Reduced ability to troubleshoot availability issues.'}</td><td>Logging is often required by regulatory frameworks like PCI DSS for audit purposes.</td><td>Medium</td><td>Difficult - Without logs, detection of unauthorized access is harder.</td><td>High</td></tr><tr><td>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0004</td><td>enable mfa-delete on s3 buckets</td><td>Require Multi-Factor Authentication (MFA) for any delete operation on S3 buckets holding critical data to prevent accidental or malicious deletion.</td><td>All S3 buckets with deletion capabilities for critical data</td><td>Without MFA-Delete, unauthorized users could permanently delete critical data.</td><td>MFA-Delete is not enabled by default and requires manual configuration for each bucket.</td><td>Manual verification required; currently not enforceable through AWS Config or IAM.</td><td>['https://docs.aws.amazon.com/AmazonS3/latest/userguide/MFADelete.html']</td><td>Without MFA-Delete, unauthorized or accidental actions may lead to permanent deletion of critical data, risking data integrity and compliance.</td><td>{'Confidentiality': 'Low - MFA-Delete impacts data integrity rather than confidentiality.', 'Integrity': 'High - Prevents unauthorized or accidental deletions, crucial for data integrity.', 'Availability': 'High - Critical data loss affects service operations and trust.'}</td><td>Non-compliance risks related to data integrity are significant under BACEN and LGPD guidelines.</td><td>Medium</td><td>Difficult - Once data is deleted without MFA, recovery is challenging.</td><td>High</td></tr><tr><td>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0005</td><td>enforce alb listener authentication with oidc</td><td>Configure ALB listeners to leverage OpenID Connect (OIDC) for offloading authentication, thereby strengthening application-level user authentication.</td><td>ALBs where user authentication is required</td><td>Insufficient authentication may lead to unauthorized access to resources.</td><td>OIDC authentication needs explicit configuration.</td><td>Configure using AWS CloudFormation for automated rule setup.</td><td>['https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-authenticate-users.html']</td><td>Insufficient authentication can allow unauthorized access, placing sensitive financial applications at risk.</td><td>{'Confidentiality': 'High - OIDC significantly strengthens access controls.', 'Integrity': 'High - Protects against unauthorized actions on applications.', 'Availability': 'Low - Primarily a confidentiality and integrity issue.'}</td><td>Strong authentication aligns with standards required by BACEN and ISO 27001.</td><td>Medium</td><td>Moderate - Difficult to detect insufficient authentication configurations reactively.</td><td>High</td></tr><tr><td>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0006</td><td>ensure deletion protection on elbv2</td><td>Enable Deletion Protection for ELBv2 Load Balancers to prevent accidental or unauthorized deletions.</td><td>All ELBv2 Load Balancers</td><td>Without Deletion Protection, critical resources are at risk of accidental destruction.</td><td>Deletion Protection is not enabled by default.</td><td>AWS Config can enforce this setting.</td><td>['https://docs.aws.amazon.com/elasticloadbalancing/latest/application/application-load-balancers.html']</td><td>Without deletion protection, critical load balancers are vulnerable to accidental or unauthorized deletions.</td><td>{'Confidentiality': 'Low - Primarily impacts availability.', 'Integrity': 'Low - Does not directly impact data integrity.', 'Availability': 'High - Protects against unintentional or malicious deletion, ensuring service continuity.'}</td><td>Ensuring uninterrupted service is part of operational standards, compliance violations can result from service outages affecting business processes.</td><td>Low</td><td>Low - Configuration checks can easily detect missing deletion protection.</td><td>Medium</td></tr><tr><td>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0007</td><td>implement aws waf on internet-facing elbs</td><td>Deploy AWS Web Application Firewall (WAF) in front of Application Load Balancers to mitigate common web threats like SQL injection and XSS.</td><td>All Internet-facing ELBs</td><td>Without WAF, ALBs are more vulnerable to common web attacks.</td><td>AWS WAF requires manual configuration.</td><td>Automate using AWS WAF policies and integrate through AWS Firewall Manager.</td><td>['https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html']</td><td>ALBs without a WAF are vulnerable to common web attacks like SQL injections, which can lead to data breaches and system compromise.</td><td>{'Confidentiality': 'High - WAF mitigates attacks that can expose sensitive data.', 'Integrity': 'High - Protects against data tampering attacks.', 'Availability': 'Medium - Reduces risk of service disruptions from attacks like DDoS.'}</td><td>Weak security posture could result in non-compliance with BACEN and PCI DSS, potentially leading to penalties.</td><td>High</td><td>Moderate - Requires active monitoring and WAF rules tuning.</td><td>High</td></tr><tr><td>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0008</td><td>restrict security groups for elbs</td><td>Configure security groups for Elastic Load Balancers to only allow necessary IPs and ports, limiting exposure to unauthorized access.</td><td>All ELBs</td><td>Inadequately restricted security groups can lead to unauthorized access.</td><td>Security groups must be manually configured.</td><td>AWS Config can monitor compliance with security group configurations.</td><td>['https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html']</td><td>Open security groups can lead to unauthorized access, potentially facilitating data breaches or unauthorized resource use.</td><td>{'Confidentiality': 'High - Risk of unauthorized access to sensitive data.', 'Integrity': 'Medium - Increased chance of unauthorized alterations.', 'Availability': 'Medium - Unauthorized access could lead to service degradation.'}</td><td>Non-compliance with security best practices can lead to violations of BACEN's security guidelines.</td><td>High</td><td>Moderate - Security misconfigurations can be monitored, but exploitation risk is significant.</td><td>Critical</td></tr><tr><td>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0009</td><td>use http/2 for improved performance on albs</td><td>Enable HTTP/2 support on Application Load Balancers for better performance and resource utilization.</td><td>All Application Load Balancers</td><td>HTTP/1.x may result in slower interaction due to lack of multiplexing.</td><td>HTTP/2 must be explicitly enabled.</td><td>Monitor through AWS Config to ensure support is enabled.</td><td>['https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html']</td><td>HTTP/1.x may lead to performance bottlenecks, affecting customer experience and resource utilization.</td><td>{'Confidentiality': 'Low - Primarily impacts performance, not security.', 'Integrity': 'Low - Does not impact data integrity.', 'Availability': 'Medium - Improved performance and efficiency, better handling of concurrent connections.'}</td><td>While not directly impacting compliance, enhanced performance supports better customer service delivery.</td><td>Low</td><td>Low - Performance can be monitored to detect bottlenecks.</td><td>Low</td></tr><tr><td>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0010</td><td>use latest security policies for ssl/tls on load balancers</td><td>Ensure that all Elastic Load Balancers are configured to use the latest predefined security policies for SSL/TLS negotiations to protect against vulnerabilities.</td><td>All ELBs using SSL/TLS</td><td>Outdated security policies can expose communications to interception.</td><td>Security policies must be updated manually.</td><td>Monitor using AWS Config and Security Hub for alerts on outdated policies.</td><td>['https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-https-listener.html']</td><td>Outdated security policies can be exploited, leading to intercepted and compromised communications.</td><td>{'Confidentiality': 'High - Outdated protocols expose data to interception.', 'Integrity': 'Medium - Potential for data manipulation if protocols are compromised.', 'Availability': 'Low - Primarily affects confidentiality.'}</td><td>Failure to use secure protocols may breach international standards like PCI DSS and expose financial data.</td><td>Medium</td><td>Low - Proactively updating policies is straightforward with proper monitoring.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0001: block public access to s3 buckets</li><li>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0002: configure elb listeners to use secure protocols</li><li>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0003: enable access logging for load balancers</li><li>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0004: enable mfa-delete on s3 buckets</li><li>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0005: enforce alb listener authentication with oidc</li><li>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0006: ensure deletion protection on elbv2</li><li>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0007: implement aws waf on internet-facing elbs</li><li>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0008: restrict security groups for elbs</li><li>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0009: use http/2 for improved performance on albs</li><li>AWS-AWS-ELASTIC-LOAD-BALANCING-2025-0010: use latest security policies for ssl/tls on load balancers</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

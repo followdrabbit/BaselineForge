@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0001</td><td>activate aws shield advanced for enhanced anti-ddos protection</td><td>Enable AWS Shield Advanced to protect against DDoS attacks on AWS resources critical to the migration service.</td><td>All critical AWS resources within AWS Application Migration Service</td><td>DDoS attacks could severely impact the availability of resources and services.</td><td>Requires manual activation; AWS Shield Standard is enabled by default.</td><td>Setup requires manual action; monitoring is available through the AWS Shield dashboard.</td><td>['https://docs.aws.amazon.com/mgn/latest/ug/security.html']</td><td>DDoS attacks can severely impact the availability of services, causing disruptions to critical banking operations and affecting customer trust.</td><td>{'Confidentiality': 'Low - Mostly affects service availability unless combined with other attacks.', 'Integrity': 'Low - Primarily focused on disruption rather than alteration.', 'Availability': 'Critical - Direct impact if defensive measures are not in place, causing service outages.'}</td><td>Non-compliance with ISO 27001 and BACEN's operational continuity requirements.</td><td>High</td><td>High - While DDoS patterns can be identified, mitigation without adequate controls is challenging.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0002</td><td>apply permissions boundaries and service control policies (scps)</td><td>Set permissions boundaries to control maximum permissions granted by IAM policies and implement SCPs to limit permissions for AWS Organization accounts.</td><td>All AWS identities and AWS Organization member accounts</td><td>Without boundaries, identities might receive excessive permissions which could be misused.</td><td>Boundaries and SCPs must be defined explicitly.</td><td>Managed through AWS IAM and AWS Organizations, monitor via AWS Config.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html', 'https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html']</td><td>Without proper boundaries, users might have more permissions than necessary, increasing the window for misuse or accidental actions.</td><td>{'Confidentiality': 'Medium - Excess permissions might allow data access beyond necessity.', 'Integrity': 'High - The risk of accidental changes increases without boundaries.', 'Availability': 'Medium - Services might be inadvertently affected due to broad permissions.'}</td><td>Potential violation of access control policies required by LGPD and ISO 27001.</td><td>Medium</td><td>Medium - Can be managed with regular audits and monitoring.</td><td>High</td></tr><tr><td>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0003</td><td>automate os and software patching</td><td>Use AWS Systems Manager Patch Manager to automate the patching of operating systems and software packages to ensure systems are up-to-date with the latest security updates.</td><td>All servers managed within AWS Application Migration Service</td><td>Outdated software could have unpatched vulnerabilities, exposing the system to exploits.</td><td>Patching is manual by default; requires configuration with AWS Systems Manager.</td><td>Automated through AWS Systems Manager Patch Manager.</td><td>['https://docs.aws.amazon.com/mgn/latest/ug/security.html']</td><td>Outdated software can contain unpatched vulnerabilities that can be exploited by attackers, particularly in a high-target sector such as financial services.</td><td>{'Confidentiality': 'High - Exploits may lead to unauthorized access to sensitive customer data.', 'Integrity': 'Medium - Vulnerabilities might allow modification of critical system configurations.', 'Availability': 'High - Unpatched systems are targets for ransomware and other malicious attacks, potentially taking systems offline.'}</td><td>Failure to maintain patch levels violates PCI DSS and ISO 27001 standards concerning security maintenance.</td><td>High</td><td>Medium - While detection through scanning tools is possible, proactive patch management is crucial for mitigation.</td><td>High</td></tr><tr><td>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0004</td><td>enable cloudtrail for comprehensive logging</td><td>Configure AWS CloudTrail to log all activities related to AWS Application Migration Service across regions for audit and traceability.</td><td>All AWS accounts using AWS Application Migration Service</td><td>Untracked user activities can lead to unmonitored unauthorized actions.</td><td>CloudTrail logging is not enabled by default and requires setup.</td><td>Setup can be automated with CloudFormation; compliance can be monitored with AWS Config.</td><td>['https://docs.aws.amazon.com/mgn/latest/ug/security.html']</td><td>Without logging, unauthorized actions can go undetected, hindering incident response and traceability necessary for audit and compliance.</td><td>{'Confidentiality': 'Medium - Lack of logs affects the ability to trace unauthorized data access incidents.', 'Integrity': 'High - Changes to configurations without logs could go unnoticed.', 'Availability': 'High - Undetected unauthorized actions can lead to system disruptions.'}</td><td>Non-compliance with BACEN's requirements for audit trails and incident management, as well as PCI DSS logging requirements.</td><td>High</td><td>High - Without logging, identifying the timeline and source of incidents is significantly challenging.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0005</td><td>ensure resource security with ebs encryption</td><td>Enable encryption for all Amazon EBS volumes used by AWS Application Migration Service to protect data at rest.</td><td>All EBS volumes used by AWS Application Migration Service</td><td>Unencrypted data can be accessed if volumes are compromised.</td><td>Amazon EBS encryption must be enabled explicitly.</td><td>Can be enforced with AWS Config rule 'ebs-encrypted-volumes'.</td><td>['https://docs.aws.amazon.com/mgn/latest/ug/infrastructure-security.html']</td><td>Unencrypted data at rest is vulnerable to unauthorized access if physical drives are accessed or misconfigured, especially concerning confidential customer data and financial records.</td><td>{'Confidentiality': 'High - Unprotected data could be exposed, violating data protection laws.', 'Integrity': 'Medium - Compromised volumes might lead to data modifications.', 'Availability': 'Low - Generally does not impact availability directly but critical for confidentiality.'}</td><td>Violates LGPD and PCI DSS data protection requirements for encrypted customer data.</td><td>Medium</td><td>Medium - Detection of data exposure is post-incident; encryption is a straightforward preventative control.</td><td>High</td></tr><tr><td>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0006</td><td>implement and enforce iam policies</td><td>Create and manage well-structured IAM policies using 'Effect', 'Action', 'Resource', and 'Condition' to define precise permissions, applying identity and resource-based policies as needed.</td><td>All IAM policies and applicable AWS resources</td><td>Improperly defined IAM policies can lead to excessive permissions or unauthorized access.</td><td>AWS accounts and users require explicit permission configurations.</td><td>Automated via AWS IAM, CloudFormation, and AWS Config.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html', 'https://docs.aws.amazon.com/mgn/latest/ug/identity-access-management.html']</td><td>Improperly defined IAM policies can result in excessive permissions, increasing the potential for unauthorized access and privilege escalation.</td><td>{'Confidentiality': 'High - Excessive permissions can lead to data access beyond authorized levels.', 'Integrity': 'Medium - Users might inadvertently modify critical configurations or data.', 'Availability': 'Medium - Users with unnecessary access could disrupt services.'}</td><td>May contravene ISO 27001 and LGPD requirements for access control and data protection.</td><td>Medium</td><td>Medium - Regular audits and monitoring can identify over-permissive policies, but initial consequences might be serious.</td><td>High</td></tr><tr><td>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0007</td><td>implement federation and central iam management</td><td>Use federated access with AWS IAM Identity Center and configure temporary credentials for users to access AWS services securely.</td><td>All AWS accounts requiring centralized identity management and federated access</td><td>Permenant credentials are a security risk; federation limits exposure by using temporary credentials.</td><td>Federation is not enforced by default, requires integration with identity providers.</td><td>Configurable via AWS IAM Identity Center, enforced via IAM roles and AWS Config.</td><td>['https://docs.aws.amazon.com/mgn/latest/ug/identity-access-management.html']</td><td>Without federated access, the need for permanent credentials poses significant risks, including accidental exposure or unauthorized use.</td><td>{'Confidentiality': 'High - Permanent credentials might be exposed, leading to potential misuse.', 'Integrity': 'Medium - Misused credentials might lead to unauthorized changes.', 'Availability': 'Low - Direct availability impact is limited compared to other areas.'}</td><td>Non-compliance with requirements for secure identity management as per ISO 27001 and LGPD.</td><td>Medium</td><td>Medium - Easier management and automation with IAM but requires initial setup.</td><td>High</td></tr><tr><td>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0008</td><td>leverage aws service-linked roles for automated resource management</td><td>Utilize AWS Application Migration Service's service-linked role which is automatically created, offering out-of-the-box permissions management for the service.</td><td>AWS Application Migration Service users</td><td>Manual management could lead to misconfigurations and security risks.</td><td>This role is automatically managed by AWS; no user intervention is required.</td><td>AWS handles this role management automatically.</td><td>['https://docs.aws.amazon.com/mgn/latest/ug/using-service-linked-roles.html']</td><td>Manual role management risks misconfigurations leading to security oversights, whereas service-linked roles ensure appropriate permissions configured by AWS standards.</td><td>{'Confidentiality': 'Low - Automated roles reduce manual errors in access configurations.', 'Integrity': 'Low - AWS-manage roles ensure correct service permissions.', 'Availability': 'Low - Ensures continuous operation through proper permissions setup.'}</td><td>Improves compliance with automated configuration management practices aligned with ISO 27001.</td><td>Low</td><td>Low - Encourages best practices, reducing manual errors.</td><td>Low</td></tr><tr><td>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0009</td><td>restrict access to replication servers and minimize public exposure</td><td>Configure security groups for replication servers to allow inbound traffic only from specified source CIDR ranges and minimize exposure to the public internet by using VPN connections.</td><td>Replication servers within AWS Application Migration Service</td><td>Unauthorized access and attacks may occur if replication servers are left exposed to open network paths or the public internet.</td><td>AWS security groups require custom configurations to restrict CIDR ranges; VPN usage needs manual setup.</td><td>Enforceable through AWS Security Hub and AWS Config to check security group configurations.</td><td>['https://docs.aws.amazon.com/mgn/latest/ug/security.html', 'https://docs.aws.amazon.com/mgn/latest/ug/infrastructure-security.html']</td><td>Leaving replication servers exposed to open network paths or the public internet increases the risk of unauthorized access and attacks, potentially compromising sensitive data and system integrity.</td><td>{'Confidentiality': 'High - Unauthorized access can lead to data breaches containing sensitive financial data.', 'Integrity': 'High - Malicious actors might alter data during replication, affecting transactional integrity.', 'Availability': 'Medium - Exposed servers might be disrupted by DDoS or other network attacks, affecting replication services.'}</td><td>Non-compliance with data protection mandates outlined by BACEN and LGPD due to unauthorized data exposure.</td><td>High</td><td>Medium - Detection depends on monitoring configurations; mitigation involves network-level changes.</td><td>High</td></tr><tr><td>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0010</td><td>use aws sourcearn and sourceaccount for confused deputy mitigation</td><td>Include `aws:SourceArn` and `aws:SourceAccount` in resource policies for AWS Application Migration Service, ensuring conditions prevent cross-service confused deputy issues.</td><td>AWS Application Migration Service resource policies</td><td>Incorrect condition setup could allow unauthorized service access.</td><td>AWS requires manual enforcement of these conditions.</td><td>Can be audited using AWS Config rules to ensure policy condition inclusion.</td><td>['https://docs.aws.amazon.com/mgn/latest/ug/cross-service-confused-deputy-prevention.html']</td><td>Without mitigating cross-service confused deputy issues, there is a risk of unauthorized service actions, potentially leading to data breaches or system compromises.</td><td>{'Confidentiality': 'High - Could allow unauthorized access from misconfigured services.', 'Integrity': 'Medium - Potential for unauthorized changes through misused roles.', 'Availability': 'Medium - Some service impacts possible through unauthorized actions by improperly authenticated sources.'}</td><td>Could breach data protection measures required by LGPD and ISO 27001.</td><td>Medium</td><td>Medium - Enforcement is key, as detection post-event is complex.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0001: activate aws shield advanced for enhanced anti-ddos protection</li><li>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0002: apply permissions boundaries and service control policies (scps)</li><li>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0003: automate os and software patching</li><li>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0004: enable cloudtrail for comprehensive logging</li><li>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0005: ensure resource security with ebs encryption</li><li>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0006: implement and enforce iam policies</li><li>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0007: implement federation and central iam management</li><li>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0008: leverage aws service-linked roles for automated resource management</li><li>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0009: restrict access to replication servers and minimize public exposure</li><li>AWS-AMAZON-APPLICATION-MIGRATION-SERVICE-2025-0010: use aws sourcearn and sourceaccount for confused deputy mitigation</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

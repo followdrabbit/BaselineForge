@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-MQ-2025-0001</td><td>configure vpc security groups for amazon mq</td><td>VPC Security Groups must be configured to block unnecessary protocols and ports, only allowing access to those actively used by the brokers, to minimize potential attack vectors.</td><td>All Amazon MQ instances within a VPC</td><td>Leaving unnecessary ports open can expose the broker to unauthorized access, leading to potential data breaches or interruption in service.</td><td>Default VPC Security Groups need to be modified to restrict port access.</td><td>Can be enforced using AWS Config rules to ensure that security groups only allow traffic on necessary ports.</td><td>['https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/using-amazon-mq-securely.html']</td><td>Improperly configured security groups can leave MQ brokers vulnerable to unauthorized access through unnecessary open ports, increasing the risk of data breaches and service disruptions.</td><td>{'Confidentiality': 'High - Open ports increase the risk of unauthorized access to sensitive data within MQ brokers.', 'Integrity': 'High - Unauthorized access could lead to data manipulation, affecting transaction integrity.', 'Availability': 'High - Open ports could be exploited for denial-of-service attacks, disrupting MQ operations.'}</td><td>Unrestricted port access may violate BACEN and PCI DSS by not following secure configuration practices, potentially leading to substantial penalties.</td><td>High</td><td>Moderate - Attack vectors via open ports may not be immediately obvious without thorough monitoring.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-MQ-2025-0002</td><td>enable aws cloudtrail logging for amazon mq</td><td>AWS CloudTrail must be enabled in all regions to log all API requests and operations made on Amazon MQ. Configure CloudTrail to record these activities across all regions for comprehensive logging.</td><td>All AWS accounts using Amazon MQ</td><td>Without CloudTrail logging, unauthorized or unintended actions on Amazon MQ resources may go undetected, leading to potential security breaches.</td><td>CloudTrail does not log by default for all regions; it requires manual configuration.</td><td>Can be enforced using AWS Config rule 'cloud-trail-enabled'.</td><td>['https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html']</td><td>Without CloudTrail logging, unauthorized or malicious actions on Amazon MQ resources may go undetected, leading to security breaches and non-compliance with auditing requirements.</td><td>{'Confidentiality': 'Medium - Lack of logging makes it difficult to detect unauthorized access to sensitive operations.', 'Integrity': 'Medium - Without logs, identifying and rectifying malicious alterations in data becomes challenging.', 'Availability': 'Medium - Absence of logs could delay responses to incidents impacting availability.'}</td><td>Failure to implement logging may result in non-compliance with BACEN, LGPD, ISO 27001, and PCI DSS which mandate auditability and traceability of transactions and access.</td><td>High</td><td>High - Without logging, unauthorized activities may go unnoticed, making mitigation post-incident challenging.</td><td>High</td></tr><tr><td>AWS-AMAZON-MQ-2025-0003</td><td>enforce tls 1.2 or higher for amazon mq communications</td><td>Configure Amazon MQ to enforce TLS 1.2 or higher for all client communications to ensure secure data transmission. Prefer configurations that support TLS 1.3 for enhanced security.</td><td>All Amazon MQ client connections</td><td>Data transmitted without TLS 1.2 or higher can be susceptible to eavesdropping or man-in-the-middle attacks.</td><td>TLS 1.2 is the minimum accepted version. Manual configuration is required to ensure compliance.</td><td>Compliance can be audited using AWS Config rules for TLS settings.</td><td>['https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/data-protection.html']</td><td>Without enforcing TLS 1.2 or higher, data in transit may be susceptible to eavesdropping or man-in-the-middle attacks, which could compromise sensitive banking information and customer data.</td><td>{'Confidentiality': 'High - Without TLS, data such as financial records and customer details could be intercepted by attackers.', 'Integrity': 'Medium - Lack of encryption could allow attackers to alter messages during transmission.', 'Availability': 'Low - TLS does not directly impact availability but could be used to protect communications in case of service disruption.'}</td><td>Non-compliance with TLS standards can violate PCI DSS, which requires strong cryptography and security protocols for transmitting cardholder data.</td><td>Medium</td><td>Difficult - Eavesdropping is silent and can go undetected without strict encryption enforcement.</td><td>High</td></tr><tr><td>AWS-AMAZON-MQ-2025-0004</td><td>ensure amazon mq brokers are not publicly accessible</td><td>Configure Amazon MQ brokers to prevent public access by setting 'PubliclyAccessible' to 'false'. Ensure all MQ brokers are launched within private subnets of a VPC and are only accessible within that network. Monitor and audit Amazon MQ brokers to verify that they remain non-publicly accessible.</td><td>All AWS accounts using Amazon MQ</td><td>Publicly accessible MQ brokers are exposed to the internet, increasing the risk of unauthorized access, DDoS attacks, and other vulnerabilities.</td><td>By default, brokers can be configured with public accessibility; this must be explicitly set to 'false'.</td><td>This can be monitored using AWS Config with a custom rule to check if brokers are set with 'PubliclyAccessible' as 'false'. Schedule AWS CLI commands using AWS Lambda or AWS Systems Manager to routinely check 'PubliclyAccessible' status. Use AWS CloudFormation or Terraform to enforce this setting upon creation.</td><td>['https://docs.aws.amazon.com/cli/latest/reference/mq/describe-broker.html', 'https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/using-amazon-mq-securely.html', 'https://www.trendmicro.com/cloudoneconformity/knowledge-base/aws/MQ/publicly-accessible.html']</td><td>Publicly accessible MQ brokers expose the financial institution’s communication infrastructure to potential unauthorized access and exploitation over the internet, increasing the risk of data breaches, DDoS attacks, and other vulnerabilities.</td><td>{'Confidentiality': 'High - Public access may lead to interception of sensitive communications and unauthorized access to the message queue.', 'Integrity': 'High - Unauthorized users might inject or alter messages within the MQ broker, affecting the integrity of financial transactions.', 'Availability': 'High - Exposed brokers may fall victim to DDoS attacks, impacting service availability and disrupting banking operations.'}</td><td>Failing to restrict public access to MQ brokers may violate LGPD due to inadequate protection of data in transmission and BACEN regulations by not implementing secure access controls, potentially resulting in severe penalties.</td><td>High</td><td>Moderate - Unauthorized accesses might be detectable through logging, but prevention is difficult without proper access controls.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-MQ-2025-0005</td><td>ensure encryption of amazon mq data at rest using kms</td><td>Configure Amazon MQ to use AWS Key Management Service (KMS) keys for encrypting all data at rest to protect sensitive information.</td><td>All Amazon MQ instances</td><td>Unencrypted data at rest can be vulnerable to unauthorized access.</td><td>Data encryption at rest must be explicitly configured to use KMS.</td><td>Use AWS Config to ensure compliance with encryption standards.</td><td>['https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/data-protection.html']</td><td>Without encryption, data at rest on Amazon MQ may be accessible to unauthorized entities in the case of a security breach, violating data protection standards.</td><td>{'Confidentiality': 'High - Unencrypted data is vulnerable to exposure in the event of unauthorized access.', 'Integrity': 'Medium - While encryption primarily impacts confidentiality, unauthorized access can still lead to data manipulation.', 'Availability': 'Low - Encryption at rest does not typically impact data availability.'}</td><td>Non-compliance with LGPD and ISO 27001 encryption requirements for data at rest can result in severe fines and reputation damage.</td><td>Medium</td><td>Moderate - Detecting unauthorized access to unencrypted data is challenging without proper logging.</td><td>High</td></tr><tr><td>AWS-AMAZON-MQ-2025-0006</td><td>implement access control via iam policies for amazon mq</td><td>Define and attach IAM policies to restrict access to Amazon MQ resources based on business needs. Only users with explicit permission should perform actions on these resources.</td><td>All AWS accounts using Amazon MQ</td><td>Improper access control can lead to unauthorized access and potential data breaches.</td><td>IAM does not automatically create policies; administrators must define and manage them.</td><td>Setup and management can be audited using AWS IAM Access Analyzer.</td><td>['https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/security-iam.html']</td><td>Insufficient access control policies could lead to unauthorized actions on MQ resources, potentially resulting in data breaches or accidental data mishandling.</td><td>{'Confidentiality': 'High - Unauthorized individuals could gain access to sensitive messaging data.', 'Integrity': 'High - Unauthorized users might alter or delete messages, impacting transaction integrity.', 'Availability': 'Medium - Unauthorized actions could disrupt MQ services, affecting availability.'}</td><td>Failure to properly implement IAM might lead to violations of BACEN and LGPD due to inadequate access restriction measures and potential data exposure.</td><td>High</td><td>Moderate - IAM misconfigurations may not be immediately apparent until exploited.</td><td>High</td></tr><tr><td>AWS-AMAZON-MQ-2025-0007</td><td>utilize perfect forward secrecy with amazon mq</td><td>Configure Amazon MQ to use and prefer cipher suites that support Perfect Forward Secrecy (PFS), such as DHE or ECDHE, to maintain confidentiality of communications even if the server's private key is compromised.</td><td>All Amazon MQ client connections</td><td>Without PFS, intercepted data can be decrypted retroactively if the server's private key is compromised, jeopardizing confidentiality.</td><td>Selection of cipher suites is configured through the client and server settings. Ensure compatibility with Java 7 or later.</td><td>Manual configuration on the client and server sides is required. AWS Config cannot enforce this setting.</td><td>['https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/infrastructure-security.html']</td><td>Without Perfect Forward Secrecy, encrypted data captured now can be decrypted retroactively if the server's private key is compromised, endangering long-term confidentiality.</td><td>{'Confidentiality': 'High - Lack of PFS could lead to future decryptability of sensitive, previously transmitted data.', 'Integrity': 'Low - PFS does not directly impact integrity but protects the confidentiality of transmissions.', 'Availability': 'Low - Does not directly affect availability.'}</td><td>Lack of PFS could result in non-compliance with higher security standards in PCI DSS and ISO 27001 regarding encryption and data protection.</td><td>Medium</td><td>Difficult - The absence of PFS might not be realized until a private key compromise occurs long after data capture.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-MQ-2025-0001: configure vpc security groups for amazon mq</li><li>AWS-AMAZON-MQ-2025-0002: enable aws cloudtrail logging for amazon mq</li><li>AWS-AMAZON-MQ-2025-0003: enforce tls 1.2 or higher for amazon mq communications</li><li>AWS-AMAZON-MQ-2025-0004: ensure amazon mq brokers are not publicly accessible</li><li>AWS-AMAZON-MQ-2025-0005: ensure encryption of amazon mq data at rest using kms</li><li>AWS-AMAZON-MQ-2025-0006: implement access control via iam policies for amazon mq</li><li>AWS-AMAZON-MQ-2025-0007: utilize perfect forward secrecy with amazon mq</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

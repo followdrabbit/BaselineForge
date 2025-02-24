@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-VPC-ENDPOINT-2025-0001</td><td>audit vpc endpoint configurations</td><td>Regularly audit VPC endpoint configurations using AWS CLI commands `describe-vpc-endpoints` and `describe-vpcs` to verify deployment across regions and ensure compliance with security best practices.</td><td>All AWS environments with VPC endpoints</td><td>Without audits, misconfigurations may remain undetected, leading to security vulnerabilities.</td><td>Manual auditing is necessary for verification.</td><td>Facilitate audits using AWS CLI automation scripts.</td><td>['https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-vpc-endpoints.html']</td><td>Without regular audits, VPC misconfigurations may remain undetected, resulting in potential security vulnerabilities.</td><td>{'Confidentiality': 'Medium - Undetected misconfigurations could inadvertently expose data.', 'Integrity': 'Medium - Persistent misconfigurations might impact data management processes.', 'Availability': 'Medium - Misconfigured endpoints could disrupt service access.'}</td><td>Failure to conduct regular audits may contravene BACEN and ISO 27001 requirements for continuous monitoring and vulnerability management.</td><td>Medium</td><td>Medium - Audits require manual effort but can be automated partially with scripts.</td><td>High</td></tr><tr><td>AWS-AMAZON-VPC-ENDPOINT-2025-0002</td><td>automate vpc endpoint policy management</td><td>Use AWS CloudFormation, AWS CLI, or Terraform for deploying and updating VPC endpoint policies, ensuring they include specific Principals instead of wildcards and align with security requirements.</td><td>All AWS accounts managing VPC endpoint policies</td><td>Improper policies may lead to unauthorized access and data exposure.</td><td>AWS does not enforce restrictions on policy principals by default.</td><td>Automate with AWS CloudFormation or Terraform, monitor using AWS Config or Security Hub.</td><td>['https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-vpcendpoint.html']</td><td>Improperly managed VPC endpoint policies can lead to unauthorized access and data exposure.</td><td>{'Confidentiality': 'High - Mismanaged policies may permit access to sensitive data to unauthorized users.', 'Integrity': 'Medium - Unauthorized users could alter data policy configurations, leading to further access expansion.', 'Availability': 'Low - Direct impact on service availability is limited.'}</td><td>Non-compliance with BACEN’s internal policy management protocols and LGPD’s principle of necessity could arise, risking regulatory penalties.</td><td>Medium</td><td>Medium - Policy misconfigurations can be detected with security tools, but might not be immediate.</td><td>High</td></tr><tr><td>AWS-AMAZON-VPC-ENDPOINT-2025-0003</td><td>enforce proper condition usage in vpc endpoint policies</td><td>Ensure VPC endpoint policies use conditions with Principals, avoiding unrestricted access through wildcards, and include adequate constraints for access control.</td><td>All AWS accounts with VPC endpoints</td><td>Wildcard usage without conditions can lead to unauthorized access and security breaches.</td><td>Manual configuration required to enforce conditions on access policies.</td><td>Monitor compliance using AWS IAM Access Analyzer or AWS Config with custom rules.</td><td>['https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints.html']</td><td>Not enforcing conditions in policies can allow unrestricted access leading to security breaches.</td><td>{'Confidentiality': 'High - Open policies without conditions expose sensitive data to unauthorized entities.', 'Integrity': 'High - Security breaches could compromise data integrity via unauthorized changes.', 'Availability': 'Low - Minimal direct impact on availability.'}</td><td>Could breach LGPD and BACEN regulations that require strict access control and monitoring.</td><td>High</td><td>Medium - Misconfigurations may go unnoticed until exploited, but using tools like AWS Config can aid detection.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-VPC-ENDPOINT-2025-0004</td><td>ensure regional compatibility for vpc endpoints</td><td>Validate that VPC endpoints are configured and operate within the same AWS region, adhering to regional constraints for seamless service connectivity.</td><td>All AWS accounts using VPC endpoints</td><td>Incorrect region configurations can cause connectivity failures, impacting service availability.</td><td>Automatic regional compatibility checks are not provided, requires manual validation.</td><td>Implement checks using AWS CLI scripts or AWS Config with regional specific rules.</td><td>['https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints.html#vpc-endpoints-limitations']</td><td>Mismatched regional configurations could cause connectivity failures and service unavailability.</td><td>{'Confidentiality': 'Low - Direct risk to data exposure is minimal.', 'Integrity': 'Low - There is little impact on data integrity.', 'Availability': 'High - Service disruptions can occur due to connectivity issues.'}</td><td>While not directly regulatory, service availability issues may impact BACEN’s operational continuity requirements.</td><td>Low</td><td>Low - Configuration mismatches are relatively easy to detect and rectify.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-VPC-ENDPOINT-2025-0005</td><td>secure connections with vpc endpoints</td><td>Ensure all AWS VPCs use endpoints to establish secure connections with AWS services, avoiding public network traffic. This reduces the risk of data interception by keeping traffic within AWS's private network.</td><td>All AWS VPCs connecting to AWS services</td><td>Without VPC endpoints, public network traffic increases vulnerability to interception and exposure to threats.</td><td>VPC endpoints are not enabled by default and must be configured manually.</td><td>Enforceable using AWS CloudFormation templates, AWS CLI, or Terraform. Monitor using AWS Config and CloudTrail.</td><td>['https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints.html']</td><td>Without secure connections using VPC endpoints, data traverses the public internet, increasing the risk of interception and exposure to cyber threats.</td><td>{'Confidentiality': 'High - Unencrypted data over public networks can be intercepted, leading to unauthorized data access.', 'Integrity': 'Medium - Data could potentially be tampered with during transmission over insecure networks.', 'Availability': 'Medium - Public network issues could lead to delays or disruptions in service connectivity.'}</td><td>Failure to secure communications may not align with BACEN data protection requirements, LGPD mandates on data confidentiality, and PCI DSS for secure transmission of cardholder data.</td><td>High</td><td>Medium - Unauthorized data access is difficult to detect without proper monitoring, but can be mitigated by enforcing VPC endpoints.</td><td>High</td></tr><tr><td>AWS-AMAZON-VPC-ENDPOINT-2025-0006</td><td>specify gateway and interface endpoint policies</td><td>For Gateway and Interface VPC endpoints, apply IAM policies specifying Principals and using conditions, and customize policies as per service requirements to ensure secure access.</td><td>All Gateway and Interface VPC endpoints</td><td>Misconfigured policies can lead to unauthorized access or data breaches.</td><td>Policies must be fine-tuned to align with organizational access requirements.</td><td>Monitor and validate with AWS Config rules and IAM Access Analyzer.</td><td>['https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints-access.html']</td><td>Misconfigured policies can result in unauthorized access to critical resources and potential data breaches.</td><td>{'Confidentiality': 'High - Poorly defined policies can expose sensitive data.', 'Integrity': 'Medium - Unauthorized access could lead to data manipulation.', 'Availability': 'Low - Does not directly affect availability.'}</td><td>Non-compliance with LGPD’s specific access control requirements and potential breaches of BACEN’s security protocols.</td><td>Medium</td><td>Medium - Policy misconfigurations are detectable with continuous monitoring tools.</td><td>High</td></tr><tr><td>AWS-AMAZON-VPC-ENDPOINT-2025-0007</td><td>strategic deployment and traffic management for vpcs</td><td>Deploy VPC endpoints in strategic network architectures like hub-and-spoke or shared VPCs and use load balancers for traffic inspection to enhance security and efficiency.</td><td>Complex architectures requiring optimal resource access and traffic management</td><td>Improper deployment and routing can lead to inefficiencies and vulnerabilities.</td><td>Manual architecture planning required, implement using CloudFormation.</td><td>Deploy using AWS CloudFormation and monitor with AWS CloudWatch.</td><td>['https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints.html']</td><td>Non-optimal deployment can introduce vulnerabilities and inefficiencies in traffic management.</td><td>{'Confidentiality': 'Medium - Inefficiencies might expose communication paths unintentionally.', 'Integrity': 'Medium - Poor management can lead to data routing errors.', 'Availability': 'High - Traffic inefficiencies can severely impact service availability.'}</td><td>Mismanagement may not directly breach regulations but could hinder BACEN's operational continuity expectations.</td><td>Medium</td><td>Medium - Inefficiencies can be difficult to pinpoint and require holistic monitoring solutions.</td><td>High</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-VPC-ENDPOINT-2025-0001: audit vpc endpoint configurations</li><li>AWS-AMAZON-VPC-ENDPOINT-2025-0002: automate vpc endpoint policy management</li><li>AWS-AMAZON-VPC-ENDPOINT-2025-0003: enforce proper condition usage in vpc endpoint policies</li><li>AWS-AMAZON-VPC-ENDPOINT-2025-0004: ensure regional compatibility for vpc endpoints</li><li>AWS-AMAZON-VPC-ENDPOINT-2025-0005: secure connections with vpc endpoints</li><li>AWS-AMAZON-VPC-ENDPOINT-2025-0006: specify gateway and interface endpoint policies</li><li>AWS-AMAZON-VPC-ENDPOINT-2025-0007: strategic deployment and traffic management for vpcs</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

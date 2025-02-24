@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-LIGHTSAIL-2025-0001</td><td>apply permissions boundaries to iam entities</td><td>Implement permissions boundaries to define maximum allowable permissions for users or roles, aligning these boundaries with organizational security policies.</td><td>All AWS accounts</td><td>Without boundaries, privilege escalation could lead to unauthorized actions.</td><td>Policies must be correctly configured and attached to IAM entities.</td><td>Permissions boundaries can be managed through IAM policy configurations.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html']</td><td>Without permissions boundaries, users may exceed intended access, leading to potentially harmful privilege escalation.</td><td>{'Confidentiality': 'Medium - Unchecked privileges can result in unauthorized data access.', 'Integrity': 'Medium - Potential for unauthorized alterations to sensitive data.', 'Availability': 'Low - Predominantly affects data access control.'}</td><td>Supports compliance by maintaining strict control over privilege escalation, critical under BACEN and ISO standards.</td><td>Medium</td><td>Moderate - Requires careful configuration and ongoing review processes.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0002</td><td>automated updates and patches for amazon lightsail instances and applications</td><td>Implement automated updates for Lightsail instances using operating system package managers to ensure systems are patched against vulnerabilities.</td><td>All Amazon Lightsail instances and container services</td><td>Failure to maintain updates can lead to exploitation of vulnerabilities.</td><td>AWS does not automatically update instances; user responsibility.</td><td>Use OS-native tools for automated updates.</td><td>['https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-update-management.html']</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0003</td><td>block public access at the s3 bucket level</td><td>Ensure that S3 public access is blocked at the bucket level to prevent unauthorized data exposure. Implement S3 Block Public Access settings on each bucket, using AWS Config to monitor compliance.</td><td>All Amazon S3 buckets</td><td>Public buckets can lead to data leaks.</td><td>By default, S3 does not block public access automatically.</td><td>Can be enforced and monitored using AWS Config rules.</td><td>['https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-best-practices.html']</td><td>Failure to block public access to S3 buckets can lead to unauthorized exposure of sensitive financial data, increasing the risk of data breaches and loss of customer trust.</td><td>{'Confidentiality': 'High - Publicly accessible buckets can leak sensitive banking data, violating confidentiality agreements.', 'Integrity': 'Medium - Public exposure could lead to data tampering if write permissions are wrongly configured.', 'Availability': 'Low - Misconfiguration mainly affects confidentiality rather than service availability.'}</td><td>Non-compliance with LGPD, BACEN privacy regulations, and ISO 27001, as they require strict controls over data confidentiality and access management.</td><td>High</td><td>Moderate - While AWS provides monitoring tools, detecting exposure requires active configuration auditing.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0004</td><td>enable mfa-delete on s3 buckets</td><td>Require Multi-Factor Authentication (MFA) for any S3 bucket deletion operation to prevent accidental or malicious data removal. Configure MFA-Delete on critical buckets and ensure MFA is used during delete operations.</td><td>All S3 buckets with deletion capabilities</td><td>Without MFA-Delete, unauthorized users could permanently delete critical data.</td><td>MFA-Delete is not enabled by default; requires manual configuration.</td><td>Manual validation required; currently not enforceable through AWS Config or IAM.</td><td>['https://docs.aws.amazon.com/AmazonS3/latest/userguide/MFADelete.html']</td><td>Without MFA-Delete, unauthorized or accidental deletions can result in irrevocable loss of critical financial data, affecting compliance and operational capabilities.</td><td>{'Confidentiality': 'Low - Primarily affects integrity and availability more than confidentiality.', 'Integrity': 'High - Ensures data integrity by preventing unauthorized deletions.', 'Availability': 'High - Loss of data availability could disrupt banking operations significantly.'}</td><td>Potentially non-compliant with BACEN mandates for data integrity and PCI DSS requirements for secure data handling.</td><td>Medium</td><td>Difficult - Detecting unauthorized deletions post-fact is not straightforward and mitigation after data loss is challenging.</td><td>High</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0005</td><td>enforce iam identity-based policies for lightsail</td><td>IAM policies for Amazon Lightsail should include action elements with the prefix 'lightsail:' to enforce permission settings correctly. Define explicit allow or deny actions for managing Lightsail resources.</td><td>All AWS accounts utilizing Amazon Lightsail</td><td>Incorrect actions could lead to unauthorized access or modification of Lightsail resources.</td><td>IAM does not automatically prefix actions with 'lightsail:'.</td><td>Audited using AWS Config rule 'iam-policy-check' and IAM Access Analyzer.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html', 'https://docs.aws.amazon.com/lightsail/latest/userguide/security_iam_service-with-iam.html']</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0006</td><td>enforce multi-factor authentication (mfa) for root and iam users</td><td>Ensure multi-factor authentication is configured for both the AWS account root user and all IAM users. Enforce using IAM policies and AWS Config rule `iam-user-mfa-enabled` for monitoring compliance.</td><td>All AWS accounts and IAM users</td><td>Without MFA, stolen credentials can lead to unauthorized access, resulting in potential data breaches or privilege escalation.</td><td>AWS does not enforce MFA by default; it needs to be configured for each user.</td><td>Enforced using IAM policies and monitored through AWS Config.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html']</td><td>Absence of MFA allows attackers to exploit stolen credentials easily, leading to unauthorized access to sensitive data and services.</td><td>{'Confidentiality': 'High - Unauthorized access can lead to exposure of sensitive financial information.', 'Integrity': 'High - Potential for significant unauthorized actions and data modifications.', 'Availability': 'Medium - Compromised accounts could result in service disruptions.'}</td><td>Critical under BACEN, ISO 27001, and PCI DSS that stress strong authentication measures.</td><td>High</td><td>Difficult - Credential-based attacks can be stealthy and hard to detect until significant damage is done.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0007</td><td>enforce organization-wide security with scps</td><td>Utilize AWS Organizations to manage Service Control Policies (SCPs) across all member accounts, enforcing minimum security standards and restrictions.</td><td>All accounts within an AWS Organization</td><td>Without SCPs, individual accounts may exceed designated permissions, leading to potential security vulnerabilities.</td><td>Requires AWS Organizations and policies need periodic review.</td><td>Monitored and enforced through AWS Organizations.</td><td>['https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html']</td><td>Without SCPs, individual AWS accounts may operate with excessive permissions, contributing to security vulnerabilities across the organization.</td><td>{'Confidentiality': 'High - Improper permissions can expose sensitive data across the organization.', 'Integrity': 'Medium - SCPs maintain control over critical data management actions.', 'Availability': 'Medium - Helps ensure sustainable service access across organization.'}</td><td>Aligns with BACEN and ISO 27001 ensuring organization-wide cyber governance and compliance.</td><td>Medium</td><td>Moderate - Properly set SCPs simplify the management but require regular audits.</td><td>High</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0008</td><td>ensure automatic creation of awsserviceroleforlightsail</td><td>Monitor to ensure AWSServiceRoleForLightsail is automatically created as needed for instance export operations.</td><td>All AWS accounts utilizing Amazon Lightsail</td><td>Manual role creation can lead to errors.</td><td>Auto-provision by AWS.</td><td>Monitor using AWS Config for role existence.</td><td>['https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-using-service-linked-roles.html#creating-service-linked-role']</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0009</td><td>grant least privilege with iam policies</td><td>Configure IAM policies to grant only the permissions necessary to perform a user's required tasks, adhering to the principle of least privilege. Schedule regular reviews of IAM policies to maintain this principle.</td><td>All IAM users and roles</td><td>Excessive permissions can lead to unintentional data exposure or misuse of resources.</td><td>IAM policies require manual creation and updates to reflect least privilege.</td><td>Policies can be validated using AWS IAM Access Analyzer.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#access_policies-json']</td><td>Excessive permissions increase the risk of data misuse and exposure, leading to potential insider threats and data breaches.</td><td>{'Confidentiality': 'High - Overly broad permissions may allow unauthorized data access.', 'Integrity': 'High - Users might accidentally or maliciously alter data.', 'Availability': 'Medium - Misuse of services could lead to denial of service scenarios.'}</td><td>Critical for compliance with BACEN, ISO 27001, and PCI DSS, which require access controls reflecting minimal necessary permissions.</td><td>High</td><td>High - Excessive permissions are hard to detect and monitor continuously, especially when numerous permissions exceed necessity.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0010</td><td>implement federated access using iam roles</td><td>Use IAM roles to enable federated access for users from external identity providers, ensuring roles are configured with appropriate permissions.</td><td>Federated users accessing AWS resources</td><td>Improperly configured federation can result in unauthorized access.</td><td>Roles need correct configuration and federated access setup using AWS IAM or AWS IAM Identity Center.</td><td>Management through AWS IAM Identity Center or AWS Management Console.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp.html']</td><td>Without proper configuration, federated access can open unauthorized routes into the organization’s systems, risking security breaches and data exposure.</td><td>{'Confidentiality': 'High - Improper federated access may lead to unauthorized data exposure.', 'Integrity': 'Medium - Could lead to unauthorized changes to data and systems.', 'Availability': 'Low - Primarily a confidentiality and integrity risk.'}</td><td>LGPD emphasizes stringent identity and access controls, potentially impacting compliance if controlled improperly.</td><td>Medium</td><td>Moderate - Federated access issues can be complex, requiring diligent monitoring and auditing.</td><td>High</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0011</td><td>implement resource-level permissions using arns or wildcards in lightsail policies</td><td>When declaring resources in IAM policies for Lightsail, use specific ARNs where possible, or wildcards (*) for actions without resource-level support.</td><td>All AWS accounts utilizing Amazon Lightsail</td><td>Indiscriminate use of wildcards can lead to overly permissive policies.</td><td>Some Lightsail actions do not support resource-specific ARNs.</td><td>Requires manual validation.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_resource.html', 'https://docs.aws.amazon.com/lightsail/latest/userguide/security_iam_service-with-iam.html']</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0012</td><td>manage cross-account access using iam roles</td><td>Establish IAM roles for cross-account access, ensuring permissions granted are restricted to necessary actions for trusted accounts only.</td><td>Accounts requiring shared resource access</td><td>Inappropriate permissions increase risk of data breach across accounts.</td><td>Cross-account role establishment requires mutual trust setup.</td><td>Configured using IAM role trust policies and monitored with AWS Config.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_cross-account.html']</td><td>Unmanaged cross-account access can inadvertently expose critical data to non-trusted parties, risking breaches.</td><td>{'Confidentiality': 'High - Misconfigured roles could expose sensitive information to unauthorized accounts.', 'Integrity': 'Medium - Unintended access may lead to unauthorized data changes.', 'Availability': 'Low - More focused on confidentiality and integrity risks.'}</td><td>Critical for maintaining BACEN compliance, as unauthorized data access is heavily prosecuted.</td><td>Medium</td><td>Moderate - Requires robust auditing and continuous monitoring of access grants.</td><td>High</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0013</td><td>monitor lightsail service-linked roles</td><td>Regularly review Lightsail service-linked roles to ensure secure resource access.</td><td>All AWS accounts utilizing Amazon Lightsail</td><td>Unauthorized role changes can cause service disruption.</td><td>AWS defines roles permissions; cannot be modified.</td><td>Monitor with AWS CloudTrail and IAM Access Analyzer.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html', 'https://docs.aws.amazon.com/lightsail/latest/userguide/security_iam_service-with-iam.html']</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0014</td><td>restrict iam role actions to necessary lightsail operations</td><td>Limit IAM role permissions for actions necessary for Lightsail operations to minimize potential attack surfaces.</td><td>IAM roles used with Amazon Lightsail service-linked operations</td><td>Excess permissions increase unauthorized action risks.</td><td>Default roles may have excessive permissions.</td><td>Apply least privilege principles with AWS IAM and enforce with AWS Config rules.</td><td>['https://docs.aws.amazon.com/lightsail/latest/userguide/security_iam_service-with-iam.html']</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0015</td><td>rotate iam user access keys every 90 days</td><td>Implement a policy to ensure that IAM user access keys are rotated at least every 90 days. Use AWS Config to monitor and alert if keys become non-compliant with this lifecycle policy.</td><td>IAM users with long-term credentials</td><td>Stale access keys increase the risk of exposure and unauthorized access if compromised.</td><td>AWS does not automatically rotate access keys; users need to rotate keys manually.</td><td>Monitored using AWS Config rule `access-keys-rotated`.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#rotate-credentials']</td><td>Stale access keys prone to compromise can be exploited for unauthorized access over time, potentially unnoticed.</td><td>{'Confidentiality': 'Medium - Stale keys can be used to access sensitive data.', 'Integrity': 'Medium - Compromised keys allow for unauthorized data manipulation.', 'Availability': 'Low - Primarily affects access control rather than availability.'}</td><td>Aligns with ISO 27001 and PCI DSS guidelines on access management and security best practices.</td><td>Medium</td><td>Moderate - Compromised long-term credentials may take time to be detected.</td><td>Medium</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0016</td><td>use aws sts for temporary iam credentials</td><td>Deploy AWS Security Token Service (STS) to generate temporary, limited-privilege credentials for applications, ensuring token expiration aligns with organizational security policies.</td><td>All applications requiring temporary access</td><td>Compromised long-lived credentials can lead to unauthorized access.</td><td>Requires applications to support token-based authentication.</td><td>Credentials can be generated programmatically via AWS SDKs or CLI.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temporary.html']</td><td>Long-lived credentials, if compromised, can severely impact security and lead to unauthorized exploitation of AWS resources.</td><td>{'Confidentiality': 'High - Exposed credentials may lead to unauthorized data access.', 'Integrity': 'Medium - Temporary breach might still allow unauthorized changes.', 'Availability': 'Medium - Compromised credentials could be used to disrupt services.'}</td><td>Supports compliance with ISO 27001 by managing user access lifecycles securely.</td><td>Medium</td><td>Moderate - Temporary credentials reduce risk exposure, though monitoring for misuse remains essential.</td><td>High</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0017</td><td>use global condition keys in iam policies for lightsail</td><td>Integrate global condition keys in IAM policies for Lightsail to enhance policy control, ensuring compatibility with supported actions and resources.</td><td>All AWS accounts utilizing Amazon Lightsail</td><td>Misconfigured keys can disrupt permission enforcement.</td><td>Customer-managed.</td><td>Verified via AWS IAM Access Analyzer.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html', 'https://docs.aws.amazon.com/lightsail/latest/userguide/security_iam_service-with-iam.html']</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0018</td><td>use tag-based authorization in lightsail iam policies</td><td>Control access based on tags by attaching tags to Lightsail resources and including them in IAM policy condition elements.</td><td>All AWS accounts utilizing Amazon Lightsail</td><td>Improper tag management might allow unauthorized access.</td><td>Manual verification required for applicable actions.</td><td>Assisted with AWS Resource Access Manager.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/access_tags.html', 'https://docs.aws.amazon.com/lightsail/latest/userguide/security_iam_service-with-iam.html']</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0019</td><td>utilize iam roles for applications on ec2 instances</td><td>Ensure applications running on EC2 instances use IAM roles for access management instead of embedding credentials. Assign appropriate roles to EC2 instances upon launch.</td><td>All EC2 instances</td><td>Hardcoding credentials increases the risk of credential leakage and complicates management.</td><td>Requires proper configuration of IAM roles and EC2 instance profiles.</td><td>Enforced by assigning IAM roles to EC2 instances via AWS Management Console or CLI.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html']</td><td>Hardcoding credentials within applications increases the risk of credential leakage and compromises data security.</td><td>{'Confidentiality': 'High - Leaked credentials can be used for unauthorized data access.', 'Integrity': 'Medium - Credentials compromise may lead to unauthorized system modifications.', 'Availability': 'Medium - Misuse of credentials can lead to service disruptions or outages.'}</td><td>May conflict with BACEN and LGPD data protection regulations requiring secure handling of access credentials.</td><td>High</td><td>Moderate - Hardcoded credentials can be exposed in numerous ways, with limited detection until misuse occurs.</td><td>High</td></tr><tr><td>AWS-AMAZON-LIGHTSAIL-2025-0020</td><td>utilize temporary credentials for lightsail access</td><td>Leverage AWS STS to obtain temporary credentials for Amazon Lightsail, ensuring these credentials are securely distributed and managed.</td><td>All AWS accounts utilizing Amazon Lightsail</td><td>Permanent credentials have a higher compromise risk.</td><td>Credentials are transient and need ongoing monitoring.</td><td>Monitor lifecycle with AWS IAM Access Analyzer and CloudWatch.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html', 'https://docs.aws.amazon.com/lightsail/latest/userguide/security_iam_service-with-iam.html']</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td><td>nan</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-LIGHTSAIL-2025-0001: apply permissions boundaries to iam entities</li><li>AWS-AMAZON-LIGHTSAIL-2025-0002: automated updates and patches for amazon lightsail instances and applications</li><li>AWS-AMAZON-LIGHTSAIL-2025-0003: block public access at the s3 bucket level</li><li>AWS-AMAZON-LIGHTSAIL-2025-0004: enable mfa-delete on s3 buckets</li><li>AWS-AMAZON-LIGHTSAIL-2025-0005: enforce iam identity-based policies for lightsail</li><li>AWS-AMAZON-LIGHTSAIL-2025-0006: enforce multi-factor authentication (mfa) for root and iam users</li><li>AWS-AMAZON-LIGHTSAIL-2025-0007: enforce organization-wide security with scps</li><li>AWS-AMAZON-LIGHTSAIL-2025-0008: ensure automatic creation of awsserviceroleforlightsail</li><li>AWS-AMAZON-LIGHTSAIL-2025-0009: grant least privilege with iam policies</li><li>AWS-AMAZON-LIGHTSAIL-2025-0010: implement federated access using iam roles</li><li>AWS-AMAZON-LIGHTSAIL-2025-0011: implement resource-level permissions using arns or wildcards in lightsail policies</li><li>AWS-AMAZON-LIGHTSAIL-2025-0012: manage cross-account access using iam roles</li><li>AWS-AMAZON-LIGHTSAIL-2025-0013: monitor lightsail service-linked roles</li><li>AWS-AMAZON-LIGHTSAIL-2025-0014: restrict iam role actions to necessary lightsail operations</li><li>AWS-AMAZON-LIGHTSAIL-2025-0015: rotate iam user access keys every 90 days</li><li>AWS-AMAZON-LIGHTSAIL-2025-0016: use aws sts for temporary iam credentials</li><li>AWS-AMAZON-LIGHTSAIL-2025-0017: use global condition keys in iam policies for lightsail</li><li>AWS-AMAZON-LIGHTSAIL-2025-0018: use tag-based authorization in lightsail iam policies</li><li>AWS-AMAZON-LIGHTSAIL-2025-0019: utilize iam roles for applications on ec2 instances</li><li>AWS-AMAZON-LIGHTSAIL-2025-0020: utilize temporary credentials for lightsail access</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>

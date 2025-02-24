@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Baseline Report</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Banner container */
+        .banner {
+            text-align: center;
+            background-color: #1a2b36;
+        }
+
+        /* Definições gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Estilo específico para a tabela de versão */
+        #version_table {
+            width: 20%;
+            float: left; /* Alinha a tabela à esquerda */
+            margin-right: 20px; /* Espaço entre a tabela e o conteúdo subsequente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #version_table th {
+            background-color: #005b96; /* Cor de fundo para cabeçalhos */
+            border: 1px solid #005b96;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            width: 40%;
+        }
+        #version_table td {
+            padding: 10px;
+            text-align: center;
+            width: 60%;
+            border: 1px solid #005b96;
+        }
+
+
+        /* Estilo específico para a tabela de controles */
+        #controls_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #e9f5f9; /* Background diferenciado */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #controls_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        #controls_table td {
+            border: 1px solid #005b96;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #controls_table tr:nth-child(even) {
+            background-color: #d6eaf8;
+        }
+
+        /* Estilo específico para a tabela de histórico */
+        #history_table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #history_table th {
+            background-color: #005b96;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        #history_table td {
+            border: 1px solid #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        #history_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Estilo para listas dentro das tabelas */
+        #history_table ul {
+            padding-left: 20px; /* Indentação padrão */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #history_table li {
+            margin-bottom: 5px; /* Espaçamento entre itens */
+        }
+
+        /* Ajuste para dispositivos móveis */
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de versão -->
+    <table id="version_table">
+        
+        <table id="version_table">
+            <tbody>
+                <tr><th>Version</th><td>Version</td></tr>
+                <tr><th>Status</th><td>Status</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Tabela de controles -->
+    <table id="controls_table">
+        
+        <table id='controls_table'>
+            <thead>
+                <tr><th>ID</th><th>Title</th><th>Description</th><th>Applicability</th><th>Security Risk</th><th>Default Behavior / Limitations</th><th>Automation</th><th>References</th><th>Risk Description</th><th>Impact Analysis</th><th>Regulatory & Compliance Impact</th><th>Likelihood of Exploitation</th><th>Detection and Mitigation Difficulty</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>AWS-AMAZON-DATA-PIPELINE-2025-0001</td><td>avoid storing sensitive information in tags or comments</td><td>Implement checks to prevent storing sensitive information in AWS resource tags or free-form text fields.</td><td>All AWS resources</td><td>Sensitive data in unstructured fields may be exposed or leaked.</td><td>AWS does not automatically scan tags for sensitive data.</td><td>Use AWS Lambda and AWS Config rules to scan and notify of policy violations.</td><td>['https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html']</td><td>Sensitive data stored in tags or comments can be exposed inadvertently, leading to potential data leaks.</td><td>{'Confidentiality': 'High - Sensitive data in tags can be accessed without stringent controls.', 'Integrity': 'Low - Primarily affects confidentiality; minimal impact on data integrity.', 'Availability': 'Low - Tags and comments, being metadata, do not directly impact service availability.'}</td><td>Storing sensitive data in unsecure fields may violate LGPD's data protection mandates and could lead to breaches of confidentiality provisions under BACEN guidelines.</td><td>Medium</td><td>Moderate - While scans can detect sensitive tags, enforcement options require process discipline.</td><td>High</td></tr><tr><td>AWS-AMAZON-DATA-PIPELINE-2025-0002</td><td>enable and configure aws cloudtrail for logging</td><td>Ensure AWS CloudTrail is enabled in all regions to log API calls and user activities, delivering logs to an Amazon S3 bucket for retention and analysis.</td><td>All AWS accounts</td><td>Without logging, unauthorized activities may go undetected, leading to potential data breaches and compliance issues.</td><td>AWS does not enable CloudTrail by default; it requires user configuration.</td><td>Enforce using AWS Config rule `cloud-trail-enabled` and monitor via AWS Security Hub.</td><td>['https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html']</td><td>With no logging, malicious activities may go unnoticed, leading to undetected data breaches and unaccountable access.</td><td>{'Confidentiality': 'High - Absence of logs can obscure unauthorized accesses.', 'Integrity': 'High - Without audit trails, data manipulation may not be detected.', 'Availability': 'Medium - Lack of monitoring can lead to untracked services or resource changes.'}</td><td>Not implementing CloudTrail logging violates BACEN, LGPD, PCI DSS, and ISO 27001 requirements for maintaining auditable access and activity records.</td><td>High</td><td>Difficult - Without logs, malicious activities are much harder to detect promptly.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-DATA-PIPELINE-2025-0003</td><td>enable multi-factor authentication (mfa) for aws accounts</td><td>Enforce multi-factor authentication (MFA) for all AWS account access to enhance security, focusing on AWS Management Console and API access. Use AWS IAM policies to mandate MFA enrollment for all users and roles.</td><td>All AWS accounts</td><td>Without MFA, compromised credentials can allow unauthorized access to AWS resources, leading to data breaches.</td><td>AWS IAM does not enforce MFA by default; requires manual configuration.</td><td>Can be enforced using AWS IAM policies and AWS Config rule `iam-user-mfa-enabled`.</td><td>['https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html']</td><td>Without Multi-Factor Authentication, compromised credentials can result in unauthorized access to AWS resources, leading to significant data breaches and potential financial fraud.</td><td>{'Confidentiality': 'High - Unauthorized access to sensitive data can lead to exposure and theft.', 'Integrity': 'High - Compromised accounts can alter, delete, or manipulate critical data.', 'Availability': 'Medium - Accounts could be locked or services disrupted due to unauthorized actions.'}</td><td>Failure to enforce MFA could breach BACEN guidelines on access control and LGPD mandates on data protection, potentially violating PCI DSS and ISO 27001 standards for ensuring strong authentication controls.</td><td>High</td><td>Moderate - Although detection of compromised accounts is possible through logging, preventing unauthorized access is more challenging without MFA.</td><td>Critical</td></tr><tr><td>AWS-AMAZON-DATA-PIPELINE-2025-0004</td><td>enforce tls 1.2 or later for secure communications</td><td>Configure AWS services to require TLS 1.2 or later for all communications, ensuring data is encrypted in transit. Apply configuration settings in services such as ELB and CloudFront to enforce a minimum TLS version.</td><td>All AWS services supporting TLS configuration</td><td>Outdated encryption protocols can lead to data interception and unauthorized access.</td><td>TLS 1.2 is not enforced by default for all services and must be explicitly set.</td><td>Use AWS Config rules such as `elbv2-desired-tls-policy` to ensure TLS policies compliance.</td><td>['https://aws.amazon.com/blogs/security/how-to-ensure-that-ssl-tls-traffic-is-encrypted/', 'https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp-controls.html']</td><td>Using outdated encryption protocols could allow interceptions and unauthorized access to sensitive communications, increasing the risk of data breaches.</td><td>{'Confidentiality': 'High - Data interception through outdated encryption could result in exposure of sensitive transactions.', 'Integrity': 'Medium - While not directly affecting data integrity, interception could lead to false data insertion.', 'Availability': 'Low - Encryption protocols primarily impact data privacy rather than service uptime.'}</td><td>Non-compliance with TLS 1.2 enforcement can lead to violations of BACEN, LGPD, and international standards such as PCI DSS that require secure data transmission practices.</td><td>High</td><td>Difficult - Interception of traffic is not easily detectable in real-time, leading to potential exposure before discovery.</td><td>High</td></tr><tr><td>AWS-AMAZON-DATA-PIPELINE-2025-0005</td><td>enforce use of instance metadata service version 2 (imdsv2)</td><td>Configure Amazon EC2 instances and EMR clusters to enforce the use of IMDSv2 to enhance security against SSRF attacks.</td><td>Amazon EC2 and EMR instances</td><td>IMDSv1 is vulnerable to SSRF attacks.</td><td>IMDSv1 is allowed by default; explicit configuration for IMDSv2 is required.</td><td>Enforce using AWS Config rules and IAM Instance Profiles.</td><td>['https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html']</td><td>Exposure to SSRF attacks can lead to sensitive data leakage and unauthorized access to instance metadata.</td><td>{'Confidentiality': 'High - IMDSv1 weaknesses can lead to exposure of sensitive metadata, including access tokens.', 'Integrity': 'Medium - Attacks exploiting metadata might affect the integrity of applications accessing incorrect or manipulated data.', 'Availability': 'Low - Directly influences confidentiality more than service availability.'}</td><td>Usage of IMDSv1 could violate security measures expected under BACEN and LGPD, risking exploitation vulnerabilities in cloud environments.</td><td>High</td><td>Difficult - SSRF vulnerabilities can be stealthy and challenging to detect without comprehensive monitoring.</td><td>High</td></tr><tr><td>AWS-AMAZON-DATA-PIPELINE-2025-0006</td><td>ensure aws api requests are signed</td><td>Require all AWS API requests to be signed with valid IAM credentials, using STS for temporary credentials to reduce the use of long-term credentials.</td><td>All AWS API requests</td><td>Unsigned requests could lead to unauthorized access to AWS resources.</td><td>AWS SDKs and CLI require signed requests by default, but misuse prevention is necessary.</td><td>Enforce using AWS IAM policies ensuring APIs are not accessible with unsigned requests.</td><td>['https://docs.aws.amazon.com/general/latest/gr/signing_aws_api_requests.html']</td><td>Unsigned API requests could lead to unauthorized access, data tampering, and potentially undetected security incidents.</td><td>{'Confidentiality': 'High - Without signing, data and credentials used in API requests are susceptible to interception and misuse.', 'Integrity': 'High - Unsigned requests risk unauthorized modifications unnoticed.', 'Availability': 'Medium - Access method vulnerabilities could be exploited, impacting service reliability.'}</td><td>Failure to sign API requests could breach BACEN's guidelines on secure communication and LGPD’s requirements for protecting personal and sensitive data, also affecting PCI DSS compliance for secure transactions.</td><td>High</td><td>Low - Misuse detection is feasible with rigorous monitoring, but initial prevention requires strict IAM policies.</td><td>High</td></tr><tr><td>AWS-AMAZON-DATA-PIPELINE-2025-0007</td><td>implement encryption for aws services</td><td>Ensure the use of AWS managed encryption solutions to protect data at rest and in transit across all services.</td><td>All AWS services</td><td>Unencrypted data is vulnerable to unauthorized access and potential data breaches.</td><td>Not all AWS services are encrypted by default; requires manual configuration.</td><td>Enforce and monitor using AWS Config and AWS Security Hub.</td><td>['https://docs.aws.amazon.com/general/latest/gr/aws-sec-standards.html']</td><td>Unencrypted data is susceptible to unauthorized access and disclosure, endangering compliance and data confidentiality.</td><td>{'Confidentiality': 'High - Lack of encryption exposes sensitive data at rest and in transit.', 'Integrity': 'Medium - While encryption primarily protects confidentiality, loss of integrity can occur through unauthorized access.', 'Availability': 'Low - Encryption affects data protection rather than availability directly.'}</td><td>Unencrypted data contravenes LGPD provisions on data protection and BACEN's guidelines on safeguarding customer information, also risking non-compliance with PCI DSS standards.</td><td>High</td><td>Moderate - Without encryption, unauthorized data exposure can be difficult to detect until after the breach.</td><td>High</td></tr><tr><td>AWS-AMAZON-DATA-PIPELINE-2025-0008</td><td>log api requests and identity in cloudtrail</td><td>Ensure that CloudTrail logs all AWS API request activity with detailed event information and identity data for all operations.</td><td>All AWS accounts</td><td>Lack of detailed logs can hinder forensic investigations and accountability.</td><td>CloudTrail logs include necessary details by default where applicable.</td><td>Manual validation required to ensure completeness of captured log details.</td><td>['https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html']</td><td>Lack of comprehensive logging reduces the ability to investigate actions and ensure accountability, potentially masking unauthorized access and activity.</td><td>{'Confidentiality': 'Medium - Limited logging can mask unauthorized access attempts, potentially leading to data breaches.', 'Integrity': 'High - Without complete logging, tracking unauthorized modifications becomes challenging.', 'Availability': 'Medium - Gaps in logging can affect capability to respond to unusual activity promptly.'}</td><td>Failing to log API requests adequately may breach BACEN and LGPD standards, along with violating audit trail requirements under PCI DSS and ISO 27001.</td><td>Medium</td><td>Moderate - Although logs are generally present, ensuring completeness and consistency can be challenging.</td><td>High</td></tr><tr><td>AWS-AMAZON-DATA-PIPELINE-2025-0009</td><td>restrict data pipeline access with iam policies</td><td>Create and manage IAM policies to restrict access to AWS Data Pipeline based on roles, permissions, and attributes.</td><td>All AWS accounts using AWS Data Pipeline</td><td>Uncontrolled access can lead to data breaches and unauthorized data manipulation.</td><td>IAM requires explicit policy definition and attachment.</td><td>Monitor compliance using AWS Config with custom IAM policy rules.</td><td>['https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-control-access.html']</td><td>Inadequate access controls can lead to unauthorized data manipulation and breaches within AWS Data Pipeline.</td><td>{'Confidentiality': 'High - Lack of restrictions can expose sensitive pipeline data to unauthorized access.', 'Integrity': 'High - Uncontrolled access allows data manipulation that can compromise data integrity.', 'Availability': 'Medium - Potential for disruption through unauthorized operations, impacting pipeline operations.'}</td><td>Lack of access controls breaches BACEN's access management requirements and LGPD's data protection regulations, risking data exposure and unauthorized operations.</td><td>Medium</td><td>Moderate - Unauthorized access may not be immediately visually detectable unless actively logged and monitored.</td><td>High</td></tr><tr><td>AWS-AMAZON-DATA-PIPELINE-2025-0010</td><td>utilize fips 140-2 validated endpoints</td><td>Configure AWS CLI and API to utilize FIPS endpoints where necessary to comply with federal standards.</td><td>Environments requiring FIPS compliance</td><td>Non-compliance can result in weak cryptographic security and regulatory violations.</td><td>FIPS endpoints must be manually configured.</td><td>Manual validation is required to ensure endpoints are correctly configured.</td><td>['https://docs.aws.amazon.com/cli/latest/userguide/cli-fips.html']</td><td>Non-compliance with FIPS standards can lead to inadequate cryptographic security, potentially violating regulatory requirements.</td><td>{'Confidentiality': 'Medium - Use of non-validated endpoints could lessen encryption strength.', 'Integrity': 'Medium - Weak cryptography might enable data tampering.', 'Availability': 'Low - Mainly affects the security posture rather than availability.'}</td><td>Failure to use FIPS-validated endpoints can result in non-compliance with specific industry mandates, impacting governance frameworks like LGPD and BACEN.</td><td>Medium</td><td>Moderate - Identifying weak cryptographic implementations often requires comprehensive security assessments.</td><td>Medium</td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+    <br>
+    <div style="clear: both;"></div>
+    <!-- Titulo da secao de controles -->
+    <h1>Change History</h1>
+    <!-- Tabela de histórico de mudanças -->
+    <table id="history_table">
+        
+        <table id='history_table'>
+            <thead>
+                <tr><th>VERSION</th><th>REVISED ON</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Version</td><td>2025-02-24</td><td><div style='text-align: left;'>Short Description: Document Created<br>Excluded Controls: None<br>Included Controls:<br><ul><li>AWS-AMAZON-DATA-PIPELINE-2025-0001: avoid storing sensitive information in tags or comments</li><li>AWS-AMAZON-DATA-PIPELINE-2025-0002: enable and configure aws cloudtrail for logging</li><li>AWS-AMAZON-DATA-PIPELINE-2025-0003: enable multi-factor authentication (mfa) for aws accounts</li><li>AWS-AMAZON-DATA-PIPELINE-2025-0004: enforce tls 1.2 or later for secure communications</li><li>AWS-AMAZON-DATA-PIPELINE-2025-0005: enforce use of instance metadata service version 2 (imdsv2)</li><li>AWS-AMAZON-DATA-PIPELINE-2025-0006: ensure aws api requests are signed</li><li>AWS-AMAZON-DATA-PIPELINE-2025-0007: implement encryption for aws services</li><li>AWS-AMAZON-DATA-PIPELINE-2025-0008: log api requests and identity in cloudtrail</li><li>AWS-AMAZON-DATA-PIPELINE-2025-0009: restrict data pipeline access with iam policies</li><li>AWS-AMAZON-DATA-PIPELINE-2025-0010: utilize fips 140-2 validated endpoints</li></ul></div></td></tr>
+            </tbody>
+        </table>
+        
+    </table>
+</body>
+
+	
+</table>
+</html>
