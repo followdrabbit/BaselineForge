@@ -138,8 +138,8 @@ def run_pipeline(
     run_artifacts_dir = base_session_dir / f"r_{run_short_id}_{id_unico}"
     run_artifacts_dir.mkdir(parents=True, exist_ok=True)
 
-    # Inicializa/Reaproveita assistente específico para o cloud provider e idioma
-    assistant_id = OpenAIService.initialize_assistant("config/config.json", selected_language, vendor)
+    # Inicializa/Reaproveita assistente (se necessário)
+    assistant_id = OpenAIService.initialize_assistant("config/config.json", selected_language)
 
     # Novo URLProcessor para este run
     run_url_processor = URLProcessor(str(run_artifacts_dir), run_short_id)
@@ -159,11 +159,11 @@ def run_pipeline(
         st.error("Nenhum arquivo Markdown foi gerado. Verifique as URLs fornecidas.")
         return [], run_artifacts_dir, id_unico
 
-    # Executa o AgentProcessor com o vendor específico
-    agent_processor = AgentProcessor(config_loader, selected_language, vendor, run_artifacts_dir)
+    # 2) Executa o AgentProcessor
+    agent_processor = AgentProcessor(config_loader, selected_language, run_artifacts_dir)
     final_content = agent_processor.process_files(markdown_files)
 
-    # Salva o resultado final
+    # 3) Salva o resultado final
     final_markdown_path = run_artifacts_dir / f"r_{run_short_id}_final.md"
     final_markdown_path.write_text(final_content, encoding="utf-8")
 
@@ -172,7 +172,6 @@ def run_pipeline(
 
 def main():
     st.title("BaselineForge")
-    st.markdown("**Confira o repositório do projeto no GitHub:** [BaselineForge](https://github.com/followdrabbit/BaselineForge)")  
 
     selected_language = st.selectbox(
         "Selecione o idioma desejado | Select the desired language | Seleccione el idioma deseado:",
@@ -218,7 +217,7 @@ def main():
             label="Download Web Page",
             data=html_content,
             file_name=f"{id_unico}_controls.html",
-            mime="text/html"
+            mime="text/html",
         )
     else:
         st.warning("Arquivos de controles e riscos não foram encontrados.")

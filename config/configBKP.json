@@ -1,0 +1,179 @@
+{
+    "languages": {
+      "EN-US": {
+        "ui": {
+          "menu": {
+            "select_vendor": "Select Vendor",
+            "enter_technology_name": "Enter the Technology Name",
+            "enter_technology_version": "Enter the version of the technology (or leave 'Static' if the technology has no version)",
+            "select_category": "Select Category",
+            "enter_urls": "Enter up to 10 URLs separated by commas",
+            "generate_baseline": "Generate Baseline"
+          },
+          "control_table": {
+            "ID": "ID",
+            "TITLE": "TITLE",
+            "DESCRIPTION": "DESCRIPTION",
+            "APPLICABILITY": "APPLICABILITY",
+            "SECURITY_RISK": "SECURITY RISK",
+            "CRITICALITY": "CRITICALITY",
+            "REFERENCES": "REFERENCES"
+          },
+          "html_sections": {
+            "control_list_title": "Security Controls List",
+            "history_table_title": "Change History"
+          },
+          "history_table": {
+            "version": "VERSION",
+            "revised_on": "REVISED ON",
+            "description": "DESCRIPTION",
+            "short_description": "Short Description: ",
+            "short_description_content": "Document Created",
+            "excluded_controls": "Excluded Controls:",
+            "excluded_controls_content": "None",
+            "included_controls": "Included Controls:"
+          },
+          "version_info": {
+            "version": "Version",
+            "status": "Status",
+            "draft": "Draft"
+          }
+        },
+        "agents": {
+          "Requisitor": {
+            "function": "Requirements Analysis and Extraction Assistant",
+            "identifier": "asst_GHPwsa3u7aFg2tBZMyi8bTPd"
+          },
+          "ControlGen": {
+            "function": "Automated Security Controls Generation Assistant",
+            "identifier": "asst_nHb24Cht7Iz40KSyJjrtqccu"
+          },
+          "ControlRefiner": {
+            "function": "Consolidation and Refinement Assistant",
+            "identifier": "asst_8uwNhKQF217JgtmUvJHA3qor"
+          },
+          "RiskEvaluator": {
+            "function": "Risk Assessment Assistant",
+            "identifier": "asst_TbJtsRIHliLNtgt68slILoQS"
+          }
+        }
+      },
+      "PT-BR": {
+        "ui": {
+          "menu": {
+            "select_vendor": "Selecione o Fornecedor",
+            "enter_technology_name": "Digite o nome da Tecnologia",
+            "enter_technology_version": "Digite a versão da tecnologia (ou deixe com valor padrão 'Static' se a tecnologia não possuir versão)",
+            "select_category": "Selecione a categoria",
+            "enter_urls": "Digite até 10 URLs separadas por vírgulas",
+            "generate_baseline": "Gerar Baseline"
+          },
+          "control_table": {
+            "ID": "ID",
+            "TITLE": "TÍTULO",
+            "DESCRIPTION": "DESCRIÇÃO",
+            "APPLICABILITY": "APLICABILIDADE",
+            "SECURITY_RISK": "RISCO DE SEGURANÇA",
+            "CRITICALITY": "CRITICIDADE",
+            "REFERENCES": "REFERÊNCIAS"
+          },
+          "html_sections": {
+            "control_list_title": "Lista de Controles de Segurança",
+            "history_table_title": "Histórico de Alterações"
+          },
+          "history_table": {
+            "version": "VERSÃO",
+            "revised_on": "REVISADO EM",
+            "description": "DESCRIÇÃO",
+            "short_description": "Descrição Breve: ",
+            "short_description_content": "Documento Criado",
+            "excluded_controls": "Controles Excluídos:",
+            "excluded_controls_content": "Nenhum",
+            "included_controls": "Controles Incluídos:"
+          },
+          "version_info": {
+            "version": "Versão",
+            "status": "Status",
+            "draft": "Rascunho"
+          }
+        },
+        "agents": {
+          "Requisitor": {
+            "function": "Análise e Extração de Requisitos",
+            "identifier": "asst_GHPwsa3u7aFg2tBZMyi8bTPd_PT"
+          },
+          "ControlGen": {
+            "function": "Geração Automatizada de Controles de Segurança",
+            "identifier": "asst_ControlGen_PLACEHOLDER_PT"
+          },
+          "ControlRefiner": {
+            "function": "Consolidation and Refinement Assistant",
+            "identifier": "asst_ControlRefiner_PLACEHOLDER_PT"
+          },
+          "RiskEvaluator": {
+            "function": "Avaliação de Riscos",
+            "identifier": "asst_RiskEvaluator_PLACEHOLDER_PT"
+          }
+        }
+      },
+      "ES-ES": {
+        "ui": {
+          "menu": {
+            "select_vendor": "Seleccione el Proveedor",
+            "enter_technology_name": "Introduzca el nombre de la Tecnología",
+            "enter_technology_version": "Introduzca la versión de la tecnología (o deje 'Static' si la tecnología no tiene versión)",
+            "select_category": "Seleccione la categoría",
+            "enter_urls": "Ingrese hasta 10 URLs separadas por comas",
+            "generate_baseline": "Generar Baseline"
+          },
+          "control_table": {
+            "ID": "ID",
+            "TITLE": "TÍTULO",
+            "DESCRIPTION": "DESCRIPCIÓN",
+            "APPLICABILITY": "APLICABILIDAD",
+            "SECURITY_RISK": "RIESGO DE SEGURIDAD",
+            "CRITICALITY": "CRITICIDAD",
+            "REFERENCES": "REFERENCIAS"
+          },
+          "html_sections": {
+            "control_list_title": "Lista de Controles de Seguridad",
+            "history_table_title": "Historial de Cambios"
+          },
+          "history_table": {
+            "version": "VERSIÓN",
+            "revised_on": "REVISADO EL",
+            "description": "DESCRIPCIÓN",
+            "short_description": "Descripción Corta: ",
+            "short_description_content": "Documento Creado",
+            "excluded_controls": "Controles Excluidos:",
+            "excluded_controls_content": "Ninguno",
+            "included_controls": "Controles Incluidos:"
+          },
+          "version_info": {
+            "version": "Versión",
+            "status": "Estado",
+            "draft": "Borrador"
+          }
+        },
+        "agents": {
+          "Requisitor": {
+            "function": "Análisis y Extracción de Requisitos",
+            "identifier": "asst_GHPwsa3u7aFg2tBZMyi8bTPd_ES"
+          },
+          "ControlGen": {
+            "function": "Generación Automatizada de Controles de Seguridad",
+            "identifier": "asst_ControlGen_PLACEHOLDER_ES"
+          },
+          "ControlRefiner": {
+            "function": "Consolidation and Refinement Assistant",
+            "identifier": "asst_ControlRefiner_PLACEHOLDER_ES"
+          },
+          "RiskEvaluator": {
+            "function": "Evaluación de Riesgos",
+            "identifier": "asst_RiskEvaluator_PLACEHOLDER_ES"
+          }
+        }
+      }
+    }
+  }
+  

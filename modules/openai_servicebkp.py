@@ -55,14 +55,13 @@ class OpenAIService:
             raise RuntimeError(f"Error creating or retrieving assistant: {e}")
 
     @staticmethod
-    def initialize_assistant(config_path: str, selected_language: str, vendor: str) -> str:
+    def initialize_assistant(config_path: str, selected_language: str) -> str:
         """
-        High-level method to initialize an assistant using the config file, selected language, and vendor.
+        High-level method to initialize an assistant using the config file and selected language.
 
         Args:
             config_path (str): Path to the configuration file.
             selected_language (str): Language code to select the appropriate assistant configuration.
-            vendor (str): Cloud service provider (e.g., "AWS", "Azure", "GCP", "Huawei").
 
         Returns:
             str: Assistant ID.
@@ -70,15 +69,15 @@ class OpenAIService:
         # Carrega a configuração utilizando o ConfigLoader
         config_loader = ConfigLoader(config_path)
         try:
-            # Acessa a seção de agentes para o idioma selecionado e o provider específico
-            agents = config_loader.get("languages")[selected_language]["agents"][vendor]
+            # Acessa a seção de agentes para o idioma selecionado
+            agents = config_loader.get("languages")[selected_language]["agents"]
         except KeyError:
-            raise ValueError(f"Assistant configuration for vendor '{vendor}' is missing in the configuration for language '{selected_language}'.")
+            raise ValueError(f"Assistant information is missing in the configuration for language '{selected_language}'.")
 
         # Selecionamos o agente "Requisitor" como padrão (ajuste se necessário)
         assistant_info = agents.get("Requisitor")
         if not assistant_info:
-            raise ValueError(f"Assistant 'Requisitor' information is missing in the configuration for vendor '{vendor}' and language '{selected_language}'.")
+            raise ValueError(f"Assistant 'Requisitor' information is missing in the configuration for language '{selected_language}'.")
 
         # Se o identificador já estiver definido, retorne-o diretamente
         if "identifier" in assistant_info and assistant_info["identifier"]:

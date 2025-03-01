@@ -20,17 +20,16 @@ class AgentProcessor:
      - Os logs são gravados em "agent.log" dentro de `artifacts_dir`.
     """
 
-    def __init__(self, config_loader, selected_language: str, vendor: str, artifacts_dir: Path):
+    def __init__(self, config_loader, selected_language: str, artifacts_dir: Path):
         self.config_loader = config_loader
         self.selected_language = selected_language
-        self.vendor = vendor
         self.artifacts_dir = artifacts_dir
 
         # Arquivo fixo de log no diretório de artefatos
         self.log_file_path = self.artifacts_dir / "agent.log"
 
-        # Carrega as configs dos agentes para o idioma e provider específico a partir do config.json
-        self.agents_config = self.config_loader.get("languages")[self.selected_language]["agents"].get(vendor, {})
+        # Carrega as configs dos agentes a partir do config.json
+        self.agents_config = self.config_loader.get("languages")[self.selected_language]["agents"]
 
     def _log_message(self, message: str):
         """
