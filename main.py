@@ -167,6 +167,21 @@ def run_pipeline(
     final_markdown_path = run_artifacts_dir / f"r_{run_short_id}_final.md"
     final_markdown_path.write_text(final_content, encoding="utf-8")
 
+    # -------------------------------------------------------------------------
+    # NOVA PARTE: CALCULA E ARMAZENA AS INFORMAÇÕES DE TOKENS E CUSTO
+    # -------------------------------------------------------------------------
+    # Compondo o prompt a partir dos arquivos markdown processados (exceto o final)
+    prompt_text = ""
+    for md_file in run_artifacts_dir.glob("*.md"):
+        if "final" not in md_file.name:
+            prompt_text += md_file.read_text(encoding="utf-8")
+    # Calcula as informações de tokens e custo utilizando o método calculate_cost
+    token_info = OpenAIService.calculate_cost(prompt_text, final_content, model="gpt-4")
+    # Armazena as informações na sessão para recuperação na página principal
+    st.session_state.token_info = token_info
+    # Exibe um resumo das informações de tokens e custo na interface
+    st.info(f"Tokens do Prompt: {token_info['prompt_tokens']} | Tokens da Resposta: {token_info['completion_tokens']} | Custo Total: US$ {token_info['total_cost']:.4f}")
+
     return [str(final_markdown_path)], run_artifacts_dir, id_unico
 
 
@@ -222,6 +237,11 @@ def main():
         )
     else:
         st.warning("Arquivos de controles e riscos não foram encontrados.")
+
+    # Exibe as informações de tokens e custo armazenadas na sessão (se existirem)
+    if "token_info" in st.session_state:
+        st.markdown("### Informações de Tokens e Custo da Consulta")
+        st.write(st.session_state.token_info)
 
     return generated_files, artifacts_dir
 
