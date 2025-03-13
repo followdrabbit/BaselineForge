@@ -3,14 +3,14 @@ import streamlit as st
 from modules.openai_service import OpenAIService
 
 class AgentProcessor:
-    def __init__(self, config_loader, selected_language: str, vendor: str, artifacts_dir: Path):
+    def __init__(self, config_loader, vendor: str, artifacts_dir: Path):
         self.config_loader = config_loader
-        self.selected_language = selected_language
         self.vendor = vendor
         self.artifacts_dir = artifacts_dir
         self.log_file_path = self.artifacts_dir / "agent.log"
 
-        self.agents_config = self.config_loader.get("languages")[self.selected_language]["agents"].get(vendor, {})
+        # Agora busca somente em "assistants" -> vendor no novo config.json
+        self.agents_config = self.config_loader.get("assistants", {}).get(vendor, {})
 
     def _log_message(self, message: str):
         """Writes a log message to both the log file and the Streamlit app."""

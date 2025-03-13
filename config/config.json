@@ -1,363 +1,93 @@
 {
-  "languages": {
-    "EN-US": {
-      "ui": {
-        "menu": {
-          "select_vendor": "Select Vendor",
-          "enter_technology_name": "Enter the Technology Name",
-          "enter_technology_version": "Enter the version of the technology (or leave 'Static' if the technology has no version)",
-          "select_category": "Select Category",
-          "enter_urls": "Enter up to 10 URLs separated by commas",
-          "generate_baseline": "Generate Baseline"
-        },
-        "control_table": {
-          "ID": "ID",
-          "TITLE": "TITLE",
-          "DESCRIPTION": "DESCRIPTION",
-          "APPLICABILITY": "APPLICABILITY",
-          "SECURITY_RISK": "SECURITY RISK",
-          "CRITICALITY": "CRITICALITY",
-          "REFERENCES": "REFERENCES"
-        },
-        "html_sections": {
-          "control_list_title": "Security Controls List",
-          "history_table_title": "Change History"
-        },
-        "history_table": {
-          "version": "VERSION",
-          "revised_on": "REVISED ON",
-          "description": "DESCRIPTION",
-          "short_description": "Short Description: ",
-          "short_description_content": "Document Created",
-          "excluded_controls": "Excluded Controls:",
-          "excluded_controls_content": "None",
-          "included_controls": "Included Controls:"
-        },
-        "version_info": {
-          "version": "Version",
-          "status": "Status",
-          "draft": "Draft"
-        }
+  "assistants": {
+    "AWS": {
+      "Requisitor": {
+        "function": "Requirements Analysis and Extraction Assistant for AWS",
+        "identifier": "asst_GHPwsa3u7aFg2tBZMyi8bTPd"
       },
-      "agents": {
-        "AWS": {
-          "Requisitor": {
-            "function": "Requirements Analysis and Extraction Assistant for AWS",
-            "identifier": "asst_GHPwsa3u7aFg2tBZMyi8bTPd"
-          },
-          "ControlGen": {
-            "function": "Automated Security Controls Generation Assistant for AWS",
-            "identifier": "asst_nHb24Cht7Iz40KSyJjrtqccu"
-          },
-          "ControlRefiner": {
-            "function": "Consolidation and Refinement Assistant for AWS",
-            "identifier": "asst_8uwNhKQF217JgtmUvJHA3qor"
-          },
-          "RiskEvaluator": {
-            "function": "Risk Assessment Assistant for AWS",
-            "identifier": "asst_TbJtsRIHliLNtgt68slILoQS"
-          }
-        },
-        "Azure": {
-          "Requisitor": {
-            "function": "Requirements Analysis and Extraction Assistant for Azure",
-            "identifier": "asst_YqO7glt8XnT2rn13UF2wlBtm"
-          },
-          "ControlGen": {
-            "function": "Automated Security Controls Generation Assistant for Azure",
-            "identifier": "asst_kGgdN8XshXtZrJ1sagvJCFAO"
-          },
-          "ControlRefiner": {
-            "function": "Consolidation and Refinement Assistant for Azure",
-            "identifier": "asst_TiU4a2rnlDyQ4MqiBdHYZMeg"
-          },
-          "RiskEvaluator": {
-            "function": "Risk Assessment Assistant for Azure",
-            "identifier": "asst_PxTdtGNWI6ylwkHfInjRpEM7"
-          }
-        },
-        "GCP": {
-          "Requisitor": {
-            "function": "Requirements Analysis and Extraction Assistant for GCP",
-            "identifier": "asst_N4Y2CuaRwvgAdgtbv62o7b6s"
-          },
-          "ControlGen": {
-            "function": "Automated Security Controls Generation Assistant for GCP",
-            "identifier": "asst_JI1h8O0Q7mNb4lE0BJSuC4Qo"
-          },
-          "ControlRefiner": {
-            "function": "Consolidation and Refinement Assistant for GCP",
-            "identifier": "asst_RRptFZdzg0JaDISBkb0WhYig"
-          },
-          "RiskEvaluator": {
-            "function": "Risk Assessment Assistant for GCP",
-            "identifier": "asst_IWrQTFWHniKEwAXZ9SGnBB2y"
-          }
-        },
-        "Huawei": {
-          "Requisitor": {
-            "function": "Requirements Analysis and Extraction Assistant for Huawei",
-            "identifier": "asst_TcU2p9eEze55EuPOg69UAuAS"
-          },
-          "ControlGen": {
-            "function": "Automated Security Controls Generation Assistant for Huawei",
-            "identifier": "asst_f88GkTxtbZ9wfJRei0JcpGvm"
-          },
-          "ControlRefiner": {
-            "function": "Consolidation and Refinement Assistant for Huawei",
-            "identifier": "asst_AFkWOumPxDSkJZiD6MdfyEel"
-          },
-          "RiskEvaluator": {
-            "function": "Risk Assessment Assistant for Huawei",
-            "identifier": "asst_n55vE230Zx5dC97CnYkLam5C"
-          }
-        },
-        "OCI": {
-          "Requisitor": {
-            "function": "Requirements Analysis and Extraction Assistant for OCI",
-            "identifier": "asst_oAtlVL7FHKHuf1ibp0vvdIFj"
-          },
-          "ControlGen": {
-            "function": "Automated Security Controls Generation Assistant for OCI",
-            "identifier": "asst_IdLuEkWX3XHSUq8CW2zcipPE"
-          },
-          "ControlRefiner": {
-            "function": "Consolidation and Refinement Assistant for OCI",
-            "identifier": "asst_fWVDrn2SSBdjUdX0Jw2bdfhQ"
-          },
-          "RiskEvaluator": {
-            "function": "Risk Assessment Assistant for OCI",
-            "identifier": "asst_qYWUtybkTLqQFjH5AAvFcwGW"
-          }
-        }
+      "ControlGen": {
+        "function": "Automated Security Controls Generation Assistant for AWS",
+        "identifier": "asst_nHb24Cht7Iz40KSyJjrtqccu"
+      },
+      "ControlRefiner": {
+        "function": "Consolidation and Refinement Assistant for AWS",
+        "identifier": "asst_8uwNhKQF217JgtmUvJHA3qor"
+      },
+      "RiskEvaluator": {
+        "function": "Risk Assessment Assistant for AWS",
+        "identifier": "asst_TbJtsRIHliLNtgt68slILoQS"
       }
     },
-    "PT-BR": {
-      "ui": {
-        "menu": {
-          "select_vendor": "Selecione o Fornecedor",
-          "enter_technology_name": "Digite o nome da Tecnologia",
-          "enter_technology_version": "Digite a versão da tecnologia (ou deixe 'Static' se a tecnologia não possuir versão)",
-          "select_category": "Selecione a categoria",
-          "enter_urls": "Digite até 10 URLs separadas por vírgulas",
-          "generate_baseline": "Gerar Baseline"
-        },
-        "control_table": {
-          "ID": "ID",
-          "TITLE": "TÍTULO",
-          "DESCRIPTION": "DESCRIÇÃO",
-          "APPLICABILITY": "APLICABILIDADE",
-          "SECURITY_RISK": "RISCO DE SEGURANÇA",
-          "CRITICALITY": "CRITICIDADE",
-          "REFERENCES": "REFERÊNCIAS"
-        },
-        "html_sections": {
-          "control_list_title": "Lista de Controles de Segurança",
-          "history_table_title": "Histórico de Alterações"
-        },
-        "history_table": {
-          "version": "VERSÃO",
-          "revised_on": "REVISADO EM",
-          "description": "DESCRIÇÃO",
-          "short_description": "Descrição Breve: ",
-          "short_description_content": "Documento Criado",
-          "excluded_controls": "Controles Excluídos:",
-          "excluded_controls_content": "Nenhum",
-          "included_controls": "Controles Incluídos:"
-        },
-        "version_info": {
-          "version": "Versão",
-          "status": "Status",
-          "draft": "Rascunho"
-        }
+    "Azure": {
+      "Requisitor": {
+        "function": "Requirements Analysis and Extraction Assistant for Azure",
+        "identifier": "asst_YqO7glt8XnT2rn13UF2wlBtm"
       },
-      "agents": {
-        "AWS": {
-          "Requisitor": {
-            "function": "Assistente de Análise e Extração de Requisitos para AWS",
-            "identifier": "asst_AWS_Requisitor_PT"
-          },
-          "ControlGen": {
-            "function": "Assistente de Geração Automatizada de Controles de Segurança para AWS",
-            "identifier": "asst_AWS_ControlGen_PT"
-          },
-          "ControlRefiner": {
-            "function": "Assistente de Consolidação e Refinamento para AWS",
-            "identifier": "asst_AWS_ControlRefiner_PT"
-          },
-          "RiskEvaluator": {
-            "function": "Assistente de Avaliação de Riscos para AWS",
-            "identifier": "asst_AWS_RiskEvaluator_PT"
-          }
-        },
-        "Azure": {
-          "Requisitor": {
-            "function": "Assistente de Análise e Extração de Requisitos para Azure",
-            "identifier": "asst_Azure_Requisitor_PT"
-          },
-          "ControlGen": {
-            "function": "Assistente de Geração Automatizada de Controles de Segurança para Azure",
-            "identifier": "asst_Azure_ControlGen_PT"
-          },
-          "ControlRefiner": {
-            "function": "Assistente de Consolidação e Refinamento para Azure",
-            "identifier": "asst_Azure_ControlRefiner_PT"
-          },
-          "RiskEvaluator": {
-            "function": "Assistente de Avaliação de Riscos para Azure",
-            "identifier": "asst_Azure_RiskEvaluator_PT"
-          }
-        },
-        "GCP": {
-          "Requisitor": {
-            "function": "Assistente de Análise e Extração de Requisitos para GCP",
-            "identifier": "asst_GCP_Requisitor_PT"
-          },
-          "ControlGen": {
-            "function": "Assistente de Geração Automatizada de Controles de Segurança para GCP",
-            "identifier": "asst_GCP_ControlGen_PT"
-          },
-          "ControlRefiner": {
-            "function": "Assistente de Consolidação e Refinamento para GCP",
-            "identifier": "asst_GCP_ControlRefiner_PT"
-          },
-          "RiskEvaluator": {
-            "function": "Assistente de Avaliação de Riscos para GCP",
-            "identifier": "asst_GCP_RiskEvaluator_PT"
-          }
-        },
-        "Huawei": {
-          "Requisitor": {
-            "function": "Assistente de Análise e Extração de Requisitos para Huawei",
-            "identifier": "asst_Huawei_Requisitor_PT"
-          },
-          "ControlGen": {
-            "function": "Assistente de Geração Automatizada de Controles de Segurança para Huawei",
-            "identifier": "asst_Huawei_ControlGen_PT"
-          },
-          "ControlRefiner": {
-            "function": "Assistente de Consolidação e Refinamento para Huawei",
-            "identifier": "asst_Huawei_ControlRefiner_PT"
-          },
-          "RiskEvaluator": {
-            "function": "Assistente de Avaliação de Riscos para Huawei",
-            "identifier": "asst_Huawei_RiskEvaluator_PT"
-          }
-        }
+      "ControlGen": {
+        "function": "Automated Security Controls Generation Assistant for Azure",
+        "identifier": "asst_kGgdN8XshXtZrJ1sagvJCFAO"
+      },
+      "ControlRefiner": {
+        "function": "Consolidation and Refinement Assistant for Azure",
+        "identifier": "asst_TiU4a2rnlDyQ4MqiBdHYZMeg"
+      },
+      "RiskEvaluator": {
+        "function": "Risk Assessment Assistant for Azure",
+        "identifier": "asst_PxTdtGNWI6ylwkHfInjRpEM7"
       }
     },
-    "ES-ES": {
-      "ui": {
-        "menu": {
-          "select_vendor": "Seleccione el Proveedor",
-          "enter_technology_name": "Introduzca el nombre de la Tecnología",
-          "enter_technology_version": "Introduzca la versión de la tecnología (o deje 'Static' si la tecnología no tiene versión)",
-          "select_category": "Seleccione la categoría",
-          "enter_urls": "Ingrese hasta 10 URLs separadas por comas",
-          "generate_baseline": "Generar Baseline"
-        },
-        "control_table": {
-          "ID": "ID",
-          "TITLE": "TÍTULO",
-          "DESCRIPTION": "DESCRIPCIÓN",
-          "APPLICABILITY": "APLICABILIDAD",
-          "SECURITY_RISK": "RIESGO DE SEGURIDAD",
-          "CRITICALITY": "CRITICIDAD",
-          "REFERENCES": "REFERENCIAS"
-        },
-        "html_sections": {
-          "control_list_title": "Lista de Controles de Seguridad",
-          "history_table_title": "Historial de Cambios"
-        },
-        "history_table": {
-          "version": "VERSIÓN",
-          "revised_on": "REVISADO EL",
-          "description": "DESCRIPCIÓN",
-          "short_description": "Descripción Corta: ",
-          "short_description_content": "Documento Creado",
-          "excluded_controls": "Controles Excluidos:",
-          "excluded_controls_content": "Ninguno",
-          "included_controls": "Controles Incluidos:"
-        },
-        "version_info": {
-          "version": "Versión",
-          "status": "Estado",
-          "draft": "Borrador"
-        }
+    "GCP": {
+      "Requisitor": {
+        "function": "Requirements Analysis and Extraction Assistant for GCP",
+        "identifier": "asst_N4Y2CuaRwvgAdgtbv62o7b6s"
       },
-      "agents": {
-        "AWS": {
-          "Requisitor": {
-            "function": "Asistente de Análisis y Extracción de Requisitos para AWS",
-            "identifier": "asst_AWS_Requisitor_ES"
-          },
-          "ControlGen": {
-            "function": "Asistente de Generación Automatizada de Controles de Seguridad para AWS",
-            "identifier": "asst_AWS_ControlGen_ES"
-          },
-          "ControlRefiner": {
-            "function": "Asistente de Consolidación y Refinamiento para AWS",
-            "identifier": "asst_AWS_ControlRefiner_ES"
-          },
-          "RiskEvaluator": {
-            "function": "Asistente de Evaluación de Riesgos para AWS",
-            "identifier": "asst_AWS_RiskEvaluator_ES"
-          }
-        },
-        "Azure": {
-          "Requisitor": {
-            "function": "Asistente de Análisis y Extracción de Requisitos para Azure",
-            "identifier": "asst_Azure_Requisitor_ES"
-          },
-          "ControlGen": {
-            "function": "Asistente de Generación Automatizada de Controles de Seguridad para Azure",
-            "identifier": "asst_Azure_ControlGen_ES"
-          },
-          "ControlRefiner": {
-            "function": "Asistente de Consolidación y Refinamiento para Azure",
-            "identifier": "asst_Azure_ControlRefiner_ES"
-          },
-          "RiskEvaluator": {
-            "function": "Asistente de Evaluación de Riesgos para Azure",
-            "identifier": "asst_Azure_RiskEvaluator_ES"
-          }
-        },
-        "GCP": {
-          "Requisitor": {
-            "function": "Asistente de Análisis y Extracción de Requisitos para GCP",
-            "identifier": "asst_GCP_Requisitor_ES"
-          },
-          "ControlGen": {
-            "function": "Asistente de Generación Automatizada de Controles de Seguridad para GCP",
-            "identifier": "asst_GCP_ControlGen_ES"
-          },
-          "ControlRefiner": {
-            "function": "Asistente de Consolidación y Refinamiento para GCP",
-            "identifier": "asst_GCP_ControlRefiner_ES"
-          },
-          "RiskEvaluator": {
-            "function": "Asistente de Evaluación de Riesgos para GCP",
-            "identifier": "asst_GCP_RiskEvaluator_ES"
-          }
-        },
-        "Huawei": {
-          "Requisitor": {
-            "function": "Asistente de Análisis y Extracción de Requisitos para Huawei",
-            "identifier": "asst_Huawei_Requisitor_ES"
-          },
-          "ControlGen": {
-            "function": "Asistente de Generación Automatizada de Controles de Seguridad para Huawei",
-            "identifier": "asst_Huawei_ControlGen_ES"
-          },
-          "ControlRefiner": {
-            "function": "Asistente de Consolidación y Refinamiento para Huawei",
-            "identifier": "asst_Huawei_ControlRefiner_ES"
-          },
-          "RiskEvaluator": {
-            "function": "Asistente de Evaluación de Riesgos para Huawei",
-            "identifier": "asst_Huawei_RiskEvaluator_ES"
-          }
-        }
+      "ControlGen": {
+        "function": "Automated Security Controls Generation Assistant for GCP",
+        "identifier": "asst_JI1h8O0Q7mNb4lE0BJSuC4Qo"
+      },
+      "ControlRefiner": {
+        "function": "Consolidation and Refinement Assistant for GCP",
+        "identifier": "asst_RRptFZdzg0JaDISBkb0WhYig"
+      },
+      "RiskEvaluator": {
+        "function": "Risk Assessment Assistant for GCP",
+        "identifier": "asst_IWrQTFWHniKEwAXZ9SGnBB2y"
+      }
+    },
+    "Huawei": {
+      "Requisitor": {
+        "function": "Requirements Analysis and Extraction Assistant for Huawei",
+        "identifier": "asst_TcU2p9eEze55EuPOg69UAuAS"
+      },
+      "ControlGen": {
+        "function": "Automated Security Controls Generation Assistant for Huawei",
+        "identifier": "asst_f88GkTxtbZ9wfJRei0JcpGvm"
+      },
+      "ControlRefiner": {
+        "function": "Consolidation and Refinement Assistant for Huawei",
+        "identifier": "asst_AFkWOumPxDSkJZiD6MdfyEel"
+      },
+      "RiskEvaluator": {
+        "function": "Risk Assessment Assistant for Huawei",
+        "identifier": "asst_n55vE230Zx5dC97CnYkLam5C"
+      }
+    },
+    "OCI": {
+      "Requisitor": {
+        "function": "Requirements Analysis and Extraction Assistant for OCI",
+        "identifier": "asst_oAtlVL7FHKHuf1ibp0vvdIFj"
+      },
+      "ControlGen": {
+        "function": "Automated Security Controls Generation Assistant for OCI",
+        "identifier": "asst_IdLuEkWX3XHSUq8CW2zcipPE"
+      },
+      "ControlRefiner": {
+        "function": "Consolidation and Refinement Assistant for OCI",
+        "identifier": "asst_fWVDrn2SSBdjUdX0Jw2bdfhQ"
+      },
+      "RiskEvaluator": {
+        "function": "Risk Assessment Assistant for OCI",
+        "identifier": "asst_qYWUtybkTLqQFjH5AAvFcwGW"
       }
     }
   }
