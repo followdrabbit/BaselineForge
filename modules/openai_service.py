@@ -117,7 +117,6 @@ class OpenAIService:
 
             responses = []
             while True:
-                # Verifica o status da execução
                 run_status = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id).status
                 if run_status == "completed":
                     messages = client.beta.threads.messages.list(thread_id=thread.id)
@@ -125,82 +124,68 @@ class OpenAIService:
                     break
                 elif run_status in ["queued", "in_progress"]:
                     time.sleep(3)
+                elif run_status in ["failed", "cancelled", "expired"]:
+                    raise RuntimeError(f"Run failed or was cancelled/expired: {run_status}")
                 else:
                     raise RuntimeError(f"Unexpected run status: {run_status}")
-
             return responses
         except Exception as e:
             raise RuntimeError(f"Error during OpenAI assistant execution: {e}")
 
-    # -------------------------------------------------------------------------
-    # NOVAS FUNÇÕES PARA CONTAGEM DE TOKENS E CÁLCULO DE CUSTO
-    # -------------------------------------------------------------------------
     @staticmethod
     def count_tokens(text: str, model: str = "gpt-4") -> int:
         """
-        Conta a quantidade de tokens no texto fornecido utilizando a codificação específica do modelo.
-        
-        Args:
-            text (str): Texto a ser tokenizado.
-            model (str): Nome do modelo para determinar a codificação (padrão "gpt-4").
-        
-        Returns:
-            int: Número de tokens no texto.
+        Counts the number of tokens in the provided text.
         """
         try:
-            # Seleciona a codificação de acordo com o modelo
-            if model.startswith("gpt-4"):
-                encoding = tiktoken.encoding_for_model("gpt-4")
-            elif model.startswith("gpt-3.5-turbo"):
-                encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
-            else:
-                # Caso o modelo não seja reconhecido, utiliza uma codificação padrão
-                encoding = tiktoken.get_encoding("cl100k_base")
-            tokens = encoding.encode(text)
-            return len(tokens)
+            model_encodings = {
+                "gpt-4": "gpt-4",
+                "gpt-4o": "gpt-4o",
+                "gpt-3.5-turbo": "gpt-3.5-turbo"
+            }
+
+            encoding_name = model_encodings.get(model.lower(), None)
+            if not encoding_name:
+                raise ValueError(f"Unsupported model: {model}. Update the encoding mapping.")
+
+            encoding = tiktoken.encoding_for_model(encoding_name)
+
+            # Process text in chunks if it's very long
+            max_chunk_size = 4096  # Adjust based on memory constraints
+            text_chunks = [text[i:i+max_chunk_size] for i in range(0, len(text), max_chunk_size)]
+
+            return sum(len(encoding.encode(chunk)) for chunk in text_chunks)
         except Exception as e:
             raise RuntimeError(f"Error counting tokens: {e}")
 
     @staticmethod
-    def calculate_cost(prompt: str, completion: str, model: str = "gpt-4") -> dict:
-        """
-        Calcula o custo de uma requisição com base na contagem de tokens do prompt e da resposta,
-        utilizando a tabela de preços da OpenAI. Essa função retorna um dicionário com a contagem
-        de tokens e os custos individuais e total, permitindo que estas informações sejam facilmente
-        recuperadas e exibidas na página principal do Streamlit.
-        
-        Args:
-            prompt (str): Texto de entrada fornecido ao modelo.
-            completion (str): Texto gerado pelo modelo.
-            model (str): Nome do modelo para contagem de tokens e definição do custo (padrão "gpt-4").
-        
-        Returns:
-            dict: Dicionário contendo:
-                - "prompt_tokens": quantidade de tokens do prompt.
-                - "completion_tokens": quantidade de tokens da resposta.
-                - "total_tokens": soma dos tokens do prompt e da resposta.
-                - "prompt_cost": custo calculado para os tokens do prompt.
-                - "completion_cost": custo calculado para os tokens da resposta.
-                - "total_cost": custo total da requisição.
-        """
-        # Tabela de preços (valores em dólares por 1000 tokens) - estes valores podem ser atualizados conforme a OpenAI
+    def calculate_cost(prompt, completion, model="gpt-4o") -> dict:
+        # If the inputs are strings, count the tokens. Otherwise, assume they are pre-counted.
+        if isinstance(prompt, str):
+            prompt_tokens = OpenAIService.count_tokens(prompt, model)
+        else:
+            prompt_tokens = prompt  # ✅ Use pre-counted value
+
+        if isinstance(completion, str):
+            completion_tokens = OpenAIService.count_tokens(completion, model)
+        else:
+            completion_tokens = completion  # ✅ Use pre-counted value
+
+        # Define the latest pricing table (per 1,000 tokens)
         pricing_table = {
             "gpt-4": {"prompt": 0.03, "completion": 0.06},
-            "gpt-3.5-turbo": {"prompt": 0.002, "completion": 0.002}
+            "gpt-3.5-turbo": {"prompt": 0.002, "completion": 0.002},
+            "gpt-4o": {"prompt": 0.0025, "completion": 0.01}
         }
+
         if model not in pricing_table:
             raise ValueError(f"Pricing for model {model} is not defined in the pricing table.")
 
-        # Conta os tokens do prompt e da resposta usando o método count_tokens
-        prompt_tokens = OpenAIService.count_tokens(prompt, model)
-        completion_tokens = OpenAIService.count_tokens(completion, model)
-
-        # Calcula o custo para cada parte (a tabela de preços é definida por 1000 tokens)
+        # Calculate costs
         prompt_cost = (prompt_tokens / 1000) * pricing_table[model]["prompt"]
         completion_cost = (completion_tokens / 1000) * pricing_table[model]["completion"]
         total_cost = prompt_cost + completion_cost
 
-        # Retorna um dicionário com as informações necessárias para exibição na página principal do Streamlit
         return {
             "prompt_tokens": prompt_tokens,
             "completion_tokens": completion_tokens,
