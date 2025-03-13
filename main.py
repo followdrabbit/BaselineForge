@@ -11,113 +11,79 @@ from modules.cleanup_util import cleanup_generated_files
 from modules.agent_processor import AgentProcessor
 from modules.data_importer import load_markdown_as_dataframe
 
-def initialize_dependencies(selected_language: str) -> Tuple[ConfigLoader, URLProcessor, HTMLGenerator, dict, Path, str]:
+def initialize_dependencies() -> Tuple[ConfigLoader, URLProcessor, HTMLGenerator, Path, str]:
     """
-    Inicializa as dependências da aplicação garantindo que apenas UM session_id seja gerado
-    por sessão. O session_id é encurtado para evitar ultrapassar limites de path no Windows.
+    Initializes the application's dependencies, ensuring that only ONE session_id is generated per session.
+    The session_id is shortened to avoid path length issues on Windows.
     """
     config_loader = ConfigLoader(config_file="config/config.json")
-    try:
-        menu_config = config_loader.get_menu(selected_language)
-    except Exception as e:
-        st.error(f"Erro ao carregar as configurações do idioma {selected_language}: {e}")
-        st.stop()
 
+    # Generate or get the session_id
     if "session_id" not in st.session_state:
         st.session_state.session_id = IDGenerator.generate_uuid()
 
     session_id = st.session_state.session_id
     short_session_id = session_id[:8]
+
     base_session_dir = Path("artefacts") / f"s_{short_session_id}"
     base_session_dir.mkdir(parents=True, exist_ok=True)
+
     url_processor = URLProcessor(str(base_session_dir), short_session_id)
     html_generator = HTMLGenerator()
 
-    return config_loader, url_processor, html_generator, menu_config, base_session_dir, short_session_id
+    return config_loader, url_processor, html_generator, base_session_dir, short_session_id
 
 
-def get_user_inputs(menu_config: dict) -> Tuple[str, str, List[str]]:
+def get_user_inputs() -> Tuple[str, str, List[str]]:
     """
-    Coleta os inputs do usuário (fornecedor, tecnologia e URLs) usando o menu de configuração.
+    Collect user inputs (vendor, technology, and URLs) directly in the main.py, in English.
     """
-    vendor = st.selectbox(
-        menu_config.get("select_vendor", "Selecione o Fornecedor"),
-        ["AWS", "Azure", "GCP", "Huawei", "OCI"]
-    )
-    tecnologia = st.text_input(
-        menu_config.get("enter_technology_name", "Digite o nome da Tecnologia")
-    )
-    urls_input = st.text_area(
-        menu_config.get("enter_urls", "Digite até 10 URLs separadas por vírgula"), ""
-    )
+    st.write("Please fill in the fields below to generate your baseline:")
+
+    vendor_label = "Select your Cloud Provider (Vendor)"
+    technology_label = "Enter your Technology Name"
+    urls_label = "Enter up to 10 URLs, separated by commas"
+
+    vendor = st.selectbox(vendor_label, ["AWS", "Azure", "GCP", "Huawei", "OCI"])
+    technology = st.text_input(technology_label)
+    urls_input = st.text_area(urls_label, "")
     urls = [url.strip() for url in urls_input.split(",") if url.strip()]
-    return vendor, tecnologia, urls
 
-
-def generate_baseline_html(
-    html_generator: HTMLGenerator,
-    config_loader: ConfigLoader,
-    selected_language: str,
-    final_markdown_path: str,
-    artifacts_dir: Path,
-    run_short_id: str,
-    id_unico: str
-) -> str:
-    """
-    Gera o HTML final do baseline usando o HTMLGenerator.
-    O run_short_id é usado para nomear o arquivo de saída e o id_unico é passado
-    para manter o padrão do ID na tabela de SECURITY CONTROLS.
-    """
-    template_path = "templates/template_html.html"
-    output_html_path = artifacts_dir / f"r_{run_short_id}_final.html"
-
-    html_sections = config_loader.get_html_sections(selected_language)
-    version_info = config_loader.get_version_info(selected_language)
-    history_table = config_loader.get_history_table(selected_language)
-    control_table_labels = config_loader.get_control_table(selected_language)
-
-    html_content = html_generator.generate_html(
-        template_path=template_path,
-        output_html=str(output_html_path),
-        html_sections=html_sections,
-        version_info=version_info,
-        controls_df=load_markdown_as_dataframe(final_markdown_path.replace("final.md", "controlgen_unificado_ControlRefiner.md")),
-        risks_df=load_markdown_as_dataframe(final_markdown_path.replace("final.md", "controlgen_unificado_RiskEvaluator.md")),
-        history_config=history_table,
-        base_control_id=id_unico
-    )
-
-    return html_content
+    return vendor, technology, urls
 
 
 def run_pipeline(
     config_loader: ConfigLoader,
     url_processor: URLProcessor,
     html_generator: HTMLGenerator,
-    menu_config: dict,
-    base_session_dir: Path,
-    selected_language: str,
-    short_session_id: str
+    base_session_dir: Path
 ) -> Tuple[List[str], Path, str]:
     """
-    Executa todo o pipeline para gerar o baseline.
-    A cada clique em "Gerar Baseline", cria um subdiretório usando run_id.
-    Retorna a lista de arquivos gerados, o diretório de artefatos e o id_unico.
+    Executes the entire pipeline to generate the baseline.
+    On each click of the "Generate Baseline" button, it creates a subdirectory using run_id.
+    Returns the list of generated files, the artifacts directory, and the unique ID (id_unico).
     """
-    vendor, tecnologia, urls = get_user_inputs(menu_config)
-    with st.form("Formulário de ID"):
-        submit_button = st.form_submit_button(menu_config.get("generate_baseline", "Gerar Baseline"))
+    vendor, technology, urls = get_user_inputs()
+
+    st.write("Click the button to generate the baseline:")
+    with st.form("BaselineForm"):
+        generate_button_label = "Generate Baseline"
+        submit_button = st.form_submit_button(generate_button_label)
+
     if not submit_button:
-        st.info("Aguardando submissão do formulário...")
-        return [], base_session_dir, ""
-    if not (vendor and tecnologia and urls):
-        st.error("Por favor, preencha todos os campos obrigatórios.")
-        return [], base_session_dir, ""
-    if len(urls) > 10:
-        st.error("Por favor, insira no máximo 10 URLs.")
+        st.info("Waiting for form submission...")
         return [], base_session_dir, ""
 
-    id_unico = IDGenerator.generate_control_id(vendor, tecnologia, datetime.now().year, 1)
+    if not (vendor and technology and urls):
+        st.error("Please fill in all required fields.")
+        return [], base_session_dir, ""
+
+    if len(urls) > 10:
+        st.error("Please enter a maximum of 10 URLs.")
+        return [], base_session_dir, ""
+
+    # Generate a base ID for the controls
+    id_unico = IDGenerator.generate_control_id(vendor, technology, datetime.now().year, 1)
 
     run_id = IDGenerator.generate_uuid()
     run_short_id = run_id[:8]
@@ -125,10 +91,13 @@ def run_pipeline(
     run_artifacts_dir = base_session_dir / f"r_{run_short_id}_{id_unico}"
     run_artifacts_dir.mkdir(parents=True, exist_ok=True)
 
-    assistant_id = OpenAIService.initialize_assistant("config/config.json", selected_language, vendor)
+    # Initialize the assistant (e.g., the "Requisitor" agent)
+    assistant_id = OpenAIService.initialize_assistant("config/config.json", vendor, agent_name="Requisitor")
 
+    # Prepare a URLProcessor specific to this "run"
     run_url_processor = URLProcessor(str(run_artifacts_dir), run_short_id)
 
+    # Download and convert each URL to Markdown
     markdown_files = []
     for url in urls:
         html_content = run_url_processor.fetch_page_content(url)
@@ -136,69 +105,88 @@ def run_pipeline(
             markdown_path = run_url_processor.save_as_markdown(url, html_content)
             markdown_files.append(Path(markdown_path))
         else:
-            st.warning(f"Falha ao processar URL: {url}")
+            st.warning(f"Failed to process URL: {url}")
 
     if not markdown_files:
-        st.error("Nenhum arquivo Markdown foi gerado. Verifique as URLs fornecidas.")
+        st.error("No Markdown file was generated. Please check the provided URLs.")
         return [], run_artifacts_dir, id_unico
 
-    agent_processor = AgentProcessor(config_loader, selected_language, vendor, run_artifacts_dir)
+    # Process files with the AgentProcessor
+    agent_processor = AgentProcessor(config_loader, vendor, run_artifacts_dir)
     final_content = agent_processor.process_files(markdown_files)
 
+    # Save the final output
     final_markdown_path = run_artifacts_dir / f"r_{run_short_id}_final.md"
     final_markdown_path.write_text(final_content, encoding="utf-8")
+
+    # Count tokens and display cost
     prompt_text = ""
     for md_file in run_artifacts_dir.glob("*.md"):
         if "final" not in md_file.name:
             prompt_text += md_file.read_text(encoding="utf-8")
-    
+
     prompt_tokens = OpenAIService.count_tokens(prompt_text, "gpt-4o")
     completion_tokens = OpenAIService.count_tokens(final_content, "gpt-4o")
     token_info = OpenAIService.calculate_cost(prompt_tokens, completion_tokens, model="gpt-4o")
 
     st.session_state.token_info = token_info
-    st.info(f"Tokens do Prompt: {token_info['prompt_tokens']} | Tokens da Resposta: {token_info['completion_tokens']} | Custo Total: US$ {token_info['total_cost']:.4f}")
+    st.info(
+        f"Prompt Tokens: {token_info['prompt_tokens']} | "
+        f"Response Tokens: {token_info['completion_tokens']} | "
+        f"Total Cost: US$ {token_info['total_cost']:.4f}"
+    )
 
     return [str(final_markdown_path)], run_artifacts_dir, id_unico
 
 
 def main():
-    st.title("BaselineForge")
-    st.markdown("**Confira o repositório do projeto no GitHub:** [BaselineForge](https://github.com/followdrabbit/BaselineForge)")  
+    st.title("Welcome to BaselineForge")
+    st.markdown("**Check out the project's GitHub repository:** [BaselineForge](https://github.com/followdrabbit/BaselineForge)")
 
-    selected_language = st.selectbox(
-        "Selecione o idioma desejado | Select the desired language | Seleccione el idioma deseado:",
-        ["EN-US", "PT-BR", "ES-ES"]
-    )
-
-    config_loader, url_processor, html_generator, menu_config, base_session_dir, short_session_id = initialize_dependencies(selected_language)
+    config_loader, url_processor, html_generator, base_session_dir, short_session_id = initialize_dependencies()
 
     generated_files, artifacts_dir, id_unico = run_pipeline(
         config_loader,
         url_processor,
         html_generator,
-        menu_config,
-        base_session_dir,
-        selected_language,
-        short_session_id
+        base_session_dir
     )
 
+    # (Optional) Generate final HTML if you want a downloadable report
     control_refiner_path = artifacts_dir / "controlgen_unified_ControlRefiner.md"
     risk_evaluator_path = artifacts_dir / "controlgen_unified_RiskEvaluator.md"
     if control_refiner_path.exists() and risk_evaluator_path.exists():
         df_controls = load_markdown_as_dataframe(str(control_refiner_path))
         df_risks = load_markdown_as_dataframe(str(risk_evaluator_path))
 
+        # Hardcoded data for HTML sections (since we're not reading from config.json for these)
+        html_sections = {
+            "control_list_title": "Security Controls",
+            "history_table_title": "Change History"
+        }
+        version_info = {
+            "version": "1.0",
+            "status": "Draft"
+        }
+        history_config = {
+            "short_description": "Short Description",
+            "short_description_content": "Document Created",
+            "excluded_controls": "Excluded Controls",
+            "excluded_controls_content": "None",
+            "included_controls": "Included Controls"
+        }
+
         html_content = html_generator.generate_html(
             template_path="templates/template_html.html",
             output_html=str(artifacts_dir / f"{id_unico}_final.html"),
-            html_sections=config_loader.get_html_sections(selected_language),
-            version_info=config_loader.get_version_info(selected_language),
+            html_sections=html_sections,
+            version_info=version_info,
             controls_df=df_controls,
             risks_df=df_risks,
-            history_config=config_loader.get("history_table", {}),
+            history_config=history_config,
             base_control_id=id_unico
         )
+
         st.download_button(
             label="Download Web Page",
             data=html_content,
@@ -206,9 +194,10 @@ def main():
             mime="text/html"
         )
     else:
-        st.warning("Arquivos de controles e riscos não foram encontrados.")
+        st.warning("Control and risk files were not found.")
 
     return generated_files, artifacts_dir
+
 
 if __name__ == "__main__":
     generated_files = []

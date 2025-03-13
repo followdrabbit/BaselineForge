@@ -56,38 +56,39 @@ class OpenAIService:
             raise RuntimeError(f"Error creating or retrieving assistant: {e}")
 
     @staticmethod
-    def initialize_assistant(config_path: str, selected_language: str, vendor: str) -> str:
+    def initialize_assistant(config_path: str, vendor: str, agent_name: str = "Requisitor") -> str:
         """
-        High-level method to initialize an assistant using the config file, selected language, and vendor.
+        High-level method to initialize an assistant using the config file and vendor.
 
         Args:
             config_path (str): Path to the configuration file.
-            selected_language (str): Language code to select the appropriate assistant configuration.
-            vendor (str): Cloud service provider (e.g., "AWS", "Azure", "GCP", "Huawei").
+            vendor (str): Cloud service provider (e.g., "AWS", "Azure", "GCP", "Huawei", "OCI").
+            agent_name (str): Which agent to load (e.g., "Requisitor", "ControlGen", etc.). Default is "Requisitor".
 
         Returns:
             str: Assistant ID.
         """
         # Carrega a configuração utilizando o ConfigLoader
         config_loader = ConfigLoader(config_path)
-        try:
-            # Acessa a seção de agentes para o idioma selecionado e o provider específico
-            agents = config_loader.get("languages")[selected_language]["agents"][vendor]
-        except KeyError:
-            raise ValueError(f"Assistant configuration for vendor '{vendor}' is missing in the configuration for language '{selected_language}'.")
 
-        # Selecionamos o agente "Requisitor" como padrão (ajuste se necessário)
-        assistant_info = agents.get("Requisitor")
-        if not assistant_info:
-            raise ValueError(f"Assistant 'Requisitor' information is missing in the configuration for vendor '{vendor}' and language '{selected_language}'.")
+        # Agora busca diretamente em "assistants" -> vendor -> agent_name
+        agent_info = (
+            config_loader.get("assistants", {})
+            .get(vendor, {})
+            .get(agent_name, {})
+        )
+        if not agent_info:
+            raise ValueError(
+                f"Configuration for vendor '{vendor}' and agent '{agent_name}' not found in config.json."
+            )
 
         # Se o identificador já estiver definido, retorne-o diretamente
-        if "identifier" in assistant_info and assistant_info["identifier"]:
-            return assistant_info["identifier"]
+        if "identifier" in agent_info and agent_info["identifier"]:
+            return agent_info["identifier"]
 
         # Caso contrário, inicializa o cliente e cria/recupera o assistente
         client = OpenAIService.setup_client()  # Obtém a chave de API do Streamlit secrets
-        return OpenAIService.create_or_get_assistant(client, assistant_info)
+        return OpenAIService.create_or_get_assistant(client, agent_info)
 
     @staticmethod
     def run_assistant(content: str, assistant_id: str):
@@ -120,7 +121,11 @@ class OpenAIService:
                 run_status = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id).status
                 if run_status == "completed":
                     messages = client.beta.threads.messages.list(thread_id=thread.id)
-                    responses = [msg.content[0].text.value for msg in messages if msg.role == "assistant"]
+                    responses = [
+                        msg.content[0].text.value 
+                        for msg in messages 
+                        if msg.role == "assistant"
+                    ]
                     break
                 elif run_status in ["queued", "in_progress"]:
                     time.sleep(3)
@@ -160,6 +165,10 @@ class OpenAIService:
 
     @staticmethod
     def calculate_cost(prompt, completion, model="gpt-4o") -> dict:
+        """
+        Calculates the cost of a prompt+completion scenario based on token usage 
+        and a defined pricing table for the specified model.
+        """
         # If the inputs are strings, count the tokens. Otherwise, assume they are pre-counted.
         if isinstance(prompt, str):
             prompt_tokens = OpenAIService.count_tokens(prompt, model)
