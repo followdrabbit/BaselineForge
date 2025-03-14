@@ -13,14 +13,15 @@ from modules.data_importer import load_markdown_as_dataframe
 
 def initialize_dependencies(selected_language: str) -> Tuple[ConfigLoader, URLProcessor, HTMLGenerator, dict, Path, str]:
     """
-    Inicializa as dependências da aplicação garantindo que apenas UM session_id seja gerado
-    por sessão. O session_id é encurtado para evitar ultrapassar limites de path no Windows.
+    Initializes the application's dependencies, ensuring that only ONE session_id
+    is generated per session. The session_id is shortened to avoid exceeding path
+    limits on Windows.
     """
     config_loader = ConfigLoader(config_file="config/config.json")
     try:
         menu_config = config_loader.get_menu(selected_language)
     except Exception as e:
-        st.error(f"Erro ao carregar as configurações do idioma {selected_language}: {e}")
+        st.error(f"Error loading settings for language '{selected_language}': {e}")
         st.stop()
 
     if "session_id" not in st.session_state:
@@ -38,20 +39,20 @@ def initialize_dependencies(selected_language: str) -> Tuple[ConfigLoader, URLPr
 
 def get_user_inputs(menu_config: dict) -> Tuple[str, str, List[str]]:
     """
-    Coleta os inputs do usuário (fornecedor, tecnologia e URLs) usando o menu de configuração.
+    Collects user inputs (vendor, technology, and URLs) using the configuration menu.
     """
     vendor = st.selectbox(
-        menu_config.get("select_vendor", "Selecione o Fornecedor"),
+        menu_config.get("select_vendor", "Select the Vendor"),
         ["AWS", "Azure", "GCP", "Huawei", "OCI"]
     )
-    tecnologia = st.text_input(
-        menu_config.get("enter_technology_name", "Digite o nome da Tecnologia")
+    technology = st.text_input(
+        menu_config.get("enter_technology_name", "Enter the Technology Name")
     )
     urls_input = st.text_area(
-        menu_config.get("enter_urls", "Digite até 10 URLs separadas por vírgula"), ""
+        menu_config.get("enter_urls", "Enter up to 10 URLs separated by commas"), ""
     )
     urls = [url.strip() for url in urls_input.split(",") if url.strip()]
-    return vendor, tecnologia, urls
+    return vendor, technology, urls
 
 
 def generate_baseline_html(
@@ -64,9 +65,9 @@ def generate_baseline_html(
     id_unico: str
 ) -> str:
     """
-    Gera o HTML final do baseline usando o HTMLGenerator.
-    O run_short_id é usado para nomear o arquivo de saída e o id_unico é passado
-    para manter o padrão do ID na tabela de SECURITY CONTROLS.
+    Generates the final baseline HTML using the HTMLGenerator.
+    The run_short_id is used for naming the output file, and id_unico
+    is passed to maintain the ID pattern in the SECURITY CONTROLS table.
     """
     template_path = "templates/template_html.html"
     output_html_path = artifacts_dir / f"r_{run_short_id}_final.html"
@@ -81,8 +82,8 @@ def generate_baseline_html(
         output_html=str(output_html_path),
         html_sections=html_sections,
         version_info=version_info,
-        controls_df=load_markdown_as_dataframe(final_markdown_path.replace("final.md", "controlgen_unificado_ControlRefiner.md")),
-        risks_df=load_markdown_as_dataframe(final_markdown_path.replace("final.md", "controlgen_unificado_RiskEvaluator.md")),
+        controls_df=load_markdown_as_dataframe(final_markdown_path.replace("final.md", "controlgen_unified_ControlRefiner.md")),
+        risks_df=load_markdown_as_dataframe(final_markdown_path.replace("final.md", "controlgen_unified_RiskEvaluator.md")),
         history_config=history_table,
         base_control_id=id_unico
     )
@@ -100,24 +101,29 @@ def run_pipeline(
     short_session_id: str
 ) -> Tuple[List[str], Path, str]:
     """
-    Executa todo o pipeline para gerar o baseline.
-    A cada clique em "Gerar Baseline", cria um subdiretório usando run_id.
-    Retorna a lista de arquivos gerados, o diretório de artefatos e o id_unico.
+    Executes the entire pipeline to generate the baseline.
+    Each click on "Generate Baseline" creates a subdirectory using run_id.
+    Returns the list of generated files, the artifacts directory, and id_unico.
     """
-    vendor, tecnologia, urls = get_user_inputs(menu_config)
-    with st.form("Formulário de ID"):
-        submit_button = st.form_submit_button(menu_config.get("generate_baseline", "Gerar Baseline"))
+    vendor, technology, urls = get_user_inputs(menu_config)
+    with st.form("ID Form"):
+        submit_button = st.form_submit_button(menu_config.get("generate_baseline", "Generate Baseline"))
     if not submit_button:
-        st.info("Aguardando submissão do formulário...")
+        st.info("Waiting for form submission...")
         return [], base_session_dir, ""
-    if not (vendor and tecnologia and urls):
-        st.error("Por favor, preencha todos os campos obrigatórios.")
+    
+    # Clear agent_costs BEFORE starting a new pipeline
+    st.session_state["agent_costs"] = {}
+
+    if not (vendor and technology and urls):
+        st.error("Please fill in all required fields.")
         return [], base_session_dir, ""
     if len(urls) > 10:
-        st.error("Por favor, insira no máximo 10 URLs.")
+        st.error("Please enter at most 10 URLs.")
         return [], base_session_dir, ""
 
-    id_unico = IDGenerator.generate_control_id(vendor, tecnologia, datetime.now().year, 1)
+    # Generate a unique ID for the controls
+    id_unico = IDGenerator.generate_control_id(vendor, technology, datetime.now().year, 1)
 
     run_id = IDGenerator.generate_uuid()
     run_short_id = run_id[:8]
@@ -125,8 +131,8 @@ def run_pipeline(
     run_artifacts_dir = base_session_dir / f"r_{run_short_id}_{id_unico}"
     run_artifacts_dir.mkdir(parents=True, exist_ok=True)
 
+    # Initialize the Assistant
     assistant_id = OpenAIService.initialize_assistant("config/config.json", selected_language, vendor)
-
     run_url_processor = URLProcessor(str(run_artifacts_dir), run_short_id)
 
     markdown_files = []
@@ -136,42 +142,62 @@ def run_pipeline(
             markdown_path = run_url_processor.save_as_markdown(url, html_content)
             markdown_files.append(Path(markdown_path))
         else:
-            st.warning(f"Falha ao processar URL: {url}")
+            st.warning(f"Failed to process URL: {url}")
 
     if not markdown_files:
-        st.error("Nenhum arquivo Markdown foi gerado. Verifique as URLs fornecidas.")
+        st.error("No Markdown file was generated. Check the provided URLs.")
         return [], run_artifacts_dir, id_unico
 
+    # Process the files through the agents
     agent_processor = AgentProcessor(config_loader, selected_language, vendor, run_artifacts_dir)
     final_content = agent_processor.process_files(markdown_files)
 
+    # Save the final file
     final_markdown_path = run_artifacts_dir / f"r_{run_short_id}_final.md"
     final_markdown_path.write_text(final_content, encoding="utf-8")
-    prompt_text = ""
-    for md_file in run_artifacts_dir.glob("*.md"):
-        if "final" not in md_file.name:
-            prompt_text += md_file.read_text(encoding="utf-8")
-    
-    prompt_tokens = OpenAIService.count_tokens(prompt_text, "gpt-4o")
-    completion_tokens = OpenAIService.count_tokens(final_content, "gpt-4o")
-    token_info = OpenAIService.calculate_cost(prompt_tokens, completion_tokens, model="gpt-4o")
 
-    st.session_state.token_info = token_info
-    st.info(f"Tokens do Prompt: {token_info['prompt_tokens']} | Tokens da Resposta: {token_info['completion_tokens']} | Custo Total: US$ {token_info['total_cost']:.4f}")
+    # Summarize and display the agent costs
+    if "agent_costs" in st.session_state:
+        total_cost = 0.0
+        total_prompt_tokens = 0
+        total_completion_tokens = 0
+
+        for agent_name, agent_data in st.session_state["agent_costs"].items():
+            total_cost += agent_data["total_cost"]
+            total_prompt_tokens += agent_data["prompt_tokens"]
+            total_completion_tokens += agent_data["completion_tokens"]
+
+        st.info(
+            f"**Prompt Tokens (sum)**: {total_prompt_tokens} | "
+            f"**Completion Tokens (sum)**: {total_completion_tokens} | "
+            f"**Approx. Total Cost (agents' sum)**: US$ {total_cost:.4f}"
+        )
+    else:
+        st.warning("No agent costs were recorded in st.session_state['agent_costs'].")
 
     return [str(final_markdown_path)], run_artifacts_dir, id_unico
 
 
 def main():
     st.title("BaselineForge")
-    st.markdown("**Confira o repositório do projeto no GitHub:** [BaselineForge](https://github.com/followdrabbit/BaselineForge)")  
+    st.markdown(
+        "**Check the project repository on GitHub:** "
+        "[BaselineForge](https://github.com/followdrabbit/BaselineForge)"
+    )
 
     selected_language = st.selectbox(
-        "Selecione o idioma desejado | Select the desired language | Seleccione el idioma deseado:",
+        "Select the desired language:",
         ["EN-US", "PT-BR", "ES-ES"]
     )
 
-    config_loader, url_processor, html_generator, menu_config, base_session_dir, short_session_id = initialize_dependencies(selected_language)
+    (
+        config_loader,
+        url_processor,
+        html_generator,
+        menu_config,
+        base_session_dir,
+        short_session_id
+    ) = initialize_dependencies(selected_language)
 
     generated_files, artifacts_dir, id_unico = run_pipeline(
         config_loader,
@@ -183,6 +209,7 @@ def main():
         short_session_id
     )
 
+    # If the control/refinement files exist, generate the HTML
     control_refiner_path = artifacts_dir / "controlgen_unified_ControlRefiner.md"
     risk_evaluator_path = artifacts_dir / "controlgen_unified_RiskEvaluator.md"
     if control_refiner_path.exists() and risk_evaluator_path.exists():
@@ -206,7 +233,7 @@ def main():
             mime="text/html"
         )
     else:
-        st.warning("Arquivos de controles e riscos não foram encontrados.")
+        st.warning("No control or risk files were found.")
 
     return generated_files, artifacts_dir
 
