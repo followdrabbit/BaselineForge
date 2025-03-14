@@ -74,6 +74,9 @@ def run_pipeline(
         st.info("Waiting for form submission...")
         return [], base_session_dir, ""
 
+    # Clear agent_costs BEFORE starting a new pipeline
+    st.session_state["agent_costs"] = {}
+
     if not (vendor and technology and urls):
         st.error("Please fill in all required fields.")
         return [], base_session_dir, ""
@@ -113,28 +116,30 @@ def run_pipeline(
 
     # Process files with the AgentProcessor
     agent_processor = AgentProcessor(config_loader, vendor, run_artifacts_dir)
-    final_content = agent_processor.process_files(markdown_files)
+    final_content, agent_costs = agent_processor.process_files(markdown_files)
 
     # Save the final output
     final_markdown_path = run_artifacts_dir / f"r_{run_short_id}_final.md"
     final_markdown_path.write_text(final_content, encoding="utf-8")
 
-    # Count tokens and display cost
-    prompt_text = ""
-    for md_file in run_artifacts_dir.glob("*.md"):
-        if "final" not in md_file.name:
-            prompt_text += md_file.read_text(encoding="utf-8")
+    # Summarize and display the agent costs
+    if "agent_costs" in st.session_state:
+        total_cost = 0.0
+        total_prompt_tokens = 0
+        total_completion_tokens = 0
 
-    prompt_tokens = OpenAIService.count_tokens(prompt_text, "gpt-4o")
-    completion_tokens = OpenAIService.count_tokens(final_content, "gpt-4o")
-    token_info = OpenAIService.calculate_cost(prompt_tokens, completion_tokens, model="gpt-4o")
+        for agent_name, agent_data in st.session_state["agent_costs"].items():
+            total_cost += agent_data["total_cost"]
+            total_prompt_tokens += agent_data["prompt_tokens"]
+            total_completion_tokens += agent_data["completion_tokens"]
 
-    st.session_state.token_info = token_info
-    st.info(
-        f"Prompt Tokens: {token_info['prompt_tokens']} | "
-        f"Response Tokens: {token_info['completion_tokens']} | "
-        f"Total Cost: US$ {token_info['total_cost']:.4f}"
-    )
+        st.info(
+            f"**Prompt Tokens (sum)**: {total_prompt_tokens} | "
+            f"**Completion Tokens (sum)**: {total_completion_tokens} | "
+            f"**Total Cost (agents' sum)**: US$ {total_cost:.4f}"
+        )
+    else:
+        st.warning("No agent costs were recorded in st.session_state['agent_costs'].")
 
     return [str(final_markdown_path)], run_artifacts_dir, id_unico
 
@@ -208,3 +213,4 @@ if __name__ == "__main__":
             generated_files, artifacts_dir = result
     finally:
         pass
+    

@@ -18,8 +18,12 @@ class AgentProcessor:
             log_file.write(message + "\n")
         st.write(message)
 
-    def process_files(self, markdown_files: list) -> str:
-        """Processes the files through a sequence of AI agents."""
+    def process_files(self, markdown_files: list):
+        """
+        Processa os arquivos através de uma cadeia de agentes.
+        Retorna a saída final do último agente e também os custos
+        armazenados em st.session_state.
+        """
         st.subheader("🚀 Starting baseline creation")
 
         self._log_message("📌 **[STEP 1/5] Extracting requirements**")
@@ -49,10 +53,15 @@ class AgentProcessor:
 
         self._log_message("📌 **[STEP 5/5] Evaluating Risks**")
         final_out = self.run_agent("RiskEvaluator", refiner_out, controlgen_merged_file)
-        return final_out
+
+        # Aqui retornamos o resultado final e também os custos
+        return final_out, st.session_state.get("agent_costs", {})
 
     def run_agent(self, agent_name: str, content: str, md_file: Path) -> str:
-        """Runs an AI agent and logs the token usage and cost."""
+        """
+        Executa um agente de IA, registra tokens/custo no st.session_state
+        e salva a saída em um arquivo .md.
+        """
         agent_info = self.agents_config.get(agent_name)
         if not agent_info:
             self._log_message(f"⚠️ [WARNING] Agent `{agent_name}` not configured. Skipping.")
@@ -63,14 +72,49 @@ class AgentProcessor:
             self._log_message(f"⚠️ [WARNING] Agent `{agent_name}` has no valid identifier. Skipping.")
             return content
         
+        # Monta o prompt para envio ao modelo
         prompt = f"Function: {agent_info['function']}\n\nContent:\n{content}"
+        
+        # Envia ao modelo e recebe a resposta
         processed_content = "\n".join(OpenAIService.run_assistant(prompt, agent_id))
+        
+        # -----------------------------------------------------------
+        # Contagem de tokens e cálculo de custo
+        prompt_tokens = OpenAIService.count_tokens(prompt, model="gpt-4o")
+        completion_tokens = OpenAIService.count_tokens(processed_content, model="gpt-4o")
+        token_info = OpenAIService.calculate_cost(prompt_tokens, completion_tokens, model="gpt-4o")
+
+        # Armazena no st.session_state
+        if "agent_costs" not in st.session_state:
+            st.session_state["agent_costs"] = {}
+
+        if agent_name not in st.session_state["agent_costs"]:
+            st.session_state["agent_costs"][agent_name] = {
+                "prompt_tokens": 0,
+                "completion_tokens": 0,
+                "total_cost": 0.0
+            }
+
+        st.session_state["agent_costs"][agent_name]["prompt_tokens"] += token_info["prompt_tokens"]
+        st.session_state["agent_costs"][agent_name]["completion_tokens"] += token_info["completion_tokens"]
+        st.session_state["agent_costs"][agent_name]["total_cost"] += token_info["total_cost"]
+        # -----------------------------------------------------------
+
+        # Exibe detalhes em um "expander" no Streamlit
+        #with st.expander("Tokens used and Cost"):
+        #    st.write(f"**Agent:** {agent_name}")
+        #    st.write(f"**Tokens Sent:** {token_info['prompt_tokens']}")
+        #    st.write(f"**Tokens Received:** {token_info['completion_tokens']}")
+        #    st.write(f"**Total Cost:** US$ {token_info['total_cost']:.4f}")
+
+        # Salva o conteúdo retornado em um arquivo .md
         output_path = self.artifacts_dir / f"{md_file.stem}_{agent_name}.md"
         output_path.write_text(processed_content, encoding="utf-8")
 
         return processed_content
 
     def _read_file_content(self, md_file: Path) -> str:
+        """Reads the contents of a Markdown file; returns empty string if missing."""
         if not md_file.exists():
             return ""
         return md_file.read_text(encoding="utf-8")
