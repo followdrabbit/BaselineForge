@@ -118,4 +118,3 @@ class AgentProcessor:
         if not md_file.exists():
             return ""
         return md_file.read_text(encoding="utf-8")
-
