@@ -18,7 +18,7 @@ class AgentProcessor:
             log_file.write(message + "\n")
         st.write(message)
 
-    def process_files(self, markdown_files: list):
+    def process_files(self, markdown_files: list, technology: str, urls: list):
         """
         Processa os arquivos através de uma cadeia de agentes.
         Retorna a saída final do último agente e também os custos
@@ -27,9 +27,17 @@ class AgentProcessor:
         st.subheader("🚀 Starting baseline creation")
 
         self._log_message("📌 **[STEP 1/5] Extracting requirements**")
-        for md_file in markdown_files:
+        for md_file, url in zip(markdown_files, urls):
             original_text = self._read_file_content(md_file)
-            self.run_agent("Requisitor", original_text, md_file)
+            
+            # Criar o prompt especial apenas para "Requisitor"
+            prompt = (
+                f"# Technology Name: {technology}\n"
+                f"# Processed Content from URL: {url}\n\n"
+                f"{original_text}"
+            )
+
+            self.run_agent("Requisitor", prompt, md_file)
 
         self._log_message("📌 **[STEP 2/5] Transforming requirements into automatable controls**")
         controlgen_outputs = []
@@ -54,7 +62,6 @@ class AgentProcessor:
         self._log_message("📌 **[STEP 5/5] Evaluating Risks**")
         final_out = self.run_agent("RiskEvaluator", refiner_out, controlgen_merged_file)
 
-        # Aqui retornamos o resultado final e também os custos
         return final_out, st.session_state.get("agent_costs", {})
 
     def run_agent(self, agent_name: str, content: str, md_file: Path) -> str:
@@ -71,13 +78,16 @@ class AgentProcessor:
         if not agent_id or "PLACEHOLDER" in agent_id:
             self._log_message(f"⚠️ [WARNING] Agent `{agent_name}` has no valid identifier. Skipping.")
             return content
-        
-        # Monta o prompt para envio ao modelo
-        prompt = f"Function: {agent_info['function']}\n\nContent:\n{content}"
-        
+
+        # Se for "Requisitor", já recebe o prompt formatado
+        if agent_name == "Requisitor":
+            prompt = content  
+        else:
+            prompt = content  # Os demais recebem apenas o conteúdo do arquivo
+
         # Envia ao modelo e recebe a resposta
         processed_content = "\n".join(OpenAIService.run_assistant(prompt, agent_id))
-        
+
         # -----------------------------------------------------------
         # Contagem de tokens e cálculo de custo
         prompt_tokens = OpenAIService.count_tokens(prompt, model="gpt-4o")
@@ -101,11 +111,11 @@ class AgentProcessor:
         # -----------------------------------------------------------
 
         # Exibe detalhes em um "expander" no Streamlit
-        #with st.expander("Tokens used and Cost"):
-        #    st.write(f"**Agent:** {agent_name}")
-        #    st.write(f"**Tokens Sent:** {token_info['prompt_tokens']}")
-        #    st.write(f"**Tokens Received:** {token_info['completion_tokens']}")
-        #    st.write(f"**Total Cost:** US$ {token_info['total_cost']:.4f}")
+        with st.expander("Tokens used and Cost"):
+            st.write(f"**Agent:** {agent_name}")
+            st.write(f"**Tokens Sent:** {token_info['prompt_tokens']}")
+            st.write(f"**Tokens Received:** {token_info['completion_tokens']}")
+            st.write(f"**Total Cost:** US$ {token_info['total_cost']:.4f}")
 
         # Salva o conteúdo retornado em um arquivo .md
         output_path = self.artifacts_dir / f"{md_file.stem}_{agent_name}.md"

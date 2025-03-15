@@ -116,7 +116,8 @@ def run_pipeline(
 
     # Process files with the AgentProcessor
     agent_processor = AgentProcessor(config_loader, vendor, run_artifacts_dir)
-    final_content, agent_costs = agent_processor.process_files(markdown_files)
+    final_content, agent_costs = agent_processor.process_files(markdown_files, technology, urls)
+
 
     # Save the final output
     final_markdown_path = run_artifacts_dir / f"r_{run_short_id}_final.md"
