@@ -36,9 +36,9 @@ def initialize_dependencies(selected_language: str) -> Tuple[ConfigLoader, URLPr
     return config_loader, url_processor, html_generator, menu_config, base_session_dir, short_session_id
 
 
-def get_user_inputs(menu_config: dict) -> Tuple[str, str, List[str]]:
+def get_user_inputs(menu_config: dict) -> Tuple[str, str, List[str], str]:
     """
-    Coleta os inputs do usuário (fornecedor, tecnologia e URLs) usando o menu de configuração.
+    Coleta os inputs do usuário (fornecedor, tecnologia, URLs e setor) usando o menu de configuração.
     """
     vendor = st.selectbox(
         menu_config.get("select_vendor", "Selecione o Fornecedor"),
@@ -51,7 +51,14 @@ def get_user_inputs(menu_config: dict) -> Tuple[str, str, List[str]]:
         menu_config.get("enter_urls", "Digite até 10 URLs separadas por vírgula"), ""
     )
     urls = [url.strip() for url in urls_input.split(",") if url.strip()]
-    return vendor, tecnologia, urls
+    
+    # Novo campo para selecionar o setor
+    setor = st.selectbox(
+        "Selecione o setor de risco a ser avaliado:",
+        ["Bancário", "Farmacêutico", "Energético", "Automotivo", "Varejo", "Manufatura"]
+    )
+    
+    return vendor, tecnologia, urls, setor
 
 
 def generate_baseline_html(
@@ -104,7 +111,7 @@ def run_pipeline(
     A cada clique em "Gerar Baseline", cria um subdiretório usando run_id.
     Retorna a lista de arquivos gerados, o diretório de artefatos e o id_unico.
     """
-    vendor, tecnologia, urls = get_user_inputs(menu_config)
+    vendor, tecnologia, urls, setor = get_user_inputs(menu_config)
     with st.form("Formulário de ID"):
         submit_button = st.form_submit_button(menu_config.get("generate_baseline", "Gerar Baseline"))
     if not submit_button:
@@ -125,7 +132,7 @@ def run_pipeline(
     run_artifacts_dir = base_session_dir / f"r_{run_short_id}_{id_unico}"
     run_artifacts_dir.mkdir(parents=True, exist_ok=True)
 
-    assistant_id = OpenAIService.initialize_assistant("config/config.json", selected_language, vendor)
+    assistant_id = OpenAIService.initialize_assistant("config/config.json", selected_language, vendor, setor)
 
     run_url_processor = URLProcessor(str(run_artifacts_dir), run_short_id)
 
