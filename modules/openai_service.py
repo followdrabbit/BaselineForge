@@ -56,14 +56,15 @@ class OpenAIService:
             raise RuntimeError(f"Error creating or retrieving assistant: {e}")
 
     @staticmethod
-    def initialize_assistant(config_path: str, selected_language: str, vendor: str) -> str:
+    def initialize_assistant(config_path: str, selected_language: str, vendor: str, sector: str) -> str:
         """
-        High-level method to initialize an assistant using the config file, selected language, and vendor.
+        High-level method to initialize an assistant using the config file, selected language, vendor, and sector.
 
         Args:
             config_path (str): Path to the configuration file.
             selected_language (str): Language code to select the appropriate assistant configuration.
             vendor (str): Cloud service provider (e.g., "AWS", "Azure", "GCP", "Huawei").
+            sector (str): The sector selected for risk evaluation.
 
         Returns:
             str: Assistant ID.
@@ -76,10 +77,10 @@ class OpenAIService:
         except KeyError:
             raise ValueError(f"Assistant configuration for vendor '{vendor}' is missing in the configuration for language '{selected_language}'.")
 
-        # Selecionamos o agente "Requisitor" como padrão (ajuste se necessário)
-        assistant_info = agents.get("Requisitor")
+        # Seleciona o agente para o setor de risco
+        assistant_info = agents.get(sector, None)
         if not assistant_info:
-            raise ValueError(f"Assistant 'Requisitor' information is missing in the configuration for vendor '{vendor}' and language '{selected_language}'.")
+            raise ValueError(f"Assistant information for sector '{sector}' is missing in the configuration for vendor '{vendor}' and language '{selected_language}'.")
 
         # Se o identificador já estiver definido, retorne-o diretamente
         if "identifier" in assistant_info and assistant_info["identifier"]:
@@ -122,7 +123,7 @@ class OpenAIService:
                     messages = client.beta.threads.messages.list(thread_id=thread.id)
                     responses = [msg.content[0].text.value for msg in messages if msg.role == "assistant"]
                     break
-                elif run_status in ["queued", "in_progress"]:
+                elif run_status in ["queued", "in_progress"] :
                     time.sleep(3)
                 elif run_status in ["failed", "cancelled", "expired"]:
                     raise RuntimeError(f"Run failed or was cancelled/expired: {run_status}")
